@@ -12,7 +12,7 @@
 # IDE and editor files
 .vs/
 .vscode/
-*.csproj
+
 *.sln
 *.user
 *.userprefs
