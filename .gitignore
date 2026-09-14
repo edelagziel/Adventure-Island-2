@@ -13,6 +13,9 @@
 .vs/
 .vscode/
 
+# Local Node dependencies
+/node_modules/
+
 *.sln
 *.user
 *.userprefs
