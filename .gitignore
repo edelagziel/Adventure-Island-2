@@ -17,6 +17,8 @@
 /node_modules/
 
 *.sln
+*.slnx
+*.csproj
 *.user
 *.userprefs
 *.pidb
@@ -31,3 +33,10 @@ Thumbs.db
 
 # Unity crash reports
 sysinfo.txt
+
+# Unity test runner output
+/TestResults*.xml
+/UnityTest*.log
+
+# Local diagnostic output
+/debug.log
