@@ -1,0 +1,17 @@
+{
+  "name": "AdventureIsland.Power",
+  "rootNamespace": "",
+  "references": [
+    "Unity.TextMeshPro",
+    "VContainer"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
