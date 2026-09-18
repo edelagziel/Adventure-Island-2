@@ -12,6 +12,11 @@ public sealed class PowerLifetimeScope : LifetimeScope
     [SerializeField, Min(0)] private int minimumPower;
     [SerializeField, Min(0)] private int maximumPower = 30;
 
+    [Header("Power Drain")]
+    [SerializeField] private PowerDrainRunner powerDrainRunner;
+    [SerializeField, Min(1)] private int drainAmount = 1;
+    [SerializeField, Min(0.01f)] private float drainIntervalSeconds = 5f;
+
     protected override void Configure(IContainerBuilder builder)
     {
         ValidateConfiguration();
@@ -26,6 +31,9 @@ public sealed class PowerLifetimeScope : LifetimeScope
             .As<IPowerView>();
         builder.Register<PowerController>(Lifetime.Scoped)
             .AsSelf();
+        builder.RegisterComponent(powerDrainRunner)
+            .WithParameter(nameof(drainAmount), drainAmount)
+            .WithParameter(nameof(drainIntervalSeconds), drainIntervalSeconds);
 
         // The controller is the root mediator, so only the Composition Root resolves it.
         builder.RegisterBuildCallback(container => container.Resolve<PowerController>());
@@ -38,6 +46,11 @@ public sealed class PowerLifetimeScope : LifetimeScope
             throw new InvalidOperationException("PowerLifetimeScope requires a PowerView reference.");
         }
 
+        if (powerDrainRunner == null)
+        {
+            throw new InvalidOperationException("PowerLifetimeScope requires a PowerDrainRunner reference.");
+        }
+
         if (minimumPower > maximumPower)
         {
             throw new InvalidOperationException("Minimum Power cannot be greater than Maximum Power.");
@@ -46,6 +59,16 @@ public sealed class PowerLifetimeScope : LifetimeScope
         if (initialPower < minimumPower || initialPower > maximumPower)
         {
             throw new InvalidOperationException("Initial Power must be inside the configured Power range.");
+        }
+
+        if (drainAmount <= 0)
+        {
+            throw new InvalidOperationException("Power drain amount must be greater than zero.");
+        }
+
+        if (drainIntervalSeconds <= 0f)
+        {
+            throw new InvalidOperationException("Power drain interval must be greater than zero.");
         }
     }
 }
