@@ -5,6 +5,8 @@ public sealed class PowerController
     private readonly IPowerModel model;
     private readonly IPowerView view;
 
+    public event Action PowerReachedMinimum;
+
     public PowerController(IPowerModel model, IPowerView view)
     {
         this.model = model ?? throw new ArgumentNullException(nameof(model));
@@ -32,6 +34,11 @@ public sealed class PowerController
         if (changed)
         {
             UpdateView();
+
+            if (model.CurrentPower == model.MinimumPower)
+            {
+                PowerReachedMinimum?.Invoke();
+            }
         }
 
         return changed;
