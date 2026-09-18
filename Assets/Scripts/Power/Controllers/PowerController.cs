@@ -37,6 +37,12 @@ public sealed class PowerController
         return changed;
     }
 
+    public void ResetPower()
+    {
+        model.ResetPower();
+        UpdateView();
+    }
+
     private void UpdateView()
     {
         view.UpdatePowerDisplay(

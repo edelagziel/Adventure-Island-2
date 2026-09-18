@@ -46,6 +46,11 @@ public sealed class PowerModel : IPowerModel
         return SetPower(requestedPower);
     }
 
+    public void ResetPower()
+    {
+        CurrentPower = InitialPower;
+    }
+
     private bool SetPower(long requestedPower)
     {
         int nextPower = (int)Math.Max(MinimumPower, Math.Min(MaximumPower, requestedPower));

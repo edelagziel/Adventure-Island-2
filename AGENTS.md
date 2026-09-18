@@ -9,8 +9,7 @@
   - initial Power: `20`
   - minimum Power: `0`
   - maximum Power: `30`
-- Jira task `AD-23` (Power initialization/reset for stage or life start) is claimed and is in planning on branch `feature/AD-23-power-reset`.
-- Do not implement AD-23 until Eden approves its lifecycle responsibility and trigger-owner design.
+- AD-23 adds the Power-side `ResetPower()` capability. The future lifecycle owner and reset timing remain outside the Power feature.
 - The current Power-drain configuration is:
   - drain amount: `1`
   - drain interval: `5` seconds of scaled gameplay time
@@ -46,7 +45,7 @@ Gameplay request
 Responsibilities:
 
 - `PowerModel` implements `IPowerModel` and owns Power state, validation, minimum/maximum rules, clamping, and mutation behavior.
-- `PowerController` is a concrete plain C# orchestration object. It depends on `IPowerModel` and `IPowerView`, calls the Model, and updates the View only when the Model reports a change.
+- `PowerController` is a concrete plain C# orchestration object. It depends on `IPowerModel` and `IPowerView`, calls the Model, updates the View after `ResetPower()`, and updates the View after `AddPower(...)` or `ReducePower(...)` only when the Model reports a change.
 - `PowerView` is a Unity `MonoBehaviour` that implements `IPowerView` and only updates presentation.
 - Gameplay code must send Power changes through the concrete `PowerController`; it must not mutate `PowerModel` directly.
 - Do not introduce `IPowerController`, `IPowerModifier`, an event chain between Controller and View, or another Power service without explicit architectural approval from Eden.
@@ -131,6 +130,17 @@ Responsibilities and lifecycle:
 - Runtime-created Fruit will use a Factory that instantiates Fruit prefabs through VContainer so `FruitPickup` is injected automatically.
 - That creation path may later support level/Tiled Fruit and enemy-drop Fruit; it is intentionally not implemented yet.
 
+## Future Lives / GameFlow integration
+
+This integration is intentionally outside AD-23 and must be revisited when the Lives / GameFlow system is implemented.
+
+- `PowerController` will publish `PowerReachedMinimum` for the future Lives / GameFlow integration.
+- A future Lives / GameFlow coordinator will subscribe, remove one life, and determine whether lives remain.
+- When lives remain, that coordinator will restart the current stage attempt; when none remain, it will reset the game according to the assignment rules.
+- When a new attempt actually begins, that coordinator will call `PowerController.ResetPower()`.
+- Power must not manage lives, respawn, stage restart, or game-over logic.
+- `PowerReachedMinimum` is an external notification for the future coordinator, not an event chain between `PowerController` and `IPowerView`.
+
 ## Verification completed
 
 - `AdventureIsland.Power.csproj` builds successfully with `0` errors and `0` warnings.
@@ -142,6 +152,7 @@ Responsibilities and lifecycle:
 - The AD-20 scene changes have no duplicate file IDs, and `Assets/Scenes/Scene_Physics.unity` remains untouched in the feature branch.
 - No automated tests were added for AD-20, following Eden's manual-playtest decision.
 - Retain the recorded distinction between compile/static verification and manual Play Mode verification; do not retroactively claim automated coverage for AD-20.
+- AD-23 was verified by successful `AdventureIsland.Power.csproj` and `Assembly-CSharp.csproj` builds, plus an in-memory Model/Controller/View reset check. No scene or runtime lifecycle verification was added.
 
 ## Known working-tree note
 
@@ -149,14 +160,8 @@ Unity automatically rewrote thousands of serialization lines in the legacy `Asse
 
 ## Next development point
 
-Plan AD-23 without implementing it until Eden explicitly approves the lifecycle design. The current production scene has no real player life/restart coordinator; the legacy `SC_Death` / `ResetPosition` flow only teleports the player and must not silently become the production lifecycle architecture.
+The current production scene has no real player life/restart coordinator; the legacy `SC_Death` / `ResetPosition` flow only teleports the player and must not silently become the production lifecycle architecture.
 
-Before implementing AD-23:
-
-1. Read the task and inspect the existing project state.
-2. Keep the approved Power responsibilities unchanged.
-3. Define and approve who triggers Power reset at stage start and same-stage life restart.
-4. Keep the change limited to one coherent vertical slice.
-5. Verify Unity runtime behavior before declaring the next task complete.
+Before implementing a future Lives / GameFlow slice, define and approve the owner of attempt restart and the exact `PowerReachedMinimum` publication contract.
 
 For architecture work, follow the global `eden-software-architecture-coach` skill and the lecturer materials it references.

@@ -11,7 +11,8 @@
 
 ## AD-23 - Reset and initialize Power for stage/life start
 
-- Status: claimed and moved to Jira In Progress on 2026-09-18; planning only, with no implementation approved yet.
-- Branch: `feature/AD-23-power-reset`, reusing the existing persistent worktree.
-- Current constraint: `Adventure-Island-2-Game.unity` has no production life/restart coordinator. `SC_Death` and `ResetPosition` are legacy `Scene_Physics.unity` behavior and only teleport the player.
-- The reset trigger owner and its dependency on the parallel AD-22 life-loss integration remain unresolved pending Eden's approval.
+- Adds `void ResetPower()` to `IPowerModel`, implemented by `PowerModel` by restoring its validated `InitialPower`.
+- Adds `PowerController.ResetPower()`, which commands the Model and synchronizes the existing `IPowerView`.
+- No lifecycle, lives, respawn, stage reload, event, or scene behavior is part of AD-23.
+- Verified by successful Power and game-assembly builds and an in-memory check of construction, Model reset, and Controller/View synchronization.
+- Future dependency: when the Lives / GameFlow system exists, `PowerController` will publish `PowerReachedMinimum`; its coordinator will handle life loss and call `PowerController.ResetPower()` only when a new attempt begins. Power remains independent of lives and restart behavior.

@@ -6,4 +6,5 @@ public interface IPowerModel
 
     bool AddPower(int amount);
     bool ReducePower(int amount);
+    void ResetPower();
 }
