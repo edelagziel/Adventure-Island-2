@@ -116,6 +116,22 @@ Responsibilities and lifecycle:
 - `Assets/Scenes/Scene_Physics.unity` is the older Mario-based scene and is considered legacy/reference content.
 - Build Settings currently still list `Scene_Physics.unity`; changing the main build scene is a separate explicit task.
 
+## AD-21 Scene Fruit architecture
+
+### Current / implemented
+
+- AD-21 reuses `PickUp` as the shared pickup Template Method.
+- `FruitPickup` is one configurable component: Fruit Type 1 grants `+1` Power and Fruit Type 2 grants `+2` Power.
+- A valid Player pickup always consumes/deactivates the Fruit.
+- `FruitPickup` delegates Power changes to `PowerController`.
+- Scene Fruit components are Unity-owned and receive `PowerController` through VContainer `Auto Inject Game Objects` on the existing `PowerLifetimeScope`.
+- `FruitLifetimeScope`, per-fruit DI registrations, and Fruit pooling are intentionally not used.
+
+### Next planned step
+
+- Runtime-created Fruit will use a Factory that instantiates Fruit prefabs through VContainer so `FruitPickup` is injected automatically.
+- That creation path may later support level/Tiled Fruit and enemy-drop Fruit; it is intentionally not implemented yet.
+
 ## Verification completed
 
 - `AdventureIsland.Power.csproj` builds successfully with `0` errors and `0` warnings.
