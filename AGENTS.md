@@ -105,12 +105,13 @@ Responsibilities and lifecycle:
 ## Scene integration
 
 - `Assets/Scenes/Adventure-Island-2-Game.unity` contains:
-  - a dedicated `PowerLifetimeScope` GameObject
-  - `PowerDrainRunner` on the same GameObject
+  - a root-level `Scripts` organization GameObject
+  - a `Power` GameObject under `Scripts`
+  - separate `PowerLifetimeScope` and `PowerDrainRunner` GameObjects under `Scripts/Power`
   - `PowerCanvas`
   - `Txt_Power`
   - `PowerView`
-  - serialized references connecting the View, drain runner, and LifetimeScope
+  - serialized references connecting the View, the separate drain runner component, and LifetimeScope
 - The initial display is `Power: 20/30`.
 - `Assets/Scenes/Scene_Physics.unity` is the older Mario-based scene and is considered legacy/reference content.
 - Build Settings currently still list `Scene_Physics.unity`; changing the main build scene is a separate explicit task.
