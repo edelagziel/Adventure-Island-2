@@ -2,16 +2,15 @@
 
 ## Current project status
 
-- Jira task `AD-19` (Power MVC foundation) is complete and Eden intends to move it to `Done`.
-- The implementation is committed and pushed to the `master` branch.
-- Latest completed feature commit: `9909a30 feat: integrate Power system into game scene`.
+- Jira tasks `AD-19` (Power MVC foundation), `AD-20` (automatic Power drain), and `AD-21` (Fruit collection and Power gain) are complete in Jira and integrated into `master`.
+- Latest completed feature commit: `735f555 feat(AD-21): add fruit power pickup`.
 - VContainer `1.19.0` is installed and used for dependency injection.
 - The current Power configuration is:
   - initial Power: `20`
   - minimum Power: `0`
   - maximum Power: `30`
-- Jira task `AD-20` (automatic Power drain) is implemented on branch `feature/AD-20-power-drain`.
-- AD-20 still requires its manual Unity Play Mode verification before it can be declared complete.
+- Jira task `AD-23` (Power initialization/reset for stage or life start) is claimed and is in planning on branch `feature/AD-23-power-reset`.
+- Do not implement AD-23 until Eden approves its lifecycle responsibility and trigger-owner design.
 - The current Power-drain configuration is:
   - drain amount: `1`
   - drain interval: `5` seconds of scaled gameplay time
@@ -142,7 +141,7 @@ Responsibilities and lifecycle:
 - The Unity-generated `AdventureIsland.Power.csproj` built with `0` errors; its two warnings came from the Unity Test Framework dependency rather than AD-20 code.
 - The AD-20 scene changes have no duplicate file IDs, and `Assets/Scenes/Scene_Physics.unity` remains untouched in the feature branch.
 - No automated tests were added for AD-20, following Eden's manual-playtest decision.
-- Do not claim AD-20 runtime completion until Play Mode confirms the `20 -> 19` change after five seconds, repeated five-second drains, minimum clamping, and disable/re-enable behavior without duplicate coroutines.
+- Retain the recorded distinction between compile/static verification and manual Play Mode verification; do not retroactively claim automated coverage for AD-20.
 
 ## Known working-tree note
 
@@ -150,13 +149,13 @@ Unity automatically rewrote thousands of serialization lines in the legacy `Asse
 
 ## Next development point
 
-Complete the AD-20 manual Play Mode verification before moving the Jira task to `Done` or merging the feature branch.
+Plan AD-23 without implementing it until Eden explicitly approves the lifecycle design. The current production scene has no real player life/restart coordinator; the legacy `SC_Death` / `ResetPosition` flow only teleports the player and must not silently become the production lifecycle architecture.
 
-The next gameplay slice may connect a real gameplay consumer, such as fruit collection, to `PowerController.AddPower(...)`. Before implementing the next Jira task:
+Before implementing AD-23:
 
 1. Read the task and inspect the existing project state.
 2. Keep the approved Power responsibilities unchanged.
-3. Define and approve any new system architecture before implementation.
+3. Define and approve who triggers Power reset at stage start and same-stage life restart.
 4. Keep the change limited to one coherent vertical slice.
 5. Verify Unity runtime behavior before declaring the next task complete.
 
