@@ -1,5 +1,14 @@
 # Project State
 
+## AD-31 - Production weapon foundation and attack flow
+
+- The production Combat assembly defines the minimal `IWeapon.TryAttack()` capability, a single-active-weapon `WeaponLoadout`, and a concrete `WeaponController` that owns equip/replace orchestration and delegates attacks without weapon-specific branching.
+- `WeaponAttackInput` is a Unity input adapter. VContainer injects the concrete `WeaponController`; pressing `Fire1` requests `TryAttack()` and does nothing when no weapon is equipped.
+- `WeaponInstaller` registers `WeaponLoadout` and `WeaponController` as scoped concrete services. `GameLifetimeScope` invokes and validates the installer while remaining composition-only.
+- Hammer trajectory, Boomerang return behavior, damage, Animals, Factory, Builder, and pooling remain outside AD-31.
+- Scene setup remains explicit: `Adventure-Island-2-Game.unity` still needs a `Scripts/Combat/WeaponInstaller` host assigned to `GameLifetimeScope`, and a future player object must host `WeaponAttackInput` and participate in VContainer auto-injection. No runtime scene integration is claimed.
+- Verification: focused compilation and in-memory behavior checks passed for equip, replacement, empty attack, delegation result, scoped registrations, and the injection contract; Combat assembly JSON, Unity metadata GUID uniqueness, and diff whitespace also passed.
+
 ## AD-28 / AD-26 / AD-27 - Shared gameplay composition and Lives flow
 
 - The shared `GameLifetimeScope` now composes `PowerInstaller`, `FruitProgressInstaller`, `LivesInstaller`, and the domain-specific `LivesFlowCoordinator`; installers remain registration/configuration-only.

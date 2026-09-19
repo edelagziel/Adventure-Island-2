@@ -1,0 +1,16 @@
+{
+  "name": "AdventureIsland.Combat",
+  "rootNamespace": "AdventureIsland.Combat",
+  "references": [
+    "VContainer"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

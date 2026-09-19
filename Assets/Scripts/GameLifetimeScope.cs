@@ -1,4 +1,5 @@
 using System;
+using AdventureIsland.Combat;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -10,6 +11,7 @@ public sealed class GameLifetimeScope : LifetimeScope
     [SerializeField] private PowerInstaller powerInstaller;
     [SerializeField] private FruitProgressInstaller fruitProgressInstaller;
     [SerializeField] private LivesInstaller livesInstaller;
+    [SerializeField] private WeaponInstaller weaponInstaller;
 
     protected override void Configure(IContainerBuilder builder)
     {
@@ -18,6 +20,7 @@ public sealed class GameLifetimeScope : LifetimeScope
         powerInstaller.Install(builder);
         fruitProgressInstaller.Install(builder);
         livesInstaller.Install(builder);
+        weaponInstaller.Install(builder);
 
         builder.Register<LivesFlowCoordinator>(Lifetime.Scoped)
             .AsSelf();
@@ -40,6 +43,11 @@ public sealed class GameLifetimeScope : LifetimeScope
         if (livesInstaller == null)
         {
             throw new InvalidOperationException("GameLifetimeScope requires a LivesInstaller reference.");
+        }
+
+        if (weaponInstaller == null)
+        {
+            throw new InvalidOperationException("GameLifetimeScope requires a WeaponInstaller reference.");
         }
     }
 }
