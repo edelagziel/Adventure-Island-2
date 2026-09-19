@@ -4,7 +4,7 @@ using VContainer;
 using VContainer.Unity;
 
 [DisallowMultipleComponent]
-public sealed class PowerLifetimeScope : LifetimeScope
+public sealed class PowerInstaller : MonoBehaviour, IInstaller
 {
     [Header("Power")]
     [SerializeField] private PowerView powerView;
@@ -17,7 +17,7 @@ public sealed class PowerLifetimeScope : LifetimeScope
     [SerializeField, Min(1)] private int drainAmount = 1;
     [SerializeField, Min(0.01f)] private float drainIntervalSeconds = 5f;
 
-    protected override void Configure(IContainerBuilder builder)
+    public void Install(IContainerBuilder builder)
     {
         ValidateConfiguration();
 
@@ -43,12 +43,12 @@ public sealed class PowerLifetimeScope : LifetimeScope
     {
         if (powerView == null)
         {
-            throw new InvalidOperationException("PowerLifetimeScope requires a PowerView reference.");
+            throw new InvalidOperationException("PowerInstaller requires a PowerView reference.");
         }
 
         if (powerDrainRunner == null)
         {
-            throw new InvalidOperationException("PowerLifetimeScope requires a PowerDrainRunner reference.");
+            throw new InvalidOperationException("PowerInstaller requires a PowerDrainRunner reference.");
         }
 
         if (minimumPower > maximumPower)

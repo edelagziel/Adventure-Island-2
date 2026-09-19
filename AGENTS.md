@@ -57,7 +57,7 @@ The Power feature is self-contained under:
 ```text
 Assets/Scripts/Power/
   AdventureIsland.Power.asmdef
-  Composition/PowerLifetimeScope.cs
+  Composition/PowerInstaller.cs
   Controllers/PowerController.cs
   Interfaces/IPowerModel.cs
   Interfaces/IPowerView.cs
@@ -66,7 +66,7 @@ Assets/Scripts/Power/
   Views/PowerView.cs
 ```
 
-`PowerLifetimeScope` is the topic-specific Composition Root. It registers:
+`PowerInstaller` owns Power-only configuration and registrations:
 
 - `PowerModel` as `IPowerModel` with scoped lifetime.
 - the serialized `PowerView` component as `IPowerView`.
@@ -74,7 +74,7 @@ Assets/Scripts/Power/
 - the serialized `PowerDrainRunner` component with its configured drain amount and interval.
 - a build callback that resolves the Controller so the initial UI is synchronized.
 
-Keep future feature registrations in their own topic-specific LifetimeScopes. Do not grow one generic `GameLifetimeScope` containing unrelated systems.
+`GameLifetimeScope` is the scene-wide VContainer Composition Root. It invokes feature installers and auto-injects shared scene consumers; it contains no gameplay rules. When a Unity component needs dependencies from more than one gameplay system, its dependencies must be registered in this shared container rather than in sibling `LifetimeScope` containers.
 
 ## AD-20 Power drain architecture
 
@@ -103,9 +103,9 @@ Responsibilities and lifecycle:
 ## Scene integration
 
 - `Assets/Scenes/Adventure-Island-2-Game.unity` contains:
-  - a root-level `Scripts` organization GameObject
-  - a `Power` GameObject under `Scripts`
-  - separate `PowerLifetimeScope` and `PowerDrainRunner` GameObjects under `Scripts/Power`
+- a root-level `Scripts` organization GameObject
+- a `Power` GameObject under `Scripts`
+  - separate `GameLifetimeScope`, `PowerInstaller`, and `PowerDrainRunner` GameObjects under `Scripts`
   - `PowerCanvas`
   - `Txt_Power`
   - `PowerView`
@@ -121,14 +121,29 @@ Responsibilities and lifecycle:
 - AD-21 reuses `PickUp` as the shared pickup Template Method.
 - `FruitPickup` is one configurable component: Fruit Type 1 grants `+1` Power and Fruit Type 2 grants `+2` Power.
 - A valid Player pickup always consumes/deactivates the Fruit.
-- `FruitPickup` delegates Power changes to `PowerController`.
-- Scene Fruit components are Unity-owned and receive `PowerController` through VContainer `Auto Inject Game Objects` on the existing `PowerLifetimeScope`.
+- `FruitPickup` directly delegates Power and Fruit Progress requests to their concrete Controllers.
+- Scene Fruit components are Unity-owned and receive `PowerController` and the shared `FruitProgressController` through VContainer `Auto Inject Game Objects` on `GameLifetimeScope`.
 - `FruitLifetimeScope`, per-fruit DI registrations, and Fruit pooling are intentionally not used.
 
 ### Next planned step
 
 - Runtime-created Fruit will use a Factory that instantiates Fruit prefabs through VContainer so `FruitPickup` is injected automatically.
 - That creation path may later support level/Tiled Fruit and enemy-drop Fruit; it is intentionally not implemented yet.
+
+## AD-24 Fruit Progress architecture
+
+`FruitProgressInstaller` owns Fruit Progress-only configuration and registrations in the shared scene container:
+
+- `FruitProgressModel` as `IFruitProgressModel` with scoped lifetime.
+- the serialized `FruitProgressView` as `IFruitProgressView`.
+- the concrete `FruitProgressController` with scoped lifetime.
+- a build callback that initializes the Fruit Progress UI.
+
+`FruitProgressModel` owns the current fruit count and configured threshold. Every collected Fruit increments the count once, regardless of its Power amount. At the configured threshold of `20`, it resets the count to `0` and reports the completed group. `FruitProgressController` updates the View, publishes its non-static `FruitThresholdReached` notification, then publishes its non-static `FruitCollected` notification. It does not manage lives, restart, Power reset, scenes, or Game Over.
+
+`FruitPickup` receives concrete `PowerController` and the shared `FruitProgressController` before gameplay, then calls `PowerController.AddPower(powerAmount)` followed by `FruitProgressController.CollectFruit()` after the existing `PickUp` template validates a Player collision. `FruitCollected` is emitted by the shared Fruit Progress controller for future optional Sound, VFX, Achievement, or Analytics observers. Power and Fruit Progress must not become `FruitCollected` subscribers.
+
+A future Lives/GameFlow coordinator may subscribe to `FruitThresholdReached`; it is not part of AD-24.
 
 ## Future Lives / GameFlow integration
 
