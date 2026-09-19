@@ -1,6 +1,6 @@
 using System;
 
-public sealed class LivesController
+public sealed class LivesController : IResettable
 {
     private readonly ILivesModel model;
     private readonly ILivesView view;
@@ -25,9 +25,23 @@ public sealed class LivesController
         return changed;
     }
 
+    public int CurrentLives => model.CurrentLives;
+
     public bool GainLife()
     {
         bool changed = model.GainLife();
+
+        if (changed)
+        {
+            UpdateView();
+        }
+
+        return changed;
+    }
+
+    public bool Reset()
+    {
+        bool changed = model.Reset();
 
         if (changed)
         {

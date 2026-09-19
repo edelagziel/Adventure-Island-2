@@ -35,6 +35,17 @@ public sealed class PowerDrainRunner : MonoBehaviour
         StopDrain();
     }
 
+    public void RestartDrainInterval()
+    {
+        if (!isInitialized)
+        {
+            return;
+        }
+
+        StopDrain();
+        StartDrainIfPossible();
+    }
+
     private void StartDrainIfPossible()
     {
         if (!isInitialized || drainCoroutine != null)

@@ -2,6 +2,7 @@
   "name": "AdventureIsland.FruitProgress",
   "rootNamespace": "",
   "references": [
+    "AdventureIsland.Shared",
     "Unity.TextMeshPro",
     "VContainer"
   ],

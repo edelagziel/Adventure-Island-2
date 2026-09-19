@@ -385,6 +385,7 @@ MonoBehaviour:
   - {fileID: 2100000001}
   powerInstaller: {fileID: 1573283290}
   fruitProgressInstaller: {fileID: 2400000006}
+  livesInstaller: {fileID: 1900000104}
 --- !u!1 &2400000004
 GameObject:
   m_ObjectHideFlags: 0
@@ -953,7 +954,7 @@ GameObject:
   - component: {fileID: 1900000103}
   - component: {fileID: 1900000104}
   m_Layer: 0
-  m_Name: LivesLifetimeScope
+  m_Name: LivesInstaller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -986,11 +987,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad250000000000000000000000000003, type: 3}
   m_Name:
-  m_EditorClassIdentifier: AdventureIsland.Lives::LivesLifetimeScope
-  parentReference:
-    TypeName:
-  autoRun: 1
-  autoInjectGameObjects: []
+  m_EditorClassIdentifier: AdventureIsland.Lives::LivesInstaller
   livesView: {fileID: 1900000124}
   initialLives: 3
 --- !u!1 &1900000110

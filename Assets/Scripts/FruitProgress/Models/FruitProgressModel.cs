@@ -31,4 +31,15 @@ public sealed class FruitProgressModel : IFruitProgressModel
         CurrentFruitCount = 0;
         return true;
     }
+
+    public bool Reset()
+    {
+        if (CurrentFruitCount == 0)
+        {
+            return false;
+        }
+
+        CurrentFruitCount = 0;
+        return true;
+    }
 }
