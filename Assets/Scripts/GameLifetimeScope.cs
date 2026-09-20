@@ -9,6 +9,7 @@ public sealed class GameLifetimeScope : LifetimeScope
     [Header("Feature Composition")]
     [SerializeField] private PowerInstaller powerInstaller;
     [SerializeField] private FruitProgressInstaller fruitProgressInstaller;
+    [SerializeField] private AnimalsInstaller animalsInstaller;
 
     protected override void Configure(IContainerBuilder builder)
     {
@@ -16,6 +17,7 @@ public sealed class GameLifetimeScope : LifetimeScope
 
         powerInstaller.Install(builder);
         fruitProgressInstaller.Install(builder);
+        animalsInstaller.Install(builder);
     }
 
     private void ValidateConfiguration()
@@ -28,6 +30,11 @@ public sealed class GameLifetimeScope : LifetimeScope
         if (fruitProgressInstaller == null)
         {
             throw new InvalidOperationException("GameLifetimeScope requires a FruitProgressInstaller reference.");
+        }
+
+        if (animalsInstaller == null)
+        {
+            throw new InvalidOperationException("GameLifetimeScope requires an AnimalsInstaller reference.");
         }
     }
 }

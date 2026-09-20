@@ -1,5 +1,14 @@
 # Project State
 
+## AD-35 - Animals mounting and active-animal foundation
+
+- `PlayerAnimalMount` owns exactly one active, mounted `IAnimal`. It parents a Factory-created animal `MonoBehaviour` to the Player, deactivates and destroys the prior instance on replacement, and performs the same cleanup on `ClearActiveAnimal()`.
+- `IAnimal.Attack()` is the shared capability boundary. `PlayerAnimalMount.AttackActiveAnimal()` delegates directly to the active animal without Blue/Red/Green checks; concrete attack implementations remain deferred.
+- `AnimalPickup` remains generic over `AnimalDefinition` and requests creation through `AnimalFactory`. The Builder/Director/Factory flow remains `AnimalDefinition -> AnimalBuilder -> AnimalDirector -> AnimalFactory` and VContainer instantiates the configured prefab.
+- `AnimalsInstaller` registers `AnimalBuilder` as `IAnimalBuilder`, plus `AnimalDirector` and `AnimalFactory`, with scoped lifetime. `GameLifetimeScope` invokes it, and the production scene contains `Scripts/Animals` with the serialized installer reference.
+- `AnimalDefinition` is an abstract configuration base with minimal Blue, Red, and Green configuration subtypes; no attack logic or unsupported stats live in definitions.
+- Focused EditMode sources cover Builder/Factory creation plus mount, replacement, clear, and attack delegation. `Assembly-CSharp` and `AdventureIsland.Animals.Tests` built successfully. The Unity batch test runner could not produce test results while the local editor process was active, so no Play Mode or executed Unity-test claim is made.
+
 ## AD-25 - Lives MVC foundation
 
 - Adds a focused Lives MVC slice: `LivesModel` owns initial/current Lives and zero-minimum rules; concrete `LivesController` orchestrates through `ILivesModel` and `ILivesView`; `LivesView` renders temporary TextMeshPro text in the form `Lives: 3`.

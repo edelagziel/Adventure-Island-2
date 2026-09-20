@@ -4,5 +4,5 @@
 /// </summary>
 public interface IAnimal
 {
-  
+  void Attack();
 }
