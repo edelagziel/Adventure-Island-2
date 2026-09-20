@@ -1,5 +1,13 @@
 # Project State
 
+## AD-29 - Production gameplay HUD, background, and camera
+
+- `Adventure-Island-2-Game.unity` now uses one production gameplay HUD Canvas with Power, Fruit Progress, and Lives visuals while preserving the existing Controller-to-View contracts.
+- `PowerView` keeps the current/max text synchronized and drives the existing horizontal `PowerBar_Fill` Image through `fillAmount`; `LivesView` presents the production `x N` counter without owning gameplay state.
+- The production scene includes its approved background, Player/platform presentation, scene Fruit prefabs, and a root-level `Main Camera` with `CameraFollow`; the background stays under the camera while camera rotation remains independent of Player rotation.
+- `Ground` and `Background` layers support the production scene setup. Referenced scene art is committed, while unused imported sprite-pack content is intentionally excluded.
+- Verification: the generated `Assembly-CSharp`, Power, Fruit Progress, and Lives projects compile successfully; scene component/GUID/reference checks pass. Build Settings still target the legacy scene and final end-to-end production bootstrap verification remains AD-30 scope.
+
 ## AD-28 / AD-26 / AD-27 - Shared gameplay composition and Lives flow
 
 - The shared `GameLifetimeScope` now composes `PowerInstaller`, `FruitProgressInstaller`, `LivesInstaller`, and the domain-specific `LivesFlowCoordinator`; installers remain registration/configuration-only.
