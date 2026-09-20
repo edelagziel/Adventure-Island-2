@@ -1,12 +1,30 @@
 # Project State
 
-## AD-29 - Production gameplay HUD, background, and camera
+## AD-29 - Production gameplay HUD and scene presentation
 
-- `Adventure-Island-2-Game.unity` now uses one production gameplay HUD Canvas with Power, Fruit Progress, and Lives visuals while preserving the existing Controller-to-View contracts.
+- The production scene uses one gameplay HUD canvas for the existing Power, Fruit Progress, and Lives Views; presentation continues through the existing Controller-to-View contracts without duplicating gameplay state.
 - `PowerView` keeps the current/max text synchronized and drives the existing horizontal `PowerBar_Fill` Image through `fillAmount`; `LivesView` presents the production `x N` counter without owning gameplay state.
 - The production scene includes its approved background, Player/platform presentation, scene Fruit prefabs, and a root-level `Main Camera` with `CameraFollow`; the background stays under the camera while camera rotation remains independent of Player rotation.
-- `Ground` and `Background` layers support the production scene setup. Referenced scene art is committed, while unused imported sprite-pack content is intentionally excluded.
+- `Ground` and `Background` layers support the production scene setup. Referenced scene art is committed, while unused imported sprite-pack content is intentionally excluded and preserved separately from the task commit.
 - Verification: the generated `Assembly-CSharp`, Power, Fruit Progress, and Lives projects compile successfully; scene component/GUID/reference checks pass. Build Settings still target the legacy scene and final end-to-end production bootstrap verification remains AD-30 scope.
+
+## AD-35 - Animals mounting and active-animal foundation
+
+- `PlayerAnimalMount` owns exactly one active, mounted `IAnimal`. It parents a Factory-created animal `MonoBehaviour` to the Player, deactivates and destroys the prior instance on replacement, and performs the same cleanup on `ClearActiveAnimal()`.
+- `IAnimal.Attack()` is the shared capability boundary. `PlayerAnimalMount.AttackActiveAnimal()` delegates directly to the active animal without Blue/Red/Green checks; concrete attack implementations remain deferred.
+- `AnimalPickup` remains generic over `AnimalDefinition` and requests creation through `AnimalFactory`. The Builder/Director/Factory flow remains `AnimalDefinition -> AnimalBuilder -> AnimalDirector -> AnimalFactory` and VContainer instantiates the configured prefab.
+- `AnimalsInstaller` registers `AnimalBuilder` as `IAnimalBuilder`, plus `AnimalDirector` and `AnimalFactory`, with scoped lifetime. `GameLifetimeScope` invokes it, and the production scene contains `Scripts/Animals` with the serialized installer reference.
+- `AnimalDefinition` is an abstract configuration base with minimal Blue, Red, and Green configuration subtypes; no attack logic or unsupported stats live in definitions.
+- Focused EditMode sources cover Builder/Factory creation plus mount, replacement, clear, and attack delegation. `Assembly-CSharp` and `AdventureIsland.Animals.Tests` built successfully. The Unity batch test runner could not produce test results while the local editor process was active, so no Play Mode or executed Unity-test claim is made.
+
+## AD-31 - Production weapon foundation and attack flow
+
+- The production Combat assembly defines the minimal `IWeapon.TryAttack()` capability, a single-active-weapon `WeaponLoadout`, and a concrete `WeaponController` that owns equip/replace orchestration and delegates attacks without weapon-specific branching.
+- `WeaponAttackInput` is a Unity input adapter. VContainer injects the concrete `WeaponController`; pressing `Fire1` requests `TryAttack()` and does nothing when no weapon is equipped.
+- `WeaponInstaller` registers `WeaponLoadout` and `WeaponController` as scoped concrete services. `GameLifetimeScope` invokes and validates the installer while remaining composition-only.
+- Hammer trajectory, Boomerang return behavior, damage, Animals, Factory, Builder, and pooling remain outside AD-31.
+- `Adventure-Island-2-Game.unity` hosts `Scripts/Combat/WeaponInstaller`, assigned to `GameLifetimeScope`; a future player object must still host `WeaponAttackInput` and participate in VContainer auto-injection. No weapon gameplay behavior is claimed from this composition-only scene integration.
+- Verification: focused compilation and in-memory behavior checks passed for equip, replacement, empty attack, delegation result, scoped registrations, and the injection contract; Combat assembly JSON, Unity metadata GUID uniqueness, and diff whitespace also passed.
 
 ## AD-28 / AD-26 / AD-27 - Shared gameplay composition and Lives flow
 
