@@ -1,4 +1,4 @@
-public interface IFruitProgressModel
+public interface IFruitProgressModel : IResettable
 {
     int CurrentFruitCount { get; }
 

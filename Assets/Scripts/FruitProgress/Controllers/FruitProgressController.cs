@@ -1,6 +1,6 @@
 using System;
 
-public sealed class FruitProgressController
+public sealed class FruitProgressController : IResettable
 {
     private readonly IFruitProgressModel model;
     private readonly IFruitProgressView view;
@@ -28,6 +28,18 @@ public sealed class FruitProgressController
         }
 
         FruitCollected?.Invoke();
+    }
+
+    public bool Reset()
+    {
+        bool changed = model.Reset();
+
+        if (changed)
+        {
+            UpdateView();
+        }
+
+        return changed;
     }
 
     private void UpdateView()

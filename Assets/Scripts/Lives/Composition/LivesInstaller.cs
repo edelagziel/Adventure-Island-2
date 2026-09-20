@@ -4,16 +4,11 @@ using VContainer;
 using VContainer.Unity;
 
 [DisallowMultipleComponent]
-public sealed class LivesInstaller : LifetimeScope, IInstaller
+public sealed class LivesInstaller : MonoBehaviour, IInstaller
 {
     [Header("Lives")]
     [SerializeField] private LivesView livesView;
     [SerializeField, Min(1)] private int initialLives = 3;
-
-    protected override void Configure(IContainerBuilder builder)
-    {
-        Install(builder);
-    }
 
     public void Install(IContainerBuilder builder)
     {

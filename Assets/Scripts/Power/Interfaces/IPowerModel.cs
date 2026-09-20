@@ -1,4 +1,4 @@
-public interface IPowerModel
+public interface IPowerModel : IResettable
 {
     int CurrentPower { get; }
 
@@ -8,5 +8,4 @@ public interface IPowerModel
 
     bool AddPower(int amount);
     bool ReducePower(int amount);
-    void ResetPower();
 }

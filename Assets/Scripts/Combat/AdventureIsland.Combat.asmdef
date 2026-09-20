@@ -1,9 +1,7 @@
 {
-  "name": "AdventureIsland.Power",
-  "rootNamespace": "",
+  "name": "AdventureIsland.Combat",
+  "rootNamespace": "AdventureIsland.Combat",
   "references": [
-    "AdventureIsland.Shared",
-    "Unity.TextMeshPro",
     "VContainer"
   ],
   "includePlatforms": [],

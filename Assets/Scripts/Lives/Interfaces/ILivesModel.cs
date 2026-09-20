@@ -1,4 +1,4 @@
-public interface ILivesModel
+public interface ILivesModel : IResettable
 {
     int CurrentLives { get; }
 

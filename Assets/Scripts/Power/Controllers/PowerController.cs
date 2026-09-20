@@ -1,6 +1,6 @@
 using System;
 
-public sealed class PowerController
+public sealed class PowerController : IResettable
 {
     private readonly IPowerModel model;
     private readonly IPowerView view;
@@ -44,10 +44,16 @@ public sealed class PowerController
         return changed;
     }
 
-    public void ResetPower()
+    public bool Reset()
     {
-        model.ResetPower();
-        UpdateView();
+        bool changed = model.Reset();
+
+        if (changed)
+        {
+            UpdateView();
+        }
+
+        return changed;
     }
 
     private void UpdateView()

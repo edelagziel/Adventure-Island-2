@@ -38,4 +38,15 @@ public sealed class LivesModel : ILivesModel
         CurrentLives = checked(CurrentLives + 1);
         return true;
     }
+
+    public bool Reset()
+    {
+        if (CurrentLives == InitialLives)
+        {
+            return false;
+        }
+
+        CurrentLives = InitialLives;
+        return true;
+    }
 }

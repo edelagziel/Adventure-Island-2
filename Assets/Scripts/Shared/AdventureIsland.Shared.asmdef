@@ -1,11 +1,7 @@
 {
-  "name": "AdventureIsland.Power",
+  "name": "AdventureIsland.Shared",
   "rootNamespace": "",
-  "references": [
-    "AdventureIsland.Shared",
-    "Unity.TextMeshPro",
-    "VContainer"
-  ],
+  "references": [],
   "includePlatforms": [],
   "excludePlatforms": [],
   "allowUnsafeCode": false,
@@ -14,5 +10,5 @@
   "autoReferenced": true,
   "defineConstraints": [],
   "versionDefines": [],
-  "noEngineReferences": false
+  "noEngineReferences": true
 }
