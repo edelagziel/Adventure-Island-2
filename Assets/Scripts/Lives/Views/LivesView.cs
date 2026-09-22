@@ -10,7 +10,7 @@ public sealed class LivesView : MonoBehaviour, ILivesView
     {
         if (livesText != null)
         {
-            livesText.text = $"Lives: {currentLives}";
+            livesText.text = $"x {currentLives}";
         }
     }
 }

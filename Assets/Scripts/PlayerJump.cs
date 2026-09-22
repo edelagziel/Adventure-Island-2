@@ -23,7 +23,7 @@ public class PlayerJump : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (transform.IsGrounded(LayerMask.GetMask("Default")))
+            if (transform.IsGrounded(LayerMask.GetMask("Ground")))
                 Jump();
         }
     }
