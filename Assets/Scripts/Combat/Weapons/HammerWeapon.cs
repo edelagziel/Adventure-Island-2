@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace AdventureIsland.Combat
 {
-    public sealed class HammerWeapon : IWeapon
+    public sealed class HammerWeapon : ICollectibleWeapon
     {
         private readonly ProjectileProvider<HammerProjectileDirector> projectileProvider;
         private readonly Transform spawnPoint;
@@ -19,7 +19,7 @@ namespace AdventureIsland.Combat
             this.spawnPoint = spawnPoint;
         }
 
-        public void CollectHammer()
+        public void Collect()
         {
             AvailableThrows = checked(AvailableThrows + 1);
         }

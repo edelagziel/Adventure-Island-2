@@ -21,6 +21,8 @@ namespace AdventureIsland.Combat
 
             builder.Register<WeaponController>(Lifetime.Scoped)
                 .AsSelf();
+            builder.Register<PlayerWeaponCollector>(Lifetime.Scoped)
+                .AsSelf();
             builder.Register<PlayerAttackController>(Lifetime.Scoped)
                 .AsSelf();
             builder.Register<HammerWeapon>(Lifetime.Scoped)

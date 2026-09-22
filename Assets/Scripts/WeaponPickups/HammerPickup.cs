@@ -6,29 +6,28 @@ using VContainer;
 [DisallowMultipleComponent]
 public sealed class HammerPickup : PickUp
 {
-    private WeaponController weaponController;
+    private PlayerWeaponCollector collector;
     private HammerWeapon hammerWeapon;
 
     [Inject]
     public void Construct(
-        WeaponController injectedWeaponController,
+        PlayerWeaponCollector injectedCollector,
         HammerWeapon injectedHammerWeapon)
     {
-        weaponController = injectedWeaponController
-            ?? throw new ArgumentNullException(nameof(injectedWeaponController));
+        collector = injectedCollector
+            ?? throw new ArgumentNullException(nameof(injectedCollector));
         hammerWeapon = injectedHammerWeapon
             ?? throw new ArgumentNullException(nameof(injectedHammerWeapon));
     }
 
     protected override void OnPickUp(GameObject player)
     {
-        if (weaponController == null || hammerWeapon == null)
+        if (collector == null || hammerWeapon == null)
         {
             throw new InvalidOperationException(
                 "HammerPickup requires weapon injection before collection.");
         }
 
-        hammerWeapon.CollectHammer();
-        weaponController.Equip(hammerWeapon);
+        collector.Collect(hammerWeapon);
     }
 }
