@@ -1,4 +1,4 @@
 public interface IResettable
 {
-    bool Reset();
+    bool ResetState();
 }

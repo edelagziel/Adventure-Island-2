@@ -33,7 +33,8 @@ public sealed class PowerInstaller : MonoBehaviour, IInstaller
             .AsSelf();
         builder.RegisterComponent(powerDrainRunner)
             .WithParameter(nameof(drainAmount), drainAmount)
-            .WithParameter(nameof(drainIntervalSeconds), drainIntervalSeconds);
+            .WithParameter(nameof(drainIntervalSeconds), drainIntervalSeconds)
+            .AsSelf();
 
         // The controller is the root mediator, so only the Composition Root resolves it.
         builder.RegisterBuildCallback(container => container.Resolve<PowerController>());
