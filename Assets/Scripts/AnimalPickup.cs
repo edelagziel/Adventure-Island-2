@@ -3,34 +3,27 @@ using UnityEngine;
 using VContainer;
 
 [DisallowMultipleComponent]
-public sealed class AnimalPickup : PickUp
+public abstract class AnimalPickup<TAnimal> : PickUp
+    where TAnimal : Animal
 {
-    [SerializeReference] private AnimalDefinition animalDefinition;
-
-    private AnimalFactory animalFactory;
+    private PlayerAnimalCollector<TAnimal> playerAnimalCollector;
 
     [Inject]
-    public void Construct(AnimalFactory injectedAnimalFactory)
+    public void Construct(
+        PlayerAnimalCollector<TAnimal> injectedPlayerAnimalCollector)
     {
-        animalFactory = injectedAnimalFactory
-            ?? throw new ArgumentNullException(nameof(injectedAnimalFactory));
+        playerAnimalCollector = injectedPlayerAnimalCollector
+            ?? throw new ArgumentNullException(nameof(injectedPlayerAnimalCollector));
     }
 
     protected override void OnPickUp(GameObject player)
     {
-        if (animalFactory == null)
+        if (playerAnimalCollector == null)
         {
             throw new InvalidOperationException(
-                "AnimalPickup requires AnimalFactory injection before collection.");
+                "AnimalPickup requires PlayerAnimalCollector injection before collection.");
         }
 
-        PlayerAnimalMount playerAnimalMount = player.GetComponent<PlayerAnimalMount>();
-        if (playerAnimalMount == null)
-        {
-            throw new InvalidOperationException(
-                "AnimalPickup requires PlayerAnimalMount on the Player GameObject.");
-        }
-
-        playerAnimalMount.SetActiveAnimal(animalFactory.Create(animalDefinition));
+        playerAnimalCollector.Collect();
     }
 }

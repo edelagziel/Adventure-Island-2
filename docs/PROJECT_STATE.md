@@ -16,14 +16,19 @@
 - `Ground` and `Background` layers support the production scene setup. Referenced scene art is committed, while unused imported sprite-pack content is intentionally excluded and preserved separately from the task commit.
 - Verification: the generated `Assembly-CSharp`, Power, Fruit Progress, and Lives projects compile successfully; scene component/GUID/reference checks pass. Build Settings still targeted the legacy scene at AD-29 closeout; AD-30 subsequently switches the enabled entry to production.
 
+## AD-36 - Blue animal and tail attack (complete)
+
+- `HeartPickup` specializes generic `AnimalPickup<BlueAnimal>`. The scoped VContainer construction path is `HeartPickup -> PlayerAnimalCollector<BlueAnimal> -> AnimalFactory<BlueAnimal> -> AnimalDirector<BlueAnimal> -> IAnimalBuilder<BlueAnimal> -> BlueAnimalBuilder -> BlueAnimal`.
+- `PlayerActiveAnimal` remains the non-generic mount owner: it parents the created animal to Player, replaces and destroys the old mounted instance deterministically, and performs the same cleanup when cleared.
+- `Animal` provides the shared `TryAttack()` Template Method. `BlueAnimal` owns its tail behavior: an explicit serialized tail `BoxCollider2D`, a 0.1-second active window, and an independent 0.5-second cooldown. No Rock, Enemy, Bonfire, Red, or Green behavior was introduced.
+- `AnimalAttackSource` implements the existing Combat `IAttackSource` boundary. It registers itself as PlayerAttackController's override only while an animal is active, so weapon behavior remains the default source and shared Combat code contains no animal-type branching.
+- The production scene serializes the Blue and Heart prefabs, `AnimalsInstaller`, `PlayerActiveAnimal`, and `AnimalAttackSource`; `GameLifetimeScope` continues to own the shared composition.
+- Verification: `Assembly-CSharp.csproj` and `AdventureIsland.Animals.csproj` build with 0 errors and 0 warnings. The prior focused Animals test source was removed by explicit approval, and Unity Test Runner / Play Mode was not claimed.
+- Deferred: AD-56 will verify the live Weapons-and-Animals attack-source integration; it must not add target-specific hit effects unless separately assigned.
+
 ## AD-35 - Animals mounting and active-animal foundation
 
-- `PlayerAnimalMount` owns exactly one active, mounted `IAnimal`. It parents a Factory-created animal `MonoBehaviour` to the Player, deactivates and destroys the prior instance on replacement, and performs the same cleanup on `ClearActiveAnimal()`.
-- `IAnimal.Attack()` is the shared capability boundary. `PlayerAnimalMount.AttackActiveAnimal()` delegates directly to the active animal without Blue/Red/Green checks; concrete attack implementations remain deferred.
-- `AnimalPickup` remains generic over `AnimalDefinition` and requests creation through `AnimalFactory`. The Builder/Director/Factory flow remains `AnimalDefinition -> AnimalBuilder -> AnimalDirector -> AnimalFactory` and VContainer instantiates the configured prefab.
-- `AnimalsInstaller` registers `AnimalBuilder` as `IAnimalBuilder`, plus `AnimalDirector` and `AnimalFactory`, with scoped lifetime. `GameLifetimeScope` invokes it, and the production scene contains `Scripts/Animals` with the serialized installer reference.
-- `AnimalDefinition` is an abstract configuration base with minimal Blue, Red, and Green configuration subtypes; no attack logic or unsupported stats live in definitions.
-- Focused EditMode sources cover Builder/Factory creation plus mount, replacement, clear, and attack delegation. `Assembly-CSharp` and `AdventureIsland.Animals.Tests` built successfully. The Unity batch test runner could not produce test results while the local editor process was active, so no Play Mode or executed Unity-test claim is made.
+- The mounting and DI foundation is now represented by the concrete AD-36 flow above: the shared scope owns the installer, `PlayerActiveAnimal` owns one mounted runtime `IAnimal`, and construction remains Builder/Director/Factory based without animal-type branching in clients.
 
 ## AD-31 - Production weapon foundation and attack flow
 

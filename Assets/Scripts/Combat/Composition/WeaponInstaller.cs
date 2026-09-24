@@ -35,6 +35,9 @@ namespace AdventureIsland.Combat
                 .AsSelf();
             builder.Register<PlayerAttackController>(Lifetime.Scoped)
                 .AsSelf();
+            builder.RegisterBuildCallback(container =>
+                container.Resolve<PlayerAttackController>()
+                    .SetDefaultAttackSource(container.Resolve<WeaponController>()));
             builder.Register<HammerWeapon>(Lifetime.Scoped)
                 .WithParameter("spawnPoint", hammerSpawnPoint)
                 .AsSelf();

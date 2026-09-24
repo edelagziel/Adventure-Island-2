@@ -4,27 +4,34 @@ namespace AdventureIsland.Combat
 {
     public sealed class PlayerAttackController
     {
-        private IAttackSource activeAttackSource;
+        private IAttackSource defaultAttackSource;
+        private IAttackSource overrideAttackSource;
 
-        public void SetActiveAttackSource(IAttackSource source)
+        public void SetDefaultAttackSource(IAttackSource source)
         {
-            activeAttackSource = source ?? throw new ArgumentNullException(nameof(source));
+            defaultAttackSource = source ?? throw new ArgumentNullException(nameof(source));
         }
 
-        public bool ClearActiveAttackSource(IAttackSource source)
+        public void SetOverrideAttackSource(IAttackSource source)
         {
-            if (source == null || !ReferenceEquals(activeAttackSource, source))
+            overrideAttackSource = source ?? throw new ArgumentNullException(nameof(source));
+        }
+
+        public bool ClearOverrideAttackSource(IAttackSource source)
+        {
+            if (source == null || !ReferenceEquals(overrideAttackSource, source))
             {
                 return false;
             }
 
-            activeAttackSource = null;
+            overrideAttackSource = null;
             return true;
         }
 
         public bool TryAttack()
         {
-            return activeAttackSource != null && activeAttackSource.TryAttack();
+            IAttackSource attackSource = overrideAttackSource ?? defaultAttackSource;
+            return attackSource != null && attackSource.TryAttack();
         }
     }
 }

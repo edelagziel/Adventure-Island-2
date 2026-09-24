@@ -1,18 +1,18 @@
 using System;
 
-public sealed class AnimalFactory
+public sealed class AnimalFactory<TAnimal>
+    where TAnimal : Animal
 {
-    private readonly AnimalDirector animalDirector;
+    private readonly AnimalDirector<TAnimal> animalDirector;
 
-    public AnimalFactory(AnimalDirector animalDirector)
+    public AnimalFactory(AnimalDirector<TAnimal> animalDirector)
     {
         this.animalDirector = animalDirector
             ?? throw new ArgumentNullException(nameof(animalDirector));
     }
 
-    public IAnimal Create(AnimalDefinition definition)
+    public TAnimal Create()
     {
-        animalDirector.ConstructAnimal(definition);
-        return animalDirector.GetAnimal();
+        return animalDirector.Construct();
     }
 }
