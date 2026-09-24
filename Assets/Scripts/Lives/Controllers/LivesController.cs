@@ -39,9 +39,9 @@ public sealed class LivesController : IResettable
         return changed;
     }
 
-    public bool Reset()
+    public bool ResetState()
     {
-        bool changed = model.Reset();
+        bool changed = model.ResetState();
 
         if (changed)
         {

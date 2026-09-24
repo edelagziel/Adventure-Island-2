@@ -32,7 +32,7 @@ public sealed class FruitProgressModel : IFruitProgressModel
         return true;
     }
 
-    public bool Reset()
+    public bool ResetState()
     {
         if (CurrentFruitCount == 0)
         {

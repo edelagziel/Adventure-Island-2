@@ -46,7 +46,7 @@ public sealed class PowerModel : IPowerModel
         return SetPower(requestedPower);
     }
 
-    public bool Reset()
+    public bool ResetState()
     {
         if (CurrentPower == InitialPower)
         {

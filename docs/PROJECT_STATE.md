@@ -1,5 +1,21 @@
 # Project State
 
+## AD-30 - Production bootstrap and scene wiring (complete)
+
+- `ProjectSettings/EditorBuildSettings.asset` now uses `Adventure-Island-2-Game.unity` as the enabled build entry; legacy `Scene_Physics.unity` remains reference content and is not deleted.
+- The production `GameLifetimeScope` composes the existing Power, Fruit Progress, Lives, Combat, Animals, and Reset installers. The Player is now included in VContainer auto-injection and hosts the existing `WeaponAttackInput` and `PlayerAnimalMount` components.
+- Existing HUD, Main Camera/CameraFollow, background, Fruit injection root, and installer references remain serialized in the production scene. No new gameplay rules, weapons, animal pickups, or lifecycle abstractions were introduced.
+- Verification: project sources compiled with 0 errors, scene component/GUID/reference checks passed, and the legacy `Reset()` API has no remaining usages. No fresh Unity Play Mode run was performed during closeout.
+- `LivesFlowCoordinator` now separates the two reset flows after Power reaches its minimum. With lives remaining, it uses `IPlayerResetter` to reset only the existing Player's spawn/velocity, Power, and the Power drain interval. At zero lives, it also uses `IPickupResetter` to reactivate the existing `PickUp` instances under the production `Fruits` root and resets Lives and Fruit Progress. It does not reload the scene or instantiate replacements.
+
+## AD-29 - Production gameplay HUD and scene presentation
+
+- The production scene uses one gameplay HUD canvas for the existing Power, Fruit Progress, and Lives Views; presentation continues through the existing Controller-to-View contracts without duplicating gameplay state.
+- `PowerView` keeps the current/max text synchronized and drives the existing horizontal `PowerBar_Fill` Image through `fillAmount`; `LivesView` presents the production `x N` counter without owning gameplay state.
+- The production scene includes its approved background, Player/platform presentation, scene Fruit prefabs, and a root-level `Main Camera` with `CameraFollow`; the background stays under the camera while camera rotation remains independent of Player rotation.
+- `Ground` and `Background` layers support the production scene setup. Referenced scene art is committed, while unused imported sprite-pack content is intentionally excluded and preserved separately from the task commit.
+- Verification: the generated `Assembly-CSharp`, Power, Fruit Progress, and Lives projects compile successfully; scene component/GUID/reference checks pass. Build Settings still targeted the legacy scene at AD-29 closeout; AD-30 subsequently switches the enabled entry to production.
+
 ## AD-35 - Animals mounting and active-animal foundation
 
 - `PlayerAnimalMount` owns exactly one active, mounted `IAnimal`. It parents a Factory-created animal `MonoBehaviour` to the Player, deactivates and destroys the prior instance on replacement, and performs the same cleanup on `ClearActiveAnimal()`.
@@ -11,11 +27,12 @@
 
 ## AD-31 - Production weapon foundation and attack flow
 
-- The production Combat assembly defines the minimal `IWeapon.TryAttack()` capability, a single-active-weapon `WeaponLoadout`, and a concrete `WeaponController` that owns equip/replace orchestration and delegates attacks without weapon-specific branching.
-- `WeaponAttackInput` is a Unity input adapter. VContainer injects the concrete `WeaponController`; pressing `Fire1` requests `TryAttack()` and does nothing when no weapon is equipped.
-- `WeaponInstaller` registers `WeaponLoadout` and `WeaponController` as scoped concrete services. `GameLifetimeScope` invokes and validates the installer while remaining composition-only.
-- Hammer trajectory, Boomerang return behavior, damage, Animals, Factory, Builder, and pooling remain outside AD-31.
-- `Adventure-Island-2-Game.unity` hosts `Scripts/Combat/WeaponInstaller`, assigned to `GameLifetimeScope`; a future player object must still host `WeaponAttackInput` and participate in VContainer auto-injection. No weapon gameplay behavior is claimed from this composition-only scene integration.
+- The production Combat assembly defines the minimal `IWeapon.TryAttack()` capability and a concrete `WeaponController` that directly owns one active `IWeapon`, replaces it on equip, and delegates attacks without weapon-specific branching. The redundant `WeaponLoadout` was removed during AD-32.
+- AD-32 replaces the weapon-only input with `PlayerAttackInput` -> `PlayerAttackController` -> the explicitly assigned `IAttackSource`. The controller stores only that source and delegates one attack; it has no weapon fallback or mounted-attack priority rule. The gameplay caller that handles equip/mount transitions must assign `WeaponController` or a mounted source and explicitly restore the weapon source after dismount. That switching flow is not yet wired into a production scene.
+- AD-32 keeps accumulated Hammer throws in a plain `HammerWeapon`. `HammerPickup` passes the scoped Hammer to `PlayerWeaponCollector`, which calls the weapon's `ICollectibleWeapon.Collect()` behavior and then equips it through `WeaponController`; replacing the active weapon does not erase its count. `HammerWeapon` uses `ProjectileProvider<HammerProjectileDirector>` to obtain a configured projectile and consumes one throw only after that projectile launches successfully.
+- `HammerWeapon` receives the player-specific Hammer spawn-point Transform through composition and supplies it on each `ProjectileProvider<HammerProjectileDirector>.GetReady(spawnPoint)` call. The Provider acquires an unconfigured instance from the non-generic `ProjectilePool`, invokes its Director for both new and reused projectiles, and releases the instance on configuration failure. The Pool owns one prefab, available and leased instances, self-release binding, reset, and disposal; it asks the non-generic `ProjectileFactory` to instantiate only when no instance is available. The Factory only instantiates and returns a projectile. Each projectile Director depends on the shared `IProjectileBuilder` build-step contract, while composition supplies the matching concrete Hammer or Boomerang Builder. Builders configure the actual projectile; there is no intermediate request, spawn, or launch product.
+- AD-33 adds a reusable collectible `BoomerangWeapon`. Its projectile owns serialized outward distance/speed, return speed, catch radius, safety timeout, live-player return targeting, and clean pooled-state reset. The weapon prevents overlapping throws but consumes no ammo. `WeaponInstaller` registers separate Hammer and keyed Boomerang pool/provider construction paths while retaining one non-generic Factory. `GameLifetimeScope` remains unchanged and composition-only.
+- `Adventure-Island-2-Game.unity` already hosts `Scripts/Combat/WeaponInstaller` and references it from `GameLifetimeScope`, but the Hammer/Boomerang projectile prefab and dedicated player spawn-point references are intentionally unwired pending Player changes. No production-scene integration or runtime Hammer/Boomerang verification has been performed; compile and static metadata/diff checks passed. Damage, HUD, and Animals integration remain deferred.
 - Verification: focused compilation and in-memory behavior checks passed for equip, replacement, empty attack, delegation result, scoped registrations, and the injection contract; Combat assembly JSON, Unity metadata GUID uniqueness, and diff whitespace also passed.
 
 ## AD-28 / AD-26 / AD-27 - Shared gameplay composition and Lives flow
@@ -23,7 +40,7 @@
 - The shared `GameLifetimeScope` now composes `PowerInstaller`, `FruitProgressInstaller`, `LivesInstaller`, and the domain-specific `LivesFlowCoordinator`; installers remain registration/configuration-only.
 - `LivesFlowCoordinator` owns instance-event subscriptions and cleanup: `FruitThresholdReached` grants one life, while `PowerReachedMinimum` removes one life and selects the follow-up flow. No static events, forwarding bridge, or generic GameFlow layer is used.
 - A surviving life restarts the current attempt by resetting Power and restarting the Power drain interval. Fruit progress is intentionally retained on that path because the assignment does not explicitly require its counter to reset on life loss. Reaching zero Lives performs the full feature-state reset for Lives, Fruit Progress, and Power and starts a fresh drain interval.
-- Resettable feature state uses the shared `IResettable.Reset()` contract (bool result) across Power, Fruit Progress, and Lives models/controllers. Drain timing remains an explicit runner lifecycle operation.
+- Resettable feature state uses the shared `IResettable.ResetState()` contract (bool result) across Power, Fruit Progress, and Lives models/controllers. `PowerDrainRunner` also implements that contract to restart its existing drain interval.
 - The production scene no longer contains a separate GameFlow composition object; Power, Fruit Progress, and Lives resolve from the single shared scope. Legacy death/teleport code remains outside this architecture, and no player/stage respawn implementation was added because the current production scene has no lifecycle owner for it.
 - Verification: `Assembly-CSharp.csproj` built successfully with 0 errors (one unrelated existing `PlayerJump.isJumping` warning), source/scene static checks passed, and no Unity Play Mode run was claimed. Obsolete Power minimum and Lives model/controller test sources and their test assemblies were removed as requested; no automated test source remains for these flows.
 

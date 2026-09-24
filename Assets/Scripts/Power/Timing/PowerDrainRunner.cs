@@ -3,7 +3,7 @@ using UnityEngine;
 using VContainer;
 
 [DisallowMultipleComponent]
-public sealed class PowerDrainRunner : MonoBehaviour
+public sealed class PowerDrainRunner : MonoBehaviour, IResettable
 {
     private PowerController powerController;
     private int drainAmount;
@@ -44,6 +44,17 @@ public sealed class PowerDrainRunner : MonoBehaviour
 
         StopDrain();
         StartDrainIfPossible();
+    }
+
+    public bool ResetState()
+    {
+        if (!isInitialized)
+        {
+            return false;
+        }
+
+        RestartDrainInterval();
+        return true;
     }
 
     private void StartDrainIfPossible()
