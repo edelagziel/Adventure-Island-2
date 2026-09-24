@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace AdventureIsland.Combat
 {
-    public sealed class HammerProjectileDirector : ProjectileDirector
+    public sealed class BoomerangProjectileDirector : ProjectileDirector
     {
         private readonly IProjectileBuilder builder;
 
-        public HammerProjectileDirector(IProjectileBuilder builder)
+        public BoomerangProjectileDirector(IProjectileBuilder builder)
         {
             this.builder = builder ?? throw new ArgumentNullException(nameof(builder));
         }

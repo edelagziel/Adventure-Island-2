@@ -2,9 +2,9 @@ using UnityEngine;
 
 namespace AdventureIsland.Combat
 {
-    public sealed class HammerProjectileBuilder : IProjectileBuilder
+    public sealed class BoomerangProjectileBuilder : IProjectileBuilder
     {
-        private HammerProjectile projectile;
+        private BoomerangProjectile projectile;
         private Transform spawnPoint;
 
         public void Reset()
@@ -15,7 +15,7 @@ namespace AdventureIsland.Combat
 
         public void SetProduct(Projectile product)
         {
-            projectile = product as HammerProjectile;
+            projectile = product as BoomerangProjectile;
         }
 
         public void SetSpawnPoint(Transform point)
@@ -25,8 +25,7 @@ namespace AdventureIsland.Combat
 
         public bool TryBuild()
         {
-            bool configured = projectile != null &&
-                projectile.TryConfigure(spawnPoint);
+            bool configured = projectile != null && projectile.TryConfigure(spawnPoint);
             Reset();
             return configured;
         }
