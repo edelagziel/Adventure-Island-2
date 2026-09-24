@@ -2,36 +2,36 @@ using System;
 
 namespace AdventureIsland.Combat
 {
-    public sealed class WeaponController
+    public sealed class WeaponController : IAttackSource
     {
-        private readonly WeaponLoadout loadout;
-
-        public WeaponController(WeaponLoadout loadout)
-        {
-            if (loadout == null)
-            {
-                throw new ArgumentNullException("loadout");
-            }
-
-            this.loadout = loadout;
-        }
+        private IWeapon activeWeapon;
 
         public bool HasActiveWeapon
         {
             get
             {
-                return loadout.HasActiveWeapon;
+                return activeWeapon != null;
             }
         }
 
         public bool Equip(IWeapon weapon)
         {
-            return loadout.Equip(weapon);
+            if (weapon == null)
+            {
+                throw new ArgumentNullException(nameof(weapon));
+            }
+
+            if (ReferenceEquals(activeWeapon, weapon))
+            {
+                return false;
+            }
+
+            activeWeapon = weapon;
+            return true;
         }
 
         public bool TryAttack()
         {
-            IWeapon activeWeapon = loadout.ActiveWeapon;
             return activeWeapon != null && activeWeapon.TryAttack();
         }
     }
