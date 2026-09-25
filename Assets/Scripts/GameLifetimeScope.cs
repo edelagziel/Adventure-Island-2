@@ -1,5 +1,6 @@
 using System;
 using AdventureIsland.Combat;
+using AdventureIsland.Enemies;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -13,6 +14,7 @@ public sealed class GameLifetimeScope : LifetimeScope
     [SerializeField] private LivesInstaller livesInstaller;
     [SerializeField] private WeaponInstaller weaponInstaller;
     [SerializeField] private AnimalsInstaller animalsInstaller;
+    [SerializeField] private EnemiesInstaller enemiesInstaller;
     [SerializeField] private ResetInstaller resetInstaller;
 
     protected override void Configure(IContainerBuilder builder)
@@ -24,6 +26,7 @@ public sealed class GameLifetimeScope : LifetimeScope
         livesInstaller.Install(builder);
         weaponInstaller.Install(builder);
         animalsInstaller.Install(builder);
+        enemiesInstaller.Install(builder);
         resetInstaller.Install(builder);
 
         builder.Register<LivesFlowCoordinator>(Lifetime.Scoped)
@@ -58,6 +61,11 @@ public sealed class GameLifetimeScope : LifetimeScope
         if (animalsInstaller == null)
         {
             throw new InvalidOperationException("GameLifetimeScope requires an AnimalsInstaller reference.");
+        }
+
+        if (enemiesInstaller == null)
+        {
+            throw new InvalidOperationException("GameLifetimeScope requires an EnemiesInstaller reference.");
         }
 
         if (resetInstaller == null)
