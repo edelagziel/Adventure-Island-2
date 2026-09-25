@@ -128,7 +128,7 @@ namespace AdventureIsland.Combat
             }
         }
 
-        internal override void ResetForPool()
+        protected internal override void ResetForPool()
         {
             EnsureInitialized();
             if (body != null)
