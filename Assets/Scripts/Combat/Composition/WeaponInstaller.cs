@@ -12,6 +12,7 @@ namespace AdventureIsland.Combat
         [SerializeField] private Transform hammerSpawnPoint;
         [SerializeField] private Projectile boomerangProjectilePrefab;
         [SerializeField] private Transform boomerangSpawnPoint;
+        [SerializeField] private Transform projectilePoolRoot;
 
         private const string BoomerangPoolKey = "BoomerangProjectilePool";
 
@@ -27,6 +28,12 @@ namespace AdventureIsland.Combat
             {
                 throw new InvalidOperationException(
                     "WeaponInstaller requires a Boomerang projectile prefab and spawn point.");
+            }
+
+            if (projectilePoolRoot == null)
+            {
+                throw new InvalidOperationException(
+                    "WeaponInstaller requires a projectile pool root.");
             }
 
             builder.Register<WeaponController>(Lifetime.Scoped)
@@ -50,6 +57,7 @@ namespace AdventureIsland.Combat
                 .AsSelf();
             builder.Register<ProjectilePool>(Lifetime.Scoped)
                 .WithParameter("prefab", hammerProjectilePrefab)
+                .WithParameter("projectileRoot", projectilePoolRoot)
                 .AsSelf();
             builder.Register<ProjectileProvider<HammerProjectileDirector>>(Lifetime.Scoped)
                 .AsSelf();
@@ -64,6 +72,7 @@ namespace AdventureIsland.Combat
             builder.Register<ProjectilePool>(Lifetime.Scoped)
                 .Keyed(BoomerangPoolKey)
                 .WithParameter("prefab", boomerangProjectilePrefab)
+                .WithParameter("projectileRoot", projectilePoolRoot)
                 .AsSelf();
             builder.Register<ProjectileProvider<BoomerangProjectileDirector>>(Lifetime.Scoped)
                 .WithParameter("pool", resolver => resolver.Resolve<ProjectilePool>(BoomerangPoolKey))

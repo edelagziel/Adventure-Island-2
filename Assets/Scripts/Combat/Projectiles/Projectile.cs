@@ -20,6 +20,6 @@ namespace AdventureIsland.Combat
         }
 
         public abstract bool TryLaunch();
-        internal abstract void ResetForPool();
+        protected internal abstract void ResetForPool();
     }
 }

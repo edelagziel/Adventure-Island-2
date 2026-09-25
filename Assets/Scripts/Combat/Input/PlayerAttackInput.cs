@@ -17,8 +17,9 @@ namespace AdventureIsland.Combat
 
         private void Update()
         {
-            if (attackController != null && Input.GetButtonDown("Fire1"))
+            if (attackController != null && Input.GetMouseButtonDown(1))
             {
+                Debug.Log("Attack input detected");
                 attackController.TryAttack();
             }
         }

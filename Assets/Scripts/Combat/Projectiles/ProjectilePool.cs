@@ -8,6 +8,7 @@ namespace AdventureIsland.Combat
     {
         private readonly ProjectileFactory factory;
         private readonly Projectile prefab;
+        private readonly Transform projectileRoot;
 
         private readonly Stack<Projectile> available =
             new Stack<Projectile>();
@@ -17,10 +18,15 @@ namespace AdventureIsland.Combat
 
         private bool disposed;
 
-        public ProjectilePool(ProjectileFactory factory, Projectile prefab)
+        public ProjectilePool(
+            ProjectileFactory factory,
+            Projectile prefab,
+            Transform projectileRoot)
         {
             this.factory = factory ?? throw new ArgumentNullException(nameof(factory));
             this.prefab = prefab;
+            this.projectileRoot = projectileRoot
+                ?? throw new ArgumentNullException(nameof(projectileRoot));
         }
 
         public Projectile Acquire()
@@ -44,6 +50,7 @@ namespace AdventureIsland.Combat
                     return null;
                 }
 
+                projectile.transform.SetParent(projectileRoot, false);
                 projectile.gameObject.SetActive(false);
                 projectile.BindPool(Release);
             }
@@ -62,6 +69,7 @@ namespace AdventureIsland.Combat
             }
 
             projectile.ResetForPool();
+            projectile.transform.SetParent(projectileRoot, false);
             projectile.gameObject.SetActive(false);
 
             available.Push(projectile);
