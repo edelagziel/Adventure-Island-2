@@ -4,6 +4,8 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public sealed class PlayerActiveAnimal : MonoBehaviour
 {
+    [SerializeField] private SpriteRenderer playerVisual;
+
     private IAnimal activeAnimal;
     private MonoBehaviour activeAnimalBehaviour;
 
@@ -32,6 +34,7 @@ public sealed class PlayerActiveAnimal : MonoBehaviour
         animalBehaviour.gameObject.SetActive(true);
         activeAnimal = animal;
         activeAnimalBehaviour = animalBehaviour;
+        SetPlayerVisualActive(false);
         ActiveAnimalChanged?.Invoke();
     }
 
@@ -63,6 +66,7 @@ public sealed class PlayerActiveAnimal : MonoBehaviour
         MonoBehaviour animalBehaviour = activeAnimalBehaviour;
         activeAnimal = null;
         activeAnimalBehaviour = null;
+        SetPlayerVisualActive(true);
 
         if (animalBehaviour == null)
         {
@@ -71,5 +75,13 @@ public sealed class PlayerActiveAnimal : MonoBehaviour
 
         animalBehaviour.gameObject.SetActive(false);
         Destroy(animalBehaviour.gameObject);
+    }
+
+    private void SetPlayerVisualActive(bool isActive)
+    {
+        if (playerVisual != null)
+        {
+            playerVisual.enabled = isActive;
+        }
     }
 }

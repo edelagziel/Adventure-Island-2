@@ -5,6 +5,9 @@ using UnityEngine;
 public sealed class BlueAnimal : Animal
 {
     [SerializeField] private BoxCollider2D tailHitbox;
+    [SerializeField] private SpriteRenderer visual;
+    [SerializeField] private Sprite idleSprite;
+    [SerializeField] private Sprite[] attackFrames;
     [SerializeField, Min(0f)] private float attackWindowSeconds = 0.1f;
     [SerializeField, Min(0f)] private float attackCooldownSeconds = 0.5f;
 
@@ -14,6 +17,7 @@ public sealed class BlueAnimal : Animal
     private void Awake()
     {
         SetTailHitboxActive(false);
+        ShowIdleVisual();
     }
 
     private void OnDisable()
@@ -25,6 +29,7 @@ public sealed class BlueAnimal : Animal
         }
 
         SetTailHitboxActive(false);
+        ShowIdleVisual();
     }
 
     protected override bool CanAttack()
@@ -48,9 +53,36 @@ public sealed class BlueAnimal : Animal
 
     private IEnumerator CloseAttackWindow()
     {
-        yield return new WaitForSeconds(attackWindowSeconds);
+        if (visual != null && attackFrames != null && attackFrames.Length > 0)
+        {
+            float frameSeconds = attackWindowSeconds / attackFrames.Length;
+
+            foreach (Sprite frame in attackFrames)
+            {
+                if (frame != null)
+                {
+                    visual.sprite = frame;
+                }
+
+                yield return new WaitForSeconds(frameSeconds);
+            }
+        }
+        else
+        {
+            yield return new WaitForSeconds(attackWindowSeconds);
+        }
+
         SetTailHitboxActive(false);
+        ShowIdleVisual();
         attackWindowCoroutine = null;
+    }
+
+    private void ShowIdleVisual()
+    {
+        if (visual != null && idleSprite != null)
+        {
+            visual.sprite = idleSprite;
+        }
     }
 
     private void SetTailHitboxActive(bool isActive)

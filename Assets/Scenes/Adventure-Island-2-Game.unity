@@ -295,6 +295,38 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1722007251337342103, guid: b256659943d252f449d74bedcd494d7a, type: 3}
   m_PrefabInstance: {fileID: 1036195548}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &393962857
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 393962858}
+  m_Layer: 0
+  m_Name: 'AnimalPickups '
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &393962858
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 393962857}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.99665, y: -1.83327, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2832204908949712833}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &415706486
 GameObject:
   m_ObjectHideFlags: 0
@@ -989,7 +1021,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b5c5598b8196434899e0d5fb974a282, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   speed: 5
 --- !u!114 &766618914
@@ -1002,7 +1034,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 01222d632616f434f95bf336938c7298, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerJump
   jumpSpeed: 200
 --- !u!114 &766618915
@@ -1015,7 +1047,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad310000000000000000000000000010, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: AdventureIsland.Combat::AdventureIsland.Combat.PlayerAttackInput
 --- !u!1 &799713377
 GameObject:
@@ -1737,7 +1769,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad19000000000000000000000000000b, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: AdventureIsland.Power::PowerInstaller
   powerView: {fileID: 1900000005}
   initialPower: 20
@@ -3325,6 +3357,7 @@ MonoBehaviour:
   - {fileID: 2100000001}
   - {fileID: 43388708}
   - {fileID: 766618908}
+  - {fileID: 393962857}
   powerInstaller: {fileID: 1573283290}
   fruitProgressInstaller: {fileID: 2400000006}
   livesInstaller: {fileID: 1900000104}
@@ -3863,7 +3896,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 38.4, y: -119}
+  m_AnchoredPosition: {x: 38.399902, y: -119}
   m_SizeDelta: {x: 40, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2900000042
@@ -3979,239 +4012,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1 &3100000001
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3100000002}
-  - component: {fileID: 3100000003}
-  m_Layer: 0
-  m_Name: Combat
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3100000002
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3100000001}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1900000034}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3100000003
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3100000001}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad310000000000000000000000000015, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: AdventureIsland.Combat::WeaponInstaller
-  hammerProjectilePrefab: {fileID: -5653253989570747057, guid: 326d57794fd3d1344a502b536aa9280b, type: 3}
-  hammerSpawnPoint: {fileID: 1585672581}
-  boomerangProjectilePrefab: {fileID: 2879461371224651236, guid: 5a96d3735708ff1418f4c8492e72664a, type: 3}
-  boomerangSpawnPoint: {fileID: 2069097925}
---- !u!1 &3500000001
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3500000002}
-  - component: {fileID: 3500000003}
-  m_Layer: 0
-  m_Name: Animals
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3500000002
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3500000001}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1900000034}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3500000003
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3500000001}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03324db4368c425d91cd5f774bab7e62, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: AdventureIsland.Animals::AnimalsInstaller
-  blueAnimalPrefab: {fileID: 1140100, guid: c36a0000000000000000000000000008, type: 3}
-  playerActiveAnimal: {fileID: 4200000001}
---- !u!1001 &6715828519362490488
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 2100000002}
-    m_Modifications:
-    - target: {fileID: 1726597061046350423, guid: dd4657bb6079cf045b94c4b683c7ab81, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 2.39
-      objectReference: {fileID: 0}
-    - target: {fileID: 1726597061046350423, guid: dd4657bb6079cf045b94c4b683c7ab81, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -2.83
-      objectReference: {fileID: 0}
-    - target: {fileID: 1726597061046350423, guid: dd4657bb6079cf045b94c4b683c7ab81, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1726597061046350423, guid: dd4657bb6079cf045b94c4b683c7ab81, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1726597061046350423, guid: dd4657bb6079cf045b94c4b683c7ab81, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1726597061046350423, guid: dd4657bb6079cf045b94c4b683c7ab81, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1726597061046350423, guid: dd4657bb6079cf045b94c4b683c7ab81, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1726597061046350423, guid: dd4657bb6079cf045b94c4b683c7ab81, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1726597061046350423, guid: dd4657bb6079cf045b94c4b683c7ab81, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1726597061046350423, guid: dd4657bb6079cf045b94c4b683c7ab81, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8336290482901527141, guid: dd4657bb6079cf045b94c4b683c7ab81, type: 3}
-      propertyPath: m_Name
-      value: Banna Fruts
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: dd4657bb6079cf045b94c4b683c7ab81, type: 3}
---- !u!1001 &7659752726355106652
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 2100000002}
-    m_Modifications:
-    - target: {fileID: 2948072170101997012, guid: e91cb3bdccc23b643ad67d96505b3b72, type: 3}
-      propertyPath: m_Name
-      value: Strawberry-fruts
-      objectReference: {fileID: 0}
-    - target: {fileID: 7647439227508845654, guid: e91cb3bdccc23b643ad67d96505b3b72, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 4.47
-      objectReference: {fileID: 0}
-    - target: {fileID: 7647439227508845654, guid: e91cb3bdccc23b643ad67d96505b3b72, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -2.81
-      objectReference: {fileID: 0}
-    - target: {fileID: 7647439227508845654, guid: e91cb3bdccc23b643ad67d96505b3b72, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7647439227508845654, guid: e91cb3bdccc23b643ad67d96505b3b72, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7647439227508845654, guid: e91cb3bdccc23b643ad67d96505b3b72, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7647439227508845654, guid: e91cb3bdccc23b643ad67d96505b3b72, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7647439227508845654, guid: e91cb3bdccc23b643ad67d96505b3b72, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7647439227508845654, guid: e91cb3bdccc23b643ad67d96505b3b72, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7647439227508845654, guid: e91cb3bdccc23b643ad67d96505b3b72, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7647439227508845654, guid: e91cb3bdccc23b643ad67d96505b3b72, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e91cb3bdccc23b643ad67d96505b3b72, type: 3}
---- !u!114 &4200000001
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 766618908}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a35b2c76e1d94f1c8a0432706d5e9b05, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: AdventureIsland.Animals::PlayerActiveAnimal
---- !u!114 &4200000003
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 766618908}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c36a0000000000000000000000000005, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: AdventureIsland.Animals::AnimalAttackSource
-  playerActiveAnimal: {fileID: 4200000001}
 --- !u!1 &3000000001
 GameObject:
   m_ObjectHideFlags: 0
@@ -4349,6 +4149,302 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ResetInstaller
   playerResetter: {fileID: 3000000003}
   pickupResetter: {fileID: 3000000006}
+--- !u!1 &3100000001
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3100000002}
+  - component: {fileID: 3100000003}
+  m_Layer: 0
+  m_Name: Combat
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3100000002
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3100000001}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1900000034}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3100000003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3100000001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad310000000000000000000000000015, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: AdventureIsland.Combat::WeaponInstaller
+  hammerProjectilePrefab: {fileID: -5653253989570747057, guid: 326d57794fd3d1344a502b536aa9280b, type: 3}
+  hammerSpawnPoint: {fileID: 1585672581}
+  boomerangProjectilePrefab: {fileID: 2879461371224651236, guid: 5a96d3735708ff1418f4c8492e72664a, type: 3}
+  boomerangSpawnPoint: {fileID: 2069097925}
+--- !u!1 &3500000001
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3500000002}
+  - component: {fileID: 3500000003}
+  m_Layer: 0
+  m_Name: Animals
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3500000002
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3500000001}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1900000034}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3500000003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3500000001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03324db4368c425d91cd5f774bab7e62, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: AdventureIsland.Animals::AnimalsInstaller
+  blueAnimalPrefab: {fileID: 1140100, guid: c36a0000000000000000000000000008, type: 3}
+  playerActiveAnimal: {fileID: 4200000001}
+--- !u!114 &4200000001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 766618908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a35b2c76e1d94f1c8a0432706d5e9b05, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: AdventureIsland.Animals::PlayerActiveAnimal
+  playerVisual: {fileID: 766618911}
+--- !u!114 &4200000003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 766618908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c36a0000000000000000000000000005, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: AdventureIsland.Animals::AnimalAttackSource
+  playerActiveAnimal: {fileID: 4200000001}
+--- !u!1001 &2832204908949712832
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 393962858}
+    m_Modifications:
+    - target: {fileID: 6458287904651513201, guid: 4b517895f99c8054eb7783b82d47ab22, type: 3}
+      propertyPath: m_Name
+      value: HeartPickup
+      objectReference: {fileID: 0}
+    - target: {fileID: 7671623919403915630, guid: 4b517895f99c8054eb7783b82d47ab22, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.99665
+      objectReference: {fileID: 0}
+    - target: {fileID: 7671623919403915630, guid: 4b517895f99c8054eb7783b82d47ab22, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.83673
+      objectReference: {fileID: 0}
+    - target: {fileID: 7671623919403915630, guid: 4b517895f99c8054eb7783b82d47ab22, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7671623919403915630, guid: 4b517895f99c8054eb7783b82d47ab22, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7671623919403915630, guid: 4b517895f99c8054eb7783b82d47ab22, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7671623919403915630, guid: 4b517895f99c8054eb7783b82d47ab22, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7671623919403915630, guid: 4b517895f99c8054eb7783b82d47ab22, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7671623919403915630, guid: 4b517895f99c8054eb7783b82d47ab22, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7671623919403915630, guid: 4b517895f99c8054eb7783b82d47ab22, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7671623919403915630, guid: 4b517895f99c8054eb7783b82d47ab22, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4b517895f99c8054eb7783b82d47ab22, type: 3}
+--- !u!4 &2832204908949712833 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7671623919403915630, guid: 4b517895f99c8054eb7783b82d47ab22, type: 3}
+  m_PrefabInstance: {fileID: 2832204908949712832}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &6715828519362490488
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2100000002}
+    m_Modifications:
+    - target: {fileID: 1726597061046350423, guid: dd4657bb6079cf045b94c4b683c7ab81, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.39
+      objectReference: {fileID: 0}
+    - target: {fileID: 1726597061046350423, guid: dd4657bb6079cf045b94c4b683c7ab81, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.83
+      objectReference: {fileID: 0}
+    - target: {fileID: 1726597061046350423, guid: dd4657bb6079cf045b94c4b683c7ab81, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1726597061046350423, guid: dd4657bb6079cf045b94c4b683c7ab81, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1726597061046350423, guid: dd4657bb6079cf045b94c4b683c7ab81, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1726597061046350423, guid: dd4657bb6079cf045b94c4b683c7ab81, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1726597061046350423, guid: dd4657bb6079cf045b94c4b683c7ab81, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1726597061046350423, guid: dd4657bb6079cf045b94c4b683c7ab81, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1726597061046350423, guid: dd4657bb6079cf045b94c4b683c7ab81, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1726597061046350423, guid: dd4657bb6079cf045b94c4b683c7ab81, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8336290482901527141, guid: dd4657bb6079cf045b94c4b683c7ab81, type: 3}
+      propertyPath: m_Name
+      value: Banna Fruts
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: dd4657bb6079cf045b94c4b683c7ab81, type: 3}
+--- !u!1001 &7659752726355106652
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2100000002}
+    m_Modifications:
+    - target: {fileID: 2948072170101997012, guid: e91cb3bdccc23b643ad67d96505b3b72, type: 3}
+      propertyPath: m_Name
+      value: Strawberry-fruts
+      objectReference: {fileID: 0}
+    - target: {fileID: 7647439227508845654, guid: e91cb3bdccc23b643ad67d96505b3b72, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 4.47
+      objectReference: {fileID: 0}
+    - target: {fileID: 7647439227508845654, guid: e91cb3bdccc23b643ad67d96505b3b72, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.81
+      objectReference: {fileID: 0}
+    - target: {fileID: 7647439227508845654, guid: e91cb3bdccc23b643ad67d96505b3b72, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7647439227508845654, guid: e91cb3bdccc23b643ad67d96505b3b72, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7647439227508845654, guid: e91cb3bdccc23b643ad67d96505b3b72, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7647439227508845654, guid: e91cb3bdccc23b643ad67d96505b3b72, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7647439227508845654, guid: e91cb3bdccc23b643ad67d96505b3b72, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7647439227508845654, guid: e91cb3bdccc23b643ad67d96505b3b72, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7647439227508845654, guid: e91cb3bdccc23b643ad67d96505b3b72, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7647439227508845654, guid: e91cb3bdccc23b643ad67d96505b3b72, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e91cb3bdccc23b643ad67d96505b3b72, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -4360,3 +4456,4 @@ SceneRoots:
   - {fileID: 415706487}
   - {fileID: 766618912}
   - {fileID: 43388709}
+  - {fileID: 393962858}
