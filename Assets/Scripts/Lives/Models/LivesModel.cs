@@ -39,7 +39,7 @@ public sealed class LivesModel : ILivesModel
         return true;
     }
 
-    public bool Reset()
+    public bool ResetState()
     {
         if (CurrentLives == InitialLives)
         {

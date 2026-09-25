@@ -6,12 +6,16 @@ public sealed class LivesFlowCoordinator : IDisposable
     private readonly LivesController livesController;
     private readonly FruitProgressController fruitProgressController;
     private readonly PowerDrainRunner powerDrainRunner;
+    private readonly IPlayerResetter playerResetter;
+    private readonly IPickupResetter pickupResetter;
 
     public LivesFlowCoordinator(
         PowerController powerController,
         LivesController livesController,
         FruitProgressController fruitProgressController,
-        PowerDrainRunner powerDrainRunner)
+        PowerDrainRunner powerDrainRunner,
+        IPlayerResetter playerResetter,
+        IPickupResetter pickupResetter)
     {
         this.powerController = powerController
             ?? throw new ArgumentNullException(nameof(powerController));
@@ -21,6 +25,10 @@ public sealed class LivesFlowCoordinator : IDisposable
             ?? throw new ArgumentNullException(nameof(fruitProgressController));
         this.powerDrainRunner = powerDrainRunner
             ?? throw new ArgumentNullException(nameof(powerDrainRunner));
+        this.playerResetter = playerResetter
+            ?? throw new ArgumentNullException(nameof(playerResetter));
+        this.pickupResetter = pickupResetter
+            ?? throw new ArgumentNullException(nameof(pickupResetter));
 
         this.fruitProgressController.FruitThresholdReached += OnFruitThresholdReached;
         this.powerController.PowerReachedMinimum += OnPowerReachedMinimum;
@@ -55,15 +63,27 @@ public sealed class LivesFlowCoordinator : IDisposable
 
     private void RestartCurrentAttempt()
     {
-        powerController.Reset();
-        powerDrainRunner.RestartDrainInterval();
+        ResetPlayerToInitialSpawn();
+        ResetPowerAndDrain();
     }
 
     private void ResetGame()
     {
-        livesController.Reset();
-        fruitProgressController.Reset();
-        powerController.Reset();
-        powerDrainRunner.RestartDrainInterval();
+        ResetPlayerToInitialSpawn();
+        pickupResetter.ReactivatePickups();
+        livesController.ResetState();
+        fruitProgressController.ResetState();
+        ResetPowerAndDrain();
+    }
+
+    private void ResetPlayerToInitialSpawn()
+    {
+        playerResetter.ResetToInitialSpawn();
+    }
+
+    private void ResetPowerAndDrain()
+    {
+        powerController.ResetState();
+        powerDrainRunner.ResetState();
     }
 }

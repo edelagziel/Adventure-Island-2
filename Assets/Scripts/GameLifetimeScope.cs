@@ -13,6 +13,7 @@ public sealed class GameLifetimeScope : LifetimeScope
     [SerializeField] private LivesInstaller livesInstaller;
     [SerializeField] private WeaponInstaller weaponInstaller;
     [SerializeField] private AnimalsInstaller animalsInstaller;
+    [SerializeField] private ResetInstaller resetInstaller;
 
     protected override void Configure(IContainerBuilder builder)
     {
@@ -23,6 +24,7 @@ public sealed class GameLifetimeScope : LifetimeScope
         livesInstaller.Install(builder);
         weaponInstaller.Install(builder);
         animalsInstaller.Install(builder);
+        resetInstaller.Install(builder);
 
         builder.Register<LivesFlowCoordinator>(Lifetime.Scoped)
             .AsSelf();
@@ -55,6 +57,11 @@ public sealed class GameLifetimeScope : LifetimeScope
         if (animalsInstaller == null)
         {
             throw new InvalidOperationException("GameLifetimeScope requires an AnimalsInstaller reference.");
+        }
+
+        if (resetInstaller == null)
+        {
+            throw new InvalidOperationException("GameLifetimeScope requires a ResetInstaller reference.");
         }
     }
 }

@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [DisallowMultipleComponent]
-public sealed class PlayerAnimalMount : MonoBehaviour
+public sealed class PlayerActiveAnimal : MonoBehaviour
 {
     private IAnimal activeAnimal;
     private MonoBehaviour activeAnimalBehaviour;
@@ -46,17 +46,12 @@ public sealed class PlayerAnimalMount : MonoBehaviour
         ActiveAnimalChanged?.Invoke();
     }
 
-    public void AttackActiveAnimal()
-    {
-        activeAnimal?.Attack();
-    }
-
     private static MonoBehaviour GetAnimalBehaviour(IAnimal animal)
     {
         if (!(animal is MonoBehaviour animalBehaviour) || animalBehaviour == null)
         {
             throw new ArgumentException(
-                "PlayerAnimalMount requires an IAnimal implemented by a MonoBehaviour.",
+                "PlayerActiveAnimal requires an IAnimal implemented by a MonoBehaviour.",
                 nameof(animal));
         }
 

@@ -1,5 +1,5 @@
-public interface IAnimalBuilder
+public interface IAnimalBuilder<TAnimal>
+    where TAnimal : Animal
 {
-    void BuildAnimalPrefab(AnimalDefinition definition);
-    IAnimal GetAnimal();
+    TAnimal Build();
 }
