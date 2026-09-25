@@ -27,7 +27,8 @@ public sealed class GameLifetimeScope : LifetimeScope
         resetInstaller.Install(builder);
 
         builder.Register<LivesFlowCoordinator>(Lifetime.Scoped)
-            .AsSelf();
+            .AsSelf()
+            .As<IPlayerFailureHandler>();
         builder.RegisterBuildCallback(container =>
             container.Resolve<LivesFlowCoordinator>());
     }

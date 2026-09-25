@@ -1,6 +1,6 @@
 using System;
 
-public sealed class LivesFlowCoordinator : IDisposable
+public sealed class LivesFlowCoordinator : IDisposable, IPlayerFailureHandler
 {
     private readonly PowerController powerController;
     private readonly LivesController livesController;
@@ -8,6 +8,7 @@ public sealed class LivesFlowCoordinator : IDisposable
     private readonly PowerDrainRunner powerDrainRunner;
     private readonly IPlayerResetter playerResetter;
     private readonly IPickupResetter pickupResetter;
+    private bool isHandlingPlayerFailure;
 
     public LivesFlowCoordinator(
         PowerController powerController,
@@ -47,18 +48,43 @@ public sealed class LivesFlowCoordinator : IDisposable
 
     private void OnPowerReachedMinimum()
     {
+        TryHandlePlayerFailure();
+    }
+
+    public bool TryHandlePlayerFailure()
+    {
+        if (isHandlingPlayerFailure)
+        {
+            return false;
+        }
+
+        isHandlingPlayerFailure = true;
+
+        try
+        {
+            return HandlePlayerFailure();
+        }
+        finally
+        {
+            isHandlingPlayerFailure = false;
+        }
+    }
+
+    private bool HandlePlayerFailure()
+    {
         if (!livesController.LoseLife())
         {
-            return;
+            return false;
         }
 
         if (livesController.CurrentLives > 0)
         {
             RestartCurrentAttempt();
-            return;
+            return true;
         }
 
         ResetGame();
+        return true;
     }
 
     private void RestartCurrentAttempt()
