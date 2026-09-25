@@ -4554,6 +4554,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4300000000000000000000000000007, type: 3}
   m_Name:
   m_EditorClassIdentifier: AdventureIsland.Enemies::EnemiesInstaller
+  verticalSpiderEnemyPrefab: {fileID: 1140100, guid: e4400000000000000000000000000010, type: 3}
+  staticSpiderEnemyPrefab: {fileID: 1140110, guid: e4400000000000000000000000000011, type: 3}
+  birdEnemyPrefab: {fileID: 1140120, guid: e4400000000000000000000000000012, type: 3}
 --- !u!114 &4200000001
 MonoBehaviour:
   m_ObjectHideFlags: 0

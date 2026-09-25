@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
 using VContainer;
@@ -11,6 +12,7 @@ namespace AdventureIsland.Enemies.Tests
     {
         private TestEnemy testEnemyPrefab;
         private TestEnemy createdEnemy;
+        private GameObject movementTestObject;
 
         [SetUp]
         public void SetUp()
@@ -30,6 +32,11 @@ namespace AdventureIsland.Enemies.Tests
             if (testEnemyPrefab != null)
             {
                 Object.DestroyImmediate(testEnemyPrefab.gameObject);
+            }
+
+            if (movementTestObject != null)
+            {
+                Object.DestroyImmediate(movementTestObject);
             }
         }
 
@@ -91,6 +98,93 @@ namespace AdventureIsland.Enemies.Tests
             Assert.That(
                 createdEnemy.LifecycleEvents,
                 Is.EqualTo(new[] { "death", "respawn" }));
+        }
+
+        [UnityTest]
+        public IEnumerator VerticalSpiderMovesStopsWhileDeadAndResumesAfterRespawn()
+        {
+            VerticalSpiderEnemy spider = CreateVerticalSpider();
+            Vector3 spawnPosition = spider.transform.position;
+
+            yield return null;
+            yield return new WaitForSeconds(0.05f);
+
+            Assert.That(spider.transform.position.y, Is.GreaterThan(spawnPosition.y));
+
+            Assert.That(spider.TryDie(), Is.True);
+            Vector3 deathPosition = spider.transform.position;
+
+            yield return new WaitForSeconds(0.02f);
+
+            Assert.That(spider.transform.position, Is.EqualTo(deathPosition));
+
+            yield return new WaitForSeconds(0.08f);
+
+            Assert.That(spider.IsAlive, Is.True);
+            Assert.That(spider.transform.position.y, Is.GreaterThan(spawnPosition.y));
+        }
+
+        [UnityTest]
+        public IEnumerator StaticSpiderRemainsAtSpawnBeforeAndAfterRespawn()
+        {
+            StaticSpiderEnemy spider = CreateStaticSpider();
+            Vector3 spawnPosition = spider.transform.position;
+
+            yield return null;
+            yield return new WaitForSeconds(0.05f);
+
+            Assert.That(spider.transform.position, Is.EqualTo(spawnPosition));
+
+            Assert.That(spider.TryDie(), Is.True);
+
+            yield return new WaitForSeconds(0.08f);
+
+            Assert.That(spider.IsAlive, Is.True);
+            Assert.That(spider.transform.position, Is.EqualTo(spawnPosition));
+        }
+
+        [UnityTest]
+        public IEnumerator BirdMovesLeftAndDown()
+        {
+            movementTestObject = new GameObject("Bird Movement Test");
+            BirdEnemy bird = movementTestObject.AddComponent<BirdEnemy>();
+            ConfigureFloat(bird, "horizontalSpeed", 1f);
+            ConfigureFloat(bird, "verticalSpeed", 1f);
+            ConfigureFloat(bird, "verticalRange", 0.5f);
+            Vector3 spawnPosition = bird.transform.position;
+
+            yield return null;
+            yield return new WaitForSeconds(0.05f);
+
+            Assert.That(bird.transform.position.x, Is.LessThan(spawnPosition.x));
+            Assert.That(bird.transform.position.y, Is.LessThan(spawnPosition.y));
+        }
+
+        private VerticalSpiderEnemy CreateVerticalSpider()
+        {
+            movementTestObject = new GameObject("Spider Movement Test");
+            VerticalSpiderEnemy spider = movementTestObject.AddComponent<VerticalSpiderEnemy>();
+            SerializedObject serializedSpider = new SerializedObject(spider);
+            serializedSpider.FindProperty("verticalSpeed").floatValue = 1f;
+            serializedSpider.FindProperty("verticalRange").floatValue = 0.5f;
+            serializedSpider.FindProperty("respawnDelaySeconds").floatValue = 0.05f;
+            serializedSpider.ApplyModifiedPropertiesWithoutUndo();
+            return spider;
+        }
+
+        private StaticSpiderEnemy CreateStaticSpider()
+        {
+            movementTestObject = new GameObject("Static Spider Movement Test");
+            StaticSpiderEnemy spider = movementTestObject.AddComponent<StaticSpiderEnemy>();
+            ConfigureFloat(spider, "respawnDelaySeconds", 0.05f);
+            return spider;
+        }
+
+        private static void ConfigureFloat(Object target, string propertyName, float value)
+        {
+            SerializedObject serializedObject = new SerializedObject(target);
+            serializedObject.FindProperty(propertyName).floatValue = value;
+            serializedObject.ApplyModifiedPropertiesWithoutUndo();
         }
 
         private sealed class TestEnemy : Enemy

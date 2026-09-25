@@ -13,6 +13,12 @@
 - `LivesFlowCoordinator` remains limited to Power/Fruit event and Lives decisions. A surviving life calls `RestartCurrentStage()`; zero lives resets Lives and requests `ResetToFirstStage()`.
 - `StageRoot.ResetStageState()` performs one generic pass over stage-local `IStageResettable` components. `PickUp` implements that contract to reactivate itself; no generic reset manager, scene reload, or legacy `SC_Death` / `ResetPosition` path is used.
 - Verification: `Assembly-CSharp.csproj` built with 0 warnings and 0 errors; source and scene static checks confirm both roots, Spawn/Goal references, auto-injection roots, and the approved stage-flow call paths. No AD-48/AD-49 level content was saved or committed in this workstream.
+## AD-44 - Spider and Bird enemy behaviours (complete)
+
+- `VerticalSpiderEnemy`, `StaticSpiderEnemy`, and `BirdEnemy` extend the shared `Enemy` lifecycle and retain typed Factory -> Director -> Builder construction through their concrete builders and `EnemiesInstaller` registrations.
+- `VerticalSpiderEnemy` moves within configured vertical bounds, `StaticSpiderEnemy` remains suspended, and `BirdEnemy` moves left while oscillating vertically. All pause while dead and resume after the base respawn lifecycle restores their spawn transform.
+- `EnemySpriteFrameAnimation` is a shared, code-based visual component. It locally resolves the sibling `Enemy` and `SpriteRenderer`, loops serialized frames only while alive, and resets to frame zero on respawn. No Animator, AnimationClip, or AnimatorController is used.
+- Bird and Spider sprite sheets/prefabs were configured and manually verified in Unity. Manual Play verification confirmed Bird movement/frame animation, vertical-spider movement/frame animation, and static-spider animation without movement. Focused Unity Test Runner runtime result output remains unconfirmed in this automation environment.
 
 ## AD-43 - Enemy foundation and respawn lifecycle (complete)
 
