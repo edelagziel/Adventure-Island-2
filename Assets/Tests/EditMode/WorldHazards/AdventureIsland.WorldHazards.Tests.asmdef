@@ -1,0 +1,26 @@
+{
+  "name": "AdventureIsland.WorldHazards.Tests",
+  "rootNamespace": "AdventureIsland.WorldHazards.Tests",
+  "references": [
+    "AdventureIsland.Lives",
+    "AdventureIsland.Power",
+    "AdventureIsland.Shared",
+    "AdventureIsland.WorldHazards"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false,
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}

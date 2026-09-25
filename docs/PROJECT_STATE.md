@@ -8,6 +8,13 @@
 - `StageRoot.ResetStageState()` performs one generic pass over stage-local `IStageResettable` components. `PickUp` implements that contract to reactivate itself; no generic reset manager, scene reload, or legacy `SC_Death` / `ResetPosition` path is used.
 - Verification: `Assembly-CSharp.csproj` built with 0 warnings and 0 errors; source and scene static checks confirm both roots, Spawn/Goal references, auto-injection roots, and the approved stage-flow call paths. No AD-48/AD-49 level content was saved or committed in this workstream.
 
+## AD-43 - Enemy foundation and respawn lifecycle (complete)
+
+- `AdventureIsland.Enemies` provides the reusable typed construction path: `EnemyFactory<TEnemy> -> EnemyDirector<TEnemy> -> IEnemyBuilder<TEnemy> -> concrete builder`. Position and rotation flow through every step, so `Enemy.Awake()` captures the instantiated object's real spawn transform.
+- `Enemy` owns the fixed, non-overridable `TryDie()` lifecycle: it rejects duplicate requests, invokes `OnDeathStarted()`, waits the serialized per-prefab delay, restores the captured transform, restores `IsAlive`, and invokes `OnRespawned()`. The base class intentionally has no arbitrary non-zero delay default; future concrete enemy prefabs configure their own value.
+- `EnemiesInstaller` registers scoped open-generic Factory and Director services through the shared `GameLifetimeScope`; concrete enemy builders remain future concrete-enemy composition work.
+- Focused construction and lifecycle test sources compile. Automated Unity Test Runner runtime execution remains unconfirmed: batch mode returned successfully but produced no test-results XML or execution summary. Do not treat the runtime assertions as passed until they are run in the Unity Editor.
+
 ## AD-30 - Production bootstrap and scene wiring (complete)
 
 - `ProjectSettings/EditorBuildSettings.asset` now uses `Adventure-Island-2-Game.unity` as the enabled build entry; legacy `Scene_Physics.unity` remains reference content and is not deleted.
