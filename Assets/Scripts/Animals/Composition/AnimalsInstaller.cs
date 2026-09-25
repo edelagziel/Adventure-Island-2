@@ -14,6 +14,7 @@ public sealed class AnimalsInstaller : MonoBehaviour, IInstaller
     [SerializeField] private GreenAnimal greenAnimalPrefab;
     [SerializeField] private Projectile redFireProjectilePrefab;
     [SerializeField] private PlayerActiveAnimal playerActiveAnimal;
+    [SerializeField] private Transform projectilePoolRoot;
 
     public void Install(IContainerBuilder builder)
     {
@@ -45,6 +46,7 @@ public sealed class AnimalsInstaller : MonoBehaviour, IInstaller
         builder.Register<ProjectilePool>(Lifetime.Scoped)
             .Keyed(RedFirePoolKey)
             .WithParameter("prefab", redFireProjectilePrefab)
+            .WithParameter("projectileRoot", projectilePoolRoot)
             .AsSelf();
         builder.Register<ProjectileProvider<RedFireProjectileDirector>>(Lifetime.Scoped)
             .WithParameter("pool", resolver =>
@@ -82,6 +84,12 @@ public sealed class AnimalsInstaller : MonoBehaviour, IInstaller
         {
             throw new InvalidOperationException(
                 "AnimalsInstaller requires a PlayerActiveAnimal reference.");
+        }
+
+        if (projectilePoolRoot == null)
+        {
+            throw new InvalidOperationException(
+                "AnimalsInstaller requires a projectile pool root.");
         }
     }
 }

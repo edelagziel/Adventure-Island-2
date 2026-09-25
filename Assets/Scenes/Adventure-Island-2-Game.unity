@@ -4180,7 +4180,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3600000002}
   m_Father: {fileID: 1900000034}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3100000003
@@ -4199,6 +4200,38 @@ MonoBehaviour:
   hammerSpawnPoint: {fileID: 1585672581}
   boomerangProjectilePrefab: {fileID: 2879461371224651236, guid: 5a96d3735708ff1418f4c8492e72664a, type: 3}
   boomerangSpawnPoint: {fileID: 2069097925}
+  projectilePoolRoot: {fileID: 3600000002}
+--- !u!1 &3600000001
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3600000002}
+  m_Layer: 0
+  m_Name: ProjectilePoolRoot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3600000002
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3600000001}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3100000002}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3500000001
 GameObject:
   m_ObjectHideFlags: 0
@@ -4248,6 +4281,7 @@ MonoBehaviour:
   greenAnimalPrefab: {fileID: 1140400, guid: 743c184cc5ea4c049e1d854ac3fff902, type: 3}
   redFireProjectilePrefab: {fileID: 1140500, guid: 25fd1684fe60432089b191789575ef12, type: 3}
   playerActiveAnimal: {fileID: 4200000001}
+  projectilePoolRoot: {fileID: 3600000002}
 --- !u!114 &4200000001
 MonoBehaviour:
   m_ObjectHideFlags: 0
