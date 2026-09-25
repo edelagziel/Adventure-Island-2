@@ -793,6 +793,7 @@ GameObject:
   - component: {fileID: 766618913}
   - component: {fileID: 4200000001}
   - component: {fileID: 4200000002}
+  - component: {fileID: 4200000003}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -3898,7 +3899,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03324db4368c425d91cd5f774bab7e62, type: 3}
   m_Name:
   m_EditorClassIdentifier: AdventureIsland.Animals::AnimalsInstaller
-  playerAnimalMount: {fileID: 4200000001}
+  blueAnimalPrefab: {fileID: 1140100, guid: c36a0000000000000000000000000008, type: 3}
+  playerActiveAnimal: {fileID: 4200000001}
 --- !u!1 &3100000001
 GameObject:
   m_ObjectHideFlags: 0
@@ -3955,7 +3957,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a35b2c76e1d94f1c8a0432706d5e9b05, type: 3}
   m_Name:
-  m_EditorClassIdentifier: AdventureIsland.Animals::PlayerAnimalMount
+  m_EditorClassIdentifier: AdventureIsland.Animals::PlayerActiveAnimal
 --- !u!114 &4200000002
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3967,7 +3969,20 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad310000000000000000000000000010, type: 3}
   m_Name:
-  m_EditorClassIdentifier: AdventureIsland.Combat::WeaponAttackInput
+  m_EditorClassIdentifier: AdventureIsland.Combat::PlayerAttackInput
+--- !u!114 &4200000003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 766618908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c36a0000000000000000000000000005, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: AdventureIsland.Animals::AnimalAttackSource
+  playerActiveAnimal: {fileID: 4200000001}
 --- !u!1 &3000000001
 GameObject:
   m_ObjectHideFlags: 0

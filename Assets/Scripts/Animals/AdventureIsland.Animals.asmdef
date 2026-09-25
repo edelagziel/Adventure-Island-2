@@ -2,7 +2,8 @@
   "name": "AdventureIsland.Animals",
   "rootNamespace": "",
   "references": [
-    "VContainer"
+    "VContainer",
+    "AdventureIsland.Combat"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],
