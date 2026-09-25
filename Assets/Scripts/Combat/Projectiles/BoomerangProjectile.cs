@@ -8,14 +8,19 @@ namespace AdventureIsland.Combat
     {
         [SerializeField, Min(0.01f)] private float outwardDistance = 5f;
         [SerializeField, Min(0.01f)] private float outwardSpeed = 6f;
+        [SerializeField, Min(0.01f)] private float arcHeight = 1.5f;
         [SerializeField, Min(0.01f)] private float returnSpeed = 8f;
+        [SerializeField, Min(0.01f)] private float returnSteering = 20f;
+        [SerializeField, Min(0.01f)] private float rotationSpeed = 720f;
         [SerializeField, Min(0.01f)] private float catchRadius = 0.5f;
         [SerializeField, Min(0.01f)] private float lifetimeSeconds = 5f;
 
         private Rigidbody2D body;
         private Transform spawnPoint;
         private Transform player;
-        private Vector2 outwardStart;
+        private Vector2 flightVelocity;
+        private float outwardTravelled;
+        private float outwardGravity;
         private float outwardDirection;
         private float remainingLifetime;
         private Vector3 initialScale;
@@ -91,7 +96,12 @@ namespace AdventureIsland.Combat
 
             player = spawnPoint.parent;
             outwardDirection = Mathf.Sign(facingScale);
-            outwardStart = position;
+            float outwardDuration = outwardDistance / outwardSpeed;
+            flightVelocity = new Vector2(
+                outwardSpeed * outwardDirection,
+                4f * arcHeight / outwardDuration);
+            outwardGravity = 8f * arcHeight / (outwardDuration * outwardDuration);
+            outwardTravelled = 0f;
             remainingLifetime = lifetimeSeconds;
             returning = false;
             transform.position = position;
@@ -124,24 +134,12 @@ namespace AdventureIsland.Combat
                 return;
             }
 
+            body.MoveRotation(body.rotation + rotationSpeed * Time.fixedDeltaTime);
+
             if (!returning)
             {
-                float traveled = Mathf.Abs(body.position.x - outwardStart.x);
-                float remaining = outwardDistance - traveled;
-                if (remaining <= 0f)
-                {
-                    returning = true;
-                }
-                else
-                {
-                    float step = Mathf.Min(outwardSpeed * Time.fixedDeltaTime, remaining);
-                    body.MovePosition(body.position + Vector2.right * (outwardDirection * step));
-                    if (step >= remaining)
-                    {
-                        returning = true;
-                    }
-                    return;
-                }
+                MoveOutward(Time.fixedDeltaTime);
+                return;
             }
 
             Vector2 target = player.position;
@@ -151,8 +149,37 @@ namespace AdventureIsland.Combat
                 return;
             }
 
-            body.MovePosition(Vector2.MoveTowards(
-                body.position, target, returnSpeed * Time.fixedDeltaTime));
+            Vector2 desiredVelocity = (target - body.position).normalized * returnSpeed;
+            flightVelocity = Vector2.MoveTowards(
+                flightVelocity,
+                desiredVelocity,
+                returnSteering * Time.fixedDeltaTime);
+
+            Vector2 nextPosition = body.position + flightVelocity * Time.fixedDeltaTime;
+            if (Vector2.Distance(nextPosition, target) <= catchRadius)
+            {
+                ReleaseToPool();
+                return;
+            }
+
+            body.MovePosition(nextPosition);
+        }
+
+        private void MoveOutward(float deltaTime)
+        {
+            float remainingDistance = outwardDistance - outwardTravelled;
+            float stepTime = Mathf.Min(deltaTime, remainingDistance / outwardSpeed);
+            Vector2 displacement = flightVelocity * stepTime +
+                Vector2.down * (0.5f * outwardGravity * stepTime * stepTime);
+
+            flightVelocity.y -= outwardGravity * stepTime;
+            outwardTravelled += outwardSpeed * stepTime;
+            body.MovePosition(body.position + displacement);
+
+            if (outwardTravelled >= outwardDistance)
+            {
+                returning = true;
+            }
         }
 
         internal override void ResetForPool()
@@ -170,7 +197,9 @@ namespace AdventureIsland.Combat
             transform.position = Vector3.zero;
             spawnPoint = null;
             player = null;
-            outwardStart = Vector2.zero;
+            flightVelocity = Vector2.zero;
+            outwardTravelled = 0f;
+            outwardGravity = 0f;
             outwardDirection = 0f;
             remainingLifetime = 0f;
             hasLaunched = false;
@@ -181,7 +210,10 @@ namespace AdventureIsland.Combat
         {
             return IsFinite(outwardDistance) && outwardDistance > 0f &&
                 IsFinite(outwardSpeed) && outwardSpeed > 0f &&
+                IsFinite(arcHeight) && arcHeight > 0f &&
                 IsFinite(returnSpeed) && returnSpeed > 0f &&
+                IsFinite(returnSteering) && returnSteering > 0f &&
+                IsFinite(rotationSpeed) && rotationSpeed > 0f &&
                 IsFinite(catchRadius) && catchRadius > 0f &&
                 IsFinite(lifetimeSeconds) && lifetimeSeconds > 0f;
         }
