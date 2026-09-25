@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -65,6 +66,50 @@ public sealed class LivesFlowCoordinatorTests
         context.Coordinator.Dispose();
     }
 
+    [Test]
+    public void RepeatedFailureRequestInSameFrame_IsRejectedWithoutSecondLifeLoss()
+    {
+        TestContext context = CreateContext(initialPower: 10);
+
+        bool firstHandled = context.Coordinator.TryHandlePlayerFailure();
+        bool secondHandled = context.Coordinator.TryHandlePlayerFailure();
+
+        Assert.That(firstHandled, Is.True);
+        Assert.That(secondHandled, Is.False);
+        Assert.That(context.LivesModel.CurrentLives, Is.EqualTo(2));
+        Assert.That(context.PlayerResetter.ResetCount, Is.EqualTo(1));
+
+        context.Coordinator.Dispose();
+    }
+
+    [Test]
+    public void FailureSequence_ReachingZeroPerformsFullReset()
+    {
+        TestContext context = CreateContext(initialPower: 10);
+        context.FruitProgressController.CollectFruit();
+
+        Assert.That(InvokeFailureSequence(context.Coordinator), Is.True);
+        Assert.That(InvokeFailureSequence(context.Coordinator), Is.True);
+        Assert.That(InvokeFailureSequence(context.Coordinator), Is.True);
+
+        Assert.That(context.LivesModel.CurrentLives, Is.EqualTo(3));
+        Assert.That(context.FruitProgressModel.CurrentFruitCount, Is.Zero);
+        Assert.That(context.PlayerResetter.ResetCount, Is.EqualTo(3));
+        Assert.That(context.PickupResetter.ResetCount, Is.EqualTo(1));
+
+        context.Coordinator.Dispose();
+    }
+
+    private static bool InvokeFailureSequence(LivesFlowCoordinator coordinator)
+    {
+        MethodInfo failureMethod = typeof(LivesFlowCoordinator).GetMethod(
+            "HandlePlayerFailure",
+            BindingFlags.Instance | BindingFlags.NonPublic);
+
+        Assert.That(failureMethod, Is.Not.Null);
+        return (bool)failureMethod.Invoke(coordinator, null);
+    }
+
     private TestContext CreateContext(int initialPower)
     {
         PowerModel powerModel = new PowerModel(initialPower, 0, 20);
@@ -75,10 +120,9 @@ public sealed class LivesFlowCoordinatorTests
         LivesController livesController = new LivesController(
             livesModel,
             new FakeLivesView());
+        FruitProgressModel fruitProgressModel = new FruitProgressModel(20);
         FruitProgressController fruitProgressController =
-            new FruitProgressController(
-                new FruitProgressModel(20),
-                new FakeFruitProgressView());
+            new FruitProgressController(fruitProgressModel, new FakeFruitProgressView());
         FakePlayerResetter playerResetter = new FakePlayerResetter();
         FakePickupResetter pickupResetter = new FakePickupResetter();
 
@@ -99,6 +143,8 @@ public sealed class LivesFlowCoordinatorTests
             powerController,
             powerModel,
             livesModel,
+            fruitProgressController,
+            fruitProgressModel,
             playerResetter,
             pickupResetter);
     }
@@ -110,6 +156,8 @@ public sealed class LivesFlowCoordinatorTests
             PowerController powerController,
             PowerModel powerModel,
             LivesModel livesModel,
+            FruitProgressController fruitProgressController,
+            FruitProgressModel fruitProgressModel,
             FakePlayerResetter playerResetter,
             FakePickupResetter pickupResetter)
         {
@@ -117,6 +165,8 @@ public sealed class LivesFlowCoordinatorTests
             PowerController = powerController;
             PowerModel = powerModel;
             LivesModel = livesModel;
+            FruitProgressController = fruitProgressController;
+            FruitProgressModel = fruitProgressModel;
             PlayerResetter = playerResetter;
             PickupResetter = pickupResetter;
         }
@@ -125,6 +175,8 @@ public sealed class LivesFlowCoordinatorTests
         public PowerController PowerController { get; }
         public PowerModel PowerModel { get; }
         public LivesModel LivesModel { get; }
+        public FruitProgressController FruitProgressController { get; }
+        public FruitProgressModel FruitProgressModel { get; }
         public FakePlayerResetter PlayerResetter { get; }
         public FakePickupResetter PickupResetter { get; }
     }

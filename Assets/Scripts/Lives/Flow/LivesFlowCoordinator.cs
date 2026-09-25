@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public sealed class LivesFlowCoordinator : IDisposable, IPlayerFailureHandler
 {
@@ -9,6 +10,7 @@ public sealed class LivesFlowCoordinator : IDisposable, IPlayerFailureHandler
     private readonly IPlayerResetter playerResetter;
     private readonly IPickupResetter pickupResetter;
     private bool isHandlingPlayerFailure;
+    private int lastHandledFailureFrame = -1;
 
     public LivesFlowCoordinator(
         PowerController powerController,
@@ -53,12 +55,13 @@ public sealed class LivesFlowCoordinator : IDisposable, IPlayerFailureHandler
 
     public bool TryHandlePlayerFailure()
     {
-        if (isHandlingPlayerFailure)
+        if (isHandlingPlayerFailure || lastHandledFailureFrame == Time.frameCount)
         {
             return false;
         }
 
         isHandlingPlayerFailure = true;
+        lastHandledFailureFrame = Time.frameCount;
 
         try
         {

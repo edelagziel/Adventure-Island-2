@@ -1,7 +1,11 @@
 {
   "name": "AdventureIsland.WorldHazards",
   "rootNamespace": "AdventureIsland.WorldHazards",
-  "references": [],
+  "references": [
+    "AdventureIsland.Lives",
+    "AdventureIsland.Power",
+    "VContainer"
+  ],
   "includePlatforms": [],
   "excludePlatforms": [],
   "allowUnsafeCode": false,
