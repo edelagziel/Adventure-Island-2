@@ -5,17 +5,13 @@ public sealed class LivesFlowCoordinator : IDisposable
     private readonly PowerController powerController;
     private readonly LivesController livesController;
     private readonly FruitProgressController fruitProgressController;
-    private readonly PowerDrainRunner powerDrainRunner;
-    private readonly IPlayerResetter playerResetter;
-    private readonly IPickupResetter pickupResetter;
+    private readonly StageFlowController stageFlowController;
 
     public LivesFlowCoordinator(
         PowerController powerController,
         LivesController livesController,
         FruitProgressController fruitProgressController,
-        PowerDrainRunner powerDrainRunner,
-        IPlayerResetter playerResetter,
-        IPickupResetter pickupResetter)
+        StageFlowController stageFlowController)
     {
         this.powerController = powerController
             ?? throw new ArgumentNullException(nameof(powerController));
@@ -23,12 +19,8 @@ public sealed class LivesFlowCoordinator : IDisposable
             ?? throw new ArgumentNullException(nameof(livesController));
         this.fruitProgressController = fruitProgressController
             ?? throw new ArgumentNullException(nameof(fruitProgressController));
-        this.powerDrainRunner = powerDrainRunner
-            ?? throw new ArgumentNullException(nameof(powerDrainRunner));
-        this.playerResetter = playerResetter
-            ?? throw new ArgumentNullException(nameof(playerResetter));
-        this.pickupResetter = pickupResetter
-            ?? throw new ArgumentNullException(nameof(pickupResetter));
+        this.stageFlowController = stageFlowController
+            ?? throw new ArgumentNullException(nameof(stageFlowController));
 
         this.fruitProgressController.FruitThresholdReached += OnFruitThresholdReached;
         this.powerController.PowerReachedMinimum += OnPowerReachedMinimum;
@@ -54,36 +46,11 @@ public sealed class LivesFlowCoordinator : IDisposable
 
         if (livesController.CurrentLives > 0)
         {
-            RestartCurrentAttempt();
+            stageFlowController.RestartCurrentStage();
             return;
         }
 
-        ResetGame();
-    }
-
-    private void RestartCurrentAttempt()
-    {
-        ResetPlayerToInitialSpawn();
-        ResetPowerAndDrain();
-    }
-
-    private void ResetGame()
-    {
-        ResetPlayerToInitialSpawn();
-        pickupResetter.ReactivatePickups();
         livesController.ResetState();
-        fruitProgressController.ResetState();
-        ResetPowerAndDrain();
-    }
-
-    private void ResetPlayerToInitialSpawn()
-    {
-        playerResetter.ResetToInitialSpawn();
-    }
-
-    private void ResetPowerAndDrain()
-    {
-        powerController.ResetState();
-        powerDrainRunner.ResetState();
+        stageFlowController.ResetToFirstStage();
     }
 }

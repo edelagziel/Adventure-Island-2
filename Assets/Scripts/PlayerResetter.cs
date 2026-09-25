@@ -7,20 +7,22 @@ public sealed class PlayerResetter : MonoBehaviour, IPlayerResetter
     [SerializeField] private Transform player;
     [SerializeField] private Rigidbody2D playerRigidbody;
 
-    private Vector3 initialPlayerPosition;
-
     private void Awake()
     {
         ValidateConfiguration();
-        initialPlayerPosition = player.position;
     }
 
-    public void ResetToInitialSpawn()
+    public void ResetToSpawn(Transform spawnPoint)
     {
+        if (spawnPoint == null)
+        {
+            throw new ArgumentNullException(nameof(spawnPoint));
+        }
+
         playerRigidbody.linearVelocity = Vector2.zero;
         playerRigidbody.angularVelocity = 0f;
-        playerRigidbody.position = initialPlayerPosition;
-        player.position = initialPlayerPosition;
+        playerRigidbody.position = spawnPoint.position;
+        player.position = spawnPoint.position;
     }
 
     private void ValidateConfiguration()

@@ -30,6 +30,17 @@ namespace AdventureIsland.Combat
             return true;
         }
 
+        public bool ClearActiveWeapon()
+        {
+            if (activeWeapon == null)
+            {
+                return false;
+            }
+
+            activeWeapon = null;
+            return true;
+        }
+
         public bool TryAttack()
         {
             return activeWeapon != null && activeWeapon.TryAttack();

@@ -1,12 +1,12 @@
 {
-  "name": "AdventureIsland.Lives",
+  "name": "AdventureIsland.Stages",
   "rootNamespace": "",
   "references": [
+    "AdventureIsland.Animals",
+    "AdventureIsland.Combat",
     "AdventureIsland.FruitProgress",
     "AdventureIsland.Power",
     "AdventureIsland.Shared",
-    "AdventureIsland.Stages",
-    "Unity.TextMeshPro",
     "VContainer"
   ],
   "includePlatforms": [],

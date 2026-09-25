@@ -7,7 +7,6 @@ using VContainer.Unity;
 public sealed class ResetInstaller : MonoBehaviour, IInstaller
 {
     [SerializeField] private PlayerResetter playerResetter;
-    [SerializeField] private PickupResetter pickupResetter;
 
     public void Install(IContainerBuilder builder)
     {
@@ -15,8 +14,6 @@ public sealed class ResetInstaller : MonoBehaviour, IInstaller
 
         builder.RegisterComponent(playerResetter)
             .As<IPlayerResetter>();
-        builder.RegisterComponent(pickupResetter)
-            .As<IPickupResetter>();
     }
 
     private void ValidateConfiguration()
@@ -26,9 +23,5 @@ public sealed class ResetInstaller : MonoBehaviour, IInstaller
             throw new InvalidOperationException("ResetInstaller requires a PlayerResetter reference.");
         }
 
-        if (pickupResetter == null)
-        {
-            throw new InvalidOperationException("ResetInstaller requires a PickupResetter reference.");
-        }
     }
 }
