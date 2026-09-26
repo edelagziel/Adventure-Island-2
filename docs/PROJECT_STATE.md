@@ -1,5 +1,31 @@
 # Project State
 
+## AD-46 - Ghost and enemy lifecycle integration (code checkpoint)
+
+- Normal combat uses the shared `IDefeatable.TryDefeat()` capability. `Enemy` delegates normal defeat to its existing death/respawn lifecycle, while `GhostEnemy` rejects normal defeat without weapon-, animal-, or Ghost-type checks in callers.
+- Fairy destruction remains deliberately separate through `IDestructible.TryDestroy()`, so Fairy can destroy both ordinary enemies and Ghost while normal attacks cannot defeat Ghost.
+- `GhostEnemy` owns its continuous movement toward the live Player Transform while alive. `EnemiesInstaller` supplies that Transform, and `EnemyBuilder` now creates runtime enemies through VContainer so instantiated enemy components receive injection. The shared `Enemy` lifecycle still restores the original spawn transform before the Ghost resumes chasing.
+- `EnemySpawn` owns optional Inspector-configured Animal-drop chance and an existing inactive drop object. It responds to the accepted enemy-death notification, activates the configured pickup at the death position, and hides it during stage reset without introducing another reward factory.
+- Verification: the Enemies production and EditMode test assemblies compile with zero errors, metadata GUID and scene-reference checks pass, and `git diff --check` passes. Automated Unity Test Runner execution remains unconfirmed because the project was open and the second batch Editor exited without producing results.
+- Deferred runtime content: `Pre_GhostEnemy`, `GhostEnemyDefinition`, a production-scene `GhostSpawn`, and final Play Mode verification require an approved Ghost sprite/presentation asset. No placeholder asset or invisible production prefab was created.
+
+## AD-42 - Fairy protection and contact destruction (complete)
+
+- `FairyProtection` owns the ten-second protection lifetime, repeated-collection restart, attached visual state, and reset cancellation. It exposes read-only protection through `IPlayerProtectionState` and participates in shared stage resets through `IResettable`.
+- `FairyContactHandler` remains the Fairy-specific contact layer but targets only the shared `IDestructible` capability. Rock delegates destruction to `TryBreak()`, Bonfire to `TryExtinguish()`, and Enemy to its existing `TryDie()` lifecycle; no concrete target-type branching is used.
+- Rock and Bonfire suppress their normal Player penalty while generic player protection is active. Abyss remains independent of protection and always uses the existing player-failure flow.
+- Enemy death now hides the current SpriteRenderer and disables the current Collider2D while keeping the same instance active for its respawn coroutine; reset restores transform, presentation, collision, and animation. Current Bird and Spider prefabs use a 30-second respawn delay.
+- The production scene contains the Player Fairy protection/contact components and visual, the scene-level Fairy installer, and an inactive Fairy reward pickup owned by its Egg. Manual Play Mode verification confirmed Fairy collection and enemy contact destruction; affected production and EditMode test assemblies compile with zero errors.
+
+## AD-41 - Egg / reward creation (complete)
+
+- Production Eggs separate interaction, state, and presentation through `EggOpenTrigger`, `Egg`, and `EggPresentation`. Each Egg owns one inactive reward beneath a scene-authored `RewardAnchor`; opening activates that existing reward without runtime creation or destruction.
+- `EggRewardPickupGate` disables only the Egg-owned reward collider for 0.5 seconds after reveal, preventing same-contact collection. Stage reset cancels any pending unlock, hides the reward, restores the closed Egg presentation, and re-enables the Egg trigger.
+- Stage 1 contains `Egg_Hammer` with an inactive Hammer pickup and `Egg_BlueAnimal` with an inactive Heart pickup. The Heart prefab now has its existing project sprite; the Hammer temporarily retains the existing Axe sprite because no Hammer sprite asset is available.
+- `PickUp` supports stage-owned rewards by allowing their automatic reset reactivation to be disabled, leaving Egg as the sole owner of reward visibility. Existing ordinary pickups retain the default reactivation behavior.
+- `SpriteFrameAnimation` is the shared presentation component used by Bonfire and Enemy prefabs, replacing their duplicated frame-animation scripts while preserving their configured frames and lifecycle behavior.
+- Manual Play Mode verification confirmed both Eggs reveal visibly, the short pickup lockout prevents immediate collection, later collection works, the Heart mounts its configured animal, and stage reset closes Eggs and hides their rewards.
+
 ## AD-48 - Stage 1 production-content completion
 
 - Preserved the approved Stage 1 layout. `Stage1Root` now explicitly owns the existing Fruit, WeaponPickups, AnimalPickups, world/hazard, Spawn, and Goal branches, so a Stage 1 restart cannot leak these collectible objects into another stage.

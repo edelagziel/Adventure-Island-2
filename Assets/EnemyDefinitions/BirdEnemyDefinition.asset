@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4410faca69a5474c974f247dac528230, type: 3}
+  m_Name: BirdEnemyDefinition
+  m_EditorClassIdentifier: AdventureIsland.Enemies::AdventureIsland.Enemies.EnemyDefinition
+  prefab: {fileID: 7899958020444627678, guid: 166920661a4f3874f9a48f16c396eb3b, type: 3}

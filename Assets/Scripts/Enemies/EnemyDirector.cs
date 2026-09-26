@@ -3,20 +3,29 @@ using UnityEngine;
 
 namespace AdventureIsland.Enemies
 {
-    public sealed class EnemyDirector<TEnemy>
-        where TEnemy : Enemy
+    public sealed class EnemyDirector
     {
-        private readonly IEnemyBuilder<TEnemy> enemyBuilder;
+        private readonly IEnemyBuilder enemyBuilder;
 
-        public EnemyDirector(IEnemyBuilder<TEnemy> enemyBuilder)
+        public EnemyDirector(IEnemyBuilder enemyBuilder)
         {
             this.enemyBuilder = enemyBuilder
                 ?? throw new ArgumentNullException(nameof(enemyBuilder));
         }
 
-        public TEnemy Construct(Vector3 position, Quaternion rotation)
+        public Enemy ConstructEnemy(
+            EnemyDefinition definition,
+            Vector3 position,
+            Quaternion rotation,
+            Transform parent)
         {
-            return enemyBuilder.Build(position, rotation);
+            enemyBuilder.Reset();
+            enemyBuilder.SetDefinition(definition);
+            enemyBuilder.SetSpawn(position, rotation, parent);
+
+            return enemyBuilder.TryCreateProduct()
+                ? enemyBuilder.Build()
+                : null;
         }
     }
 }

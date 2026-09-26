@@ -4,6 +4,8 @@ using UnityEngine;
 
 public abstract class PickUp : MonoBehaviour, IStageResettable
 {
+    [SerializeField] private bool reactivateOnStageReset = true;
+
     void OnTriggerEnter2D(Collider2D col)
     {
         if (col.gameObject.tag == "Player")
@@ -18,6 +20,9 @@ public abstract class PickUp : MonoBehaviour, IStageResettable
 
     public virtual void ResetStageState()
     {
-        gameObject.SetActive(true);
+        if (reactivateOnStageReset)
+        {
+            gameObject.SetActive(true);
+        }
     }
 }

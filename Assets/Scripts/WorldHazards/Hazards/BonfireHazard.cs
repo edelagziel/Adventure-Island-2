@@ -5,15 +5,21 @@ using VContainer;
 namespace AdventureIsland.WorldHazards
 {
     [DisallowMultipleComponent]
-    public sealed class BonfireHazard : MonoBehaviour, IExtinguishableObstacle, IStageResettable
+    public sealed class BonfireHazard : MonoBehaviour, IExtinguishableObstacle,
+        IDestructible, IStageResettable
     {
         private IPlayerFailureHandler playerFailureHandler;
+        private IPlayerProtectionState playerProtection;
 
         [Inject]
-        public void Construct(IPlayerFailureHandler injectedPlayerFailureHandler)
+        public void Construct(
+            IPlayerFailureHandler injectedPlayerFailureHandler,
+            IPlayerProtectionState injectedPlayerProtection)
         {
             playerFailureHandler = injectedPlayerFailureHandler
                 ?? throw new ArgumentNullException(nameof(injectedPlayerFailureHandler));
+            playerProtection = injectedPlayerProtection
+                ?? throw new ArgumentNullException(nameof(injectedPlayerProtection));
         }
 
         public bool TryExtinguish()
@@ -25,6 +31,11 @@ namespace AdventureIsland.WorldHazards
 
             gameObject.SetActive(false);
             return true;
+        }
+
+        public bool TryDestroy()
+        {
+            return TryExtinguish();
         }
 
         public void ResetStageState()
@@ -39,10 +50,15 @@ namespace AdventureIsland.WorldHazards
                 return;
             }
 
-            if (playerFailureHandler == null)
+            if (playerProtection != null && playerProtection.IsActive)
+            {
+                return;
+            }
+
+            if (playerFailureHandler == null || playerProtection == null)
             {
                 throw new InvalidOperationException(
-                    "BonfireHazard requires IPlayerFailureHandler injection before trigger handling.");
+                    "BonfireHazard requires failure and player protection injection before trigger handling.");
             }
 
             playerFailureHandler.TryHandlePlayerFailure();

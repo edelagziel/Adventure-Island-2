@@ -95,7 +95,8 @@ public sealed class LivesFlowCoordinatorTests
             powerDrainRunner,
             fruitProgressController,
             new WeaponController(),
-            playerActiveAnimal);
+            playerActiveAnimal,
+            new FakeResettable());
         stageFlowController.Initialize();
 
         LivesFlowCoordinator coordinator = new LivesFlowCoordinator(
@@ -193,6 +194,14 @@ public sealed class LivesFlowCoordinatorTests
     {
         public void UpdateFruitProgress(int currentFruitCount, int fruitThreshold)
         {
+        }
+    }
+
+    private sealed class FakeResettable : IResettable
+    {
+        public bool ResetState()
+        {
+            return true;
         }
     }
 }

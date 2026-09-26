@@ -1,23 +1,31 @@
+using System;
 using System.Collections;
+using AdventureIsland.Presentation;
 using UnityEngine;
 
 namespace AdventureIsland.Enemies
 {
-    public abstract class Enemy : MonoBehaviour
+    public abstract class Enemy : MonoBehaviour, IDefeatable, IDestructible
     {
         [SerializeField, Min(0f)] private float respawnDelaySeconds;
+        [SerializeField] private SpriteFrameAnimation spriteAnimation;
 
         private Vector3 originalSpawnPosition;
         private Quaternion originalSpawnRotation;
         private Coroutine respawnCoroutine;
+        private SpriteRenderer enemyRenderer;
+        private Collider2D enemyCollider;
 
         public bool IsAlive { get; private set; }
         public bool IsWaitingToRespawn => respawnCoroutine != null;
+        public event Action<Enemy> DeathStarted;
 
         private void Awake()
         {
             originalSpawnPosition = transform.position;
             originalSpawnRotation = transform.rotation;
+            enemyRenderer = GetComponent<SpriteRenderer>();
+            enemyCollider = GetComponent<Collider2D>();
             IsAlive = true;
         }
 
@@ -29,9 +37,46 @@ namespace AdventureIsland.Enemies
             }
 
             IsAlive = false;
+            if (spriteAnimation != null)
+            {
+                spriteAnimation.Stop();
+            }
+
+            SetRuntimePresence(false);
             OnDeathStarted();
+            DeathStarted?.Invoke(this);
             respawnCoroutine = StartCoroutine(RespawnAfterDelay());
             return true;
+        }
+
+        public virtual bool TryDefeat()
+        {
+            return TryDie();
+        }
+
+        public bool TryDestroy()
+        {
+            return TryDie();
+        }
+
+        internal void ResetRuntimeState()
+        {
+            if (respawnCoroutine != null)
+            {
+                StopCoroutine(respawnCoroutine);
+                respawnCoroutine = null;
+            }
+
+            transform.SetPositionAndRotation(originalSpawnPosition, originalSpawnRotation);
+            IsAlive = true;
+            SetRuntimePresence(true);
+
+            if (spriteAnimation != null)
+            {
+                spriteAnimation.PlayLoop();
+            }
+
+            OnRespawned();
         }
 
         protected virtual void OnDeathStarted()
@@ -42,14 +87,25 @@ namespace AdventureIsland.Enemies
         {
         }
 
+        private void SetRuntimePresence(bool isPresent)
+        {
+            if (enemyRenderer != null)
+            {
+                enemyRenderer.enabled = isPresent;
+            }
+
+            if (enemyCollider != null)
+            {
+                enemyCollider.enabled = isPresent;
+            }
+        }
+
         private IEnumerator RespawnAfterDelay()
         {
             yield return new WaitForSeconds(respawnDelaySeconds);
 
-            transform.SetPositionAndRotation(originalSpawnPosition, originalSpawnRotation);
-            IsAlive = true;
             respawnCoroutine = null;
-            OnRespawned();
+            ResetRuntimeState();
         }
     }
 }

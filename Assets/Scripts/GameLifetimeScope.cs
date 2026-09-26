@@ -1,6 +1,7 @@
 using System;
 using AdventureIsland.Combat;
 using AdventureIsland.Enemies;
+using AdventureIsland.Fairy;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -15,6 +16,7 @@ public sealed class GameLifetimeScope : LifetimeScope
     [SerializeField] private WeaponInstaller weaponInstaller;
     [SerializeField] private AnimalsInstaller animalsInstaller;
     [SerializeField] private EnemiesInstaller enemiesInstaller;
+    [SerializeField] private FairyInstaller fairyInstaller;
     [SerializeField] private ResetInstaller resetInstaller;
     [SerializeField] private StageInstaller stageInstaller;
     [SerializeField] private GameUiInstaller gameUiInstaller;
@@ -29,6 +31,7 @@ public sealed class GameLifetimeScope : LifetimeScope
         weaponInstaller.Install(builder);
         animalsInstaller.Install(builder);
         enemiesInstaller.Install(builder);
+        fairyInstaller.Install(builder);
         resetInstaller.Install(builder);
         stageInstaller.Install(builder);
         gameUiInstaller.Install(builder);
@@ -78,6 +81,11 @@ public sealed class GameLifetimeScope : LifetimeScope
         if (enemiesInstaller == null)
         {
             throw new InvalidOperationException("GameLifetimeScope requires an EnemiesInstaller reference.");
+        }
+
+        if (fairyInstaller == null)
+        {
+            throw new InvalidOperationException("GameLifetimeScope requires a FairyInstaller reference.");
         }
 
         if (resetInstaller == null)
