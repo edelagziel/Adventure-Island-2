@@ -52,6 +52,24 @@ namespace AdventureIsland.WorldHazards
                 return;
             }
 
+            IActiveAnimalMount activeAnimalMount = null;
+            foreach (MonoBehaviour behaviour in
+                other.GetComponentsInParent<MonoBehaviour>(true))
+            {
+                if (behaviour is IActiveAnimalMount mount)
+                {
+                    activeAnimalMount = mount;
+                    break;
+                }
+            }
+
+            if (activeAnimalMount != null && activeAnimalMount.HasActiveAnimal)
+            {
+                activeAnimalMount.ClearActiveAnimal();
+                TryBreak();
+                return;
+            }
+
             if (playerDamageReceiver == null)
             {
                 throw new InvalidOperationException(

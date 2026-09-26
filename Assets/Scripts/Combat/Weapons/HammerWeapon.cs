@@ -7,6 +7,7 @@ namespace AdventureIsland.Combat
     {
         private readonly ProjectileProvider<HammerProjectileDirector> projectileProvider;
         private readonly Transform spawnPoint;
+        private Projectile activeProjectile;
 
         public int AvailableThrows { get; private set; }
 
@@ -26,7 +27,8 @@ namespace AdventureIsland.Combat
 
         public bool TryAttack()
         {
-            if (AvailableThrows == 0)
+            if (AvailableThrows == 0 ||
+                (activeProjectile != null && activeProjectile.gameObject.activeSelf))
             {
                 return false;
             }
@@ -43,6 +45,7 @@ namespace AdventureIsland.Combat
                 return false;
             }
 
+            activeProjectile = projectile;
             AvailableThrows--;
             return true;
         }

@@ -3,19 +3,19 @@ using UnityEngine;
 namespace AdventureIsland.Combat
 {
     [DisallowMultipleComponent]
-    public sealed class DefeatOnContact : MonoBehaviour
+    public sealed class DestroyDestructibleOnContact : MonoBehaviour
     {
         private void OnTriggerEnter2D(Collider2D other)
         {
-            TryDefeat(other.gameObject);
+            TryDestroy(other.gameObject);
         }
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            TryDefeat(collision.gameObject);
+            TryDestroy(collision.gameObject);
         }
 
-        private static bool TryDefeat(GameObject target)
+        private static bool TryDestroy(GameObject target)
         {
             if (target == null)
             {
@@ -25,11 +25,10 @@ namespace AdventureIsland.Combat
             foreach (MonoBehaviour behaviour in
                 target.GetComponentsInParent<MonoBehaviour>(true))
             {
-                if (behaviour is IDefeatable defeatable)
+                if (behaviour is IBreakableObstacle breakableObstacle)
                 {
-                    return defeatable.TryDefeat();
+                    return breakableObstacle.TryBreak();
                 }
-
             }
 
             return false;

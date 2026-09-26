@@ -97,6 +97,43 @@ namespace AdventureIsland.WorldHazards.Tests
         }
 
         [Test]
+        public void BonfireTrigger_WithMountedAnimal_RemovesAnimalAndExtinguishes()
+        {
+            BonfireHazard hazard = CreateTriggerHazard<BonfireHazard>();
+            hazard.Construct(
+                new FakeFailureHandler(),
+                new FakePlayerProtectionState());
+            FakeActiveAnimalMount mount = CreateContactObject(
+                "Player", Vector2.zero, addRigidbody: false)
+                .AddComponent<FakeActiveAnimalMount>();
+
+            BoxCollider2D contact = contactObject.GetComponent<BoxCollider2D>();
+            InvokeTrigger(hazard, contact);
+
+            Assert.That(mount.ClearCount, Is.EqualTo(1));
+            Assert.That(hazard.gameObject.activeSelf, Is.False);
+        }
+
+        [Test]
+        public void BonfireTrigger_WithFairyAndMountedAnimal_ExtinguishesWithoutRemovingAnimal()
+        {
+            BonfireHazard hazard = CreateTriggerHazard<BonfireHazard>();
+            hazard.Construct(
+                new FakeFailureHandler(),
+                new FakePlayerProtectionState(isActive: true));
+            FakeActiveAnimalMount mount = CreateContactObject(
+                "Player", Vector2.zero, addRigidbody: false)
+                .AddComponent<FakeActiveAnimalMount>();
+
+            BoxCollider2D contact = contactObject.GetComponent<BoxCollider2D>();
+            InvokeTrigger(hazard, contact);
+
+            Assert.That(mount.ClearCount, Is.Zero);
+            Assert.That(mount.HasActiveAnimal, Is.True);
+            Assert.That(hazard.gameObject.activeSelf, Is.False);
+        }
+
+        [Test]
         public void AbyssTrigger_RequestsFailureOnlyForPlayerAndExposesNoObstacleCapability()
         {
             FakeFailureHandler handler = new FakeFailureHandler();
@@ -197,7 +234,24 @@ namespace AdventureIsland.WorldHazards.Tests
 
         private sealed class FakePlayerProtectionState : IPlayerProtectionState
         {
-            public bool IsActive => false;
+            public FakePlayerProtectionState(bool isActive = false)
+            {
+                IsActive = isActive;
+            }
+
+            public bool IsActive { get; }
+        }
+
+        private sealed class FakeActiveAnimalMount : MonoBehaviour, IActiveAnimalMount
+        {
+            public bool HasActiveAnimal { get; private set; } = true;
+            public int ClearCount { get; private set; }
+
+            public void ClearActiveAnimal()
+            {
+                HasActiveAnimal = false;
+                ClearCount++;
+            }
         }
     }
 }

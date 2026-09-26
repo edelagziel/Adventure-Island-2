@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c36a0000000000000000000000000006, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: AdventureIsland.Animals::BlueAnimal
   tailHitbox: {fileID: 6101000}
   visual: {fileID: 2120100}
@@ -124,6 +124,7 @@ GameObject:
   - component: {fileID: 4001001}
   - component: {fileID: 6101000}
   - component: {fileID: 1140101}
+  - component: {fileID: 7255916676500412561}
   m_Layer: 0
   m_Name: TailHitbox
   m_TagString: Untagged
@@ -202,5 +203,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 04ac5e225bae4e4db1251da6a8782872, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: AdventureIsland.Combat::AdventureIsland.Combat.DefeatOnContact
+--- !u!114 &7255916676500412561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1001001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a109e94deec3b354997f322fead3cd00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: AdventureIsland.Combat::AdventureIsland.Combat.DestroyDestructibleOnContact

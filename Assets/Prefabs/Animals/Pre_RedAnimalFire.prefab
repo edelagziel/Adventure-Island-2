@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5005000}
   - component: {fileID: 5805000}
   - component: {fileID: 1140501}
+  - component: {fileID: 8910207869260971975}
   m_Layer: 0
   m_Name: Pre_RedAnimalFire
   m_TagString: Untagged
@@ -46,7 +47,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ecff735b187141eb8cb305dc4f047f95, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: AdventureIsland.Animals::RedFireProjectile
   speed: 6
   lifetimeSeconds: 2
@@ -182,5 +183,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 04ac5e225bae4e4db1251da6a8782872, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: AdventureIsland.Combat::AdventureIsland.Combat.DefeatOnContact
+--- !u!114 &8910207869260971975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1005000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a109e94deec3b354997f322fead3cd00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: AdventureIsland.Combat::AdventureIsland.Combat.DestroyDestructibleOnContact

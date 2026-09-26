@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [DisallowMultipleComponent]
-public sealed class PlayerActiveAnimal : MonoBehaviour
+public sealed class PlayerActiveAnimal : MonoBehaviour, IActiveAnimalMount
 {
     [SerializeField] private SpriteRenderer playerVisual;
 

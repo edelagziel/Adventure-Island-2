@@ -52,7 +52,20 @@ namespace AdventureIsland.WorldHazards
 
             if (playerProtection != null && playerProtection.IsActive)
             {
+                TryExtinguish();
                 return;
+            }
+
+            foreach (MonoBehaviour behaviour in
+                other.GetComponentsInParent<MonoBehaviour>(true))
+            {
+                if (behaviour is IActiveAnimalMount mount &&
+                    mount.HasActiveAnimal)
+                {
+                    mount.ClearActiveAnimal();
+                    TryExtinguish();
+                    return;
+                }
             }
 
             if (playerFailureHandler == null || playerProtection == null)
