@@ -1,5 +1,14 @@
 # Project State
 
+## AD-41 - Egg / reward creation (complete)
+
+- Production Eggs separate interaction, state, and presentation through `EggOpenTrigger`, `Egg`, and `EggPresentation`. Each Egg owns one inactive reward beneath a scene-authored `RewardAnchor`; opening activates that existing reward without runtime creation or destruction.
+- `EggRewardPickupGate` disables only the Egg-owned reward collider for 0.5 seconds after reveal, preventing same-contact collection. Stage reset cancels any pending unlock, hides the reward, restores the closed Egg presentation, and re-enables the Egg trigger.
+- Stage 1 contains `Egg_Hammer` with an inactive Hammer pickup and `Egg_BlueAnimal` with an inactive Heart pickup. The Heart prefab now has its existing project sprite; the Hammer temporarily retains the existing Axe sprite because no Hammer sprite asset is available.
+- `PickUp` supports stage-owned rewards by allowing their automatic reset reactivation to be disabled, leaving Egg as the sole owner of reward visibility. Existing ordinary pickups retain the default reactivation behavior.
+- `SpriteFrameAnimation` is the shared presentation component used by Bonfire and Enemy prefabs, replacing their duplicated frame-animation scripts while preserving their configured frames and lifecycle behavior.
+- Manual Play Mode verification confirmed both Eggs reveal visibly, the short pickup lockout prevents immediate collection, later collection works, the Heart mounts its configured animal, and stage reset closes Eggs and hides their rewards.
+
 ## AD-48 - Stage 1 production-content completion
 
 - Preserved the approved Stage 1 layout. `Stage1Root` now explicitly owns the existing Fruit, WeaponPickups, AnimalPickups, world/hazard, Spawn, and Goal branches, so a Stage 1 restart cannot leak these collectible objects into another stage.
