@@ -105,13 +105,14 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1f99319e082447a4796831c29c1ac869, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: AdventureIsland.Enemies::AdventureIsland.Enemies.EnemySpriteFrameAnimation
-  enemy: {fileID: 7899958020444627678}
-  spriteRenderer: {fileID: 9052784494792344849}
-  animationFrames:
+  m_EditorClassIdentifier: AdventureIsland.Presentation::AdventureIsland.Presentation.SpriteFrameAnimation
+  targetRenderer: {fileID: 9052784494792344849}
+  frames:
   - {fileID: 2529053289659216616, guid: a89425ba942aa4b4da9e9598ddebdaa4, type: 3}
   - {fileID: 1551518325, guid: a89425ba942aa4b4da9e9598ddebdaa4, type: 3}
-  frameIntervalSeconds: 0.1
+  secondsPerFrame: 0.1
+  playOnEnable: 1
+  loop: 1
 --- !u!114 &7899958020444627678
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,6 +126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: AdventureIsland.Enemies::AdventureIsland.Enemies.BirdEnemy
   respawnDelaySeconds: 0.5
+  spriteAnimation: {fileID: 6780716785586787360}
   horizontalSpeed: 1
   verticalSpeed: 0.5
   verticalRange: 0.25

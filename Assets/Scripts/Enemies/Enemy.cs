@@ -1,4 +1,5 @@
 using System.Collections;
+using AdventureIsland.Presentation;
 using UnityEngine;
 
 namespace AdventureIsland.Enemies
@@ -6,6 +7,7 @@ namespace AdventureIsland.Enemies
     public abstract class Enemy : MonoBehaviour
     {
         [SerializeField, Min(0f)] private float respawnDelaySeconds;
+        [SerializeField] private SpriteFrameAnimation spriteAnimation;
 
         private Vector3 originalSpawnPosition;
         private Quaternion originalSpawnRotation;
@@ -29,6 +31,11 @@ namespace AdventureIsland.Enemies
             }
 
             IsAlive = false;
+            if (spriteAnimation != null)
+            {
+                spriteAnimation.Stop();
+            }
+
             OnDeathStarted();
             respawnCoroutine = StartCoroutine(RespawnAfterDelay());
             return true;
@@ -44,6 +51,12 @@ namespace AdventureIsland.Enemies
 
             transform.SetPositionAndRotation(originalSpawnPosition, originalSpawnRotation);
             IsAlive = true;
+
+            if (spriteAnimation != null)
+            {
+                spriteAnimation.PlayLoop();
+            }
+
             OnRespawned();
         }
 

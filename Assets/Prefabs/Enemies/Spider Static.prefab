@@ -107,6 +107,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: AdventureIsland.Enemies::AdventureIsland.Enemies.StaticSpiderEnemy
   respawnDelaySeconds: 0.5
+  spriteAnimation: {fileID: 5640977475786734676}
 --- !u!61 &2461307009870922897
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -164,10 +165,11 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1f99319e082447a4796831c29c1ac869, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: AdventureIsland.Enemies::AdventureIsland.Enemies.EnemySpriteFrameAnimation
-  enemy: {fileID: 7556495851994389792}
-  spriteRenderer: {fileID: 340940303357078639}
-  animationFrames:
+  m_EditorClassIdentifier: AdventureIsland.Presentation::AdventureIsland.Presentation.SpriteFrameAnimation
+  targetRenderer: {fileID: 340940303357078639}
+  frames:
   - {fileID: 8500523318603045300, guid: 42374aca8f3607b43a8a6a125aee98da, type: 3}
   - {fileID: 1546631401, guid: 42374aca8f3607b43a8a6a125aee98da, type: 3}
-  frameIntervalSeconds: 0.1
+  secondsPerFrame: 0.1
+  playOnEnable: 1
+  loop: 1
