@@ -28,40 +28,38 @@ namespace AdventureIsland.WorldHazards.Tests
         [Test]
         public void RockCollision_DamagesPlayerOnceUntilContactEnds()
         {
-            PowerModel model = new PowerModel(20, 0, 30);
-            PowerController controller = new PowerController(model, new FakePowerView());
-            RockHazard hazard = CreateRock(controller);
+            FakePlayerDamageReceiver damageReceiver = new FakePlayerDamageReceiver();
+            RockHazard hazard = CreateRock(damageReceiver);
             CreateContactObject("Player", Vector2.zero, addRigidbody: false);
 
             InvokeRockContact(hazard, contactObject);
-            Assert.That(model.CurrentPower, Is.EqualTo(17));
+            Assert.That(damageReceiver.RequestCount, Is.EqualTo(1));
+            Assert.That(damageReceiver.LastDamageAmount, Is.EqualTo(3));
 
             // Continuous contact produces no additional callback because Rock uses
             // OnCollisionEnter2D rather than OnCollisionStay2D.
-            Assert.That(model.CurrentPower, Is.EqualTo(17));
+            Assert.That(damageReceiver.RequestCount, Is.EqualTo(1));
 
             InvokeRockContact(hazard, contactObject);
-            Assert.That(model.CurrentPower, Is.EqualTo(14));
+            Assert.That(damageReceiver.RequestCount, Is.EqualTo(2));
         }
 
         [Test]
         public void RockCollision_IgnoresNonPlayer()
         {
-            PowerModel model = new PowerModel(20, 0, 30);
-            PowerController controller = new PowerController(model, new FakePowerView());
-            RockHazard hazard = CreateRock(controller);
+            FakePlayerDamageReceiver damageReceiver = new FakePlayerDamageReceiver();
+            RockHazard hazard = CreateRock(damageReceiver);
             CreateContactObject("Untagged", Vector2.zero, addRigidbody: false);
 
             InvokeRockContact(hazard, contactObject);
 
-            Assert.That(model.CurrentPower, Is.EqualTo(20));
+            Assert.That(damageReceiver.RequestCount, Is.Zero);
         }
 
         [Test]
         public void RockTryBreak_DeactivatesOnlyOnce()
         {
-            RockHazard hazard = CreateRock(
-                new PowerController(new PowerModel(20, 0, 30), new FakePowerView()));
+            RockHazard hazard = CreateRock(new FakePlayerDamageReceiver());
 
             Assert.That(hazard.TryBreak(), Is.True);
             Assert.That(hazard.gameObject.activeSelf, Is.False);
@@ -117,12 +115,12 @@ namespace AdventureIsland.WorldHazards.Tests
             Assert.That(handler.RequestCount, Is.EqualTo(1));
         }
 
-        private RockHazard CreateRock(PowerController controller)
+        private RockHazard CreateRock(IPlayerDamageReceiver damageReceiver)
         {
             hazardObject = new GameObject("RockHazardTests");
             hazardObject.AddComponent<BoxCollider2D>();
             RockHazard hazard = hazardObject.AddComponent<RockHazard>();
-            hazard.Construct(controller, new FakePlayerProtectionState());
+            hazard.Construct(damageReceiver);
             return hazard;
         }
 
@@ -184,10 +182,16 @@ namespace AdventureIsland.WorldHazards.Tests
             }
         }
 
-        private sealed class FakePowerView : IPowerView
+        private sealed class FakePlayerDamageReceiver : IPlayerDamageReceiver
         {
-            public void UpdatePowerDisplay(int currentPower, int maximumPower)
+            public int RequestCount { get; private set; }
+            public int LastDamageAmount { get; private set; }
+
+            public bool TryTakeDamage(int amount)
             {
+                RequestCount++;
+                LastDamageAmount = amount;
+                return true;
             }
         }
 

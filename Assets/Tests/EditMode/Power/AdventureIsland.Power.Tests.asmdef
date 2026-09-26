@@ -1,10 +1,9 @@
 {
-  "name": "AdventureIsland.WorldHazards.Tests",
-  "rootNamespace": "AdventureIsland.WorldHazards.Tests",
+  "name": "AdventureIsland.Power.Tests",
+  "rootNamespace": "AdventureIsland.Power.Tests",
   "references": [
-    "AdventureIsland.Lives",
-    "AdventureIsland.Shared",
-    "AdventureIsland.WorldHazards"
+    "AdventureIsland.Power",
+    "AdventureIsland.Shared"
   ],
   "includePlatforms": [
     "Editor"

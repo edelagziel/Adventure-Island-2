@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6780716785586787360}
   - component: {fileID: 7899958020444627678}
   - component: {fileID: 3179042819484624878}
+  - component: {fileID: 9179042819484624878}
   m_Layer: 0
   m_Name: Bird enemy
   m_TagString: Untagged
@@ -176,3 +177,16 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.5, y: 0.75}
   m_EdgeRadius: 0
+--- !u!114 &9179042819484624878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3798971141228832275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02985039499e42148e5a1355a954699b, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: AdventureIsland.Enemies::AdventureIsland.Enemies.EnemyContactDamage
+  damageAmount: 1

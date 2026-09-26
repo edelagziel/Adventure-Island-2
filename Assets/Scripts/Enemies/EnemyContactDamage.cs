@@ -2,13 +2,12 @@ using System;
 using UnityEngine;
 using VContainer;
 
-namespace AdventureIsland.WorldHazards
+namespace AdventureIsland.Enemies
 {
     [DisallowMultipleComponent]
-    public sealed class RockHazard : MonoBehaviour, IBreakableObstacle,
-        IDestructible, IStageResettable
+    public sealed class EnemyContactDamage : MonoBehaviour
     {
-        private const int CollisionPowerDamage = 3;
+        [SerializeField, Min(1)] private int damageAmount = 1;
 
         private IPlayerDamageReceiver playerDamageReceiver;
 
@@ -17,27 +16,6 @@ namespace AdventureIsland.WorldHazards
         {
             playerDamageReceiver = injectedPlayerDamageReceiver
                 ?? throw new ArgumentNullException(nameof(injectedPlayerDamageReceiver));
-        }
-
-        public bool TryBreak()
-        {
-            if (!gameObject.activeSelf)
-            {
-                return false;
-            }
-
-            gameObject.SetActive(false);
-            return true;
-        }
-
-        public bool TryDestroy()
-        {
-            return TryBreak();
-        }
-
-        public void ResetStageState()
-        {
-            gameObject.SetActive(true);
         }
 
         private void OnCollisionEnter2D(Collision2D collision)
@@ -55,10 +33,10 @@ namespace AdventureIsland.WorldHazards
             if (playerDamageReceiver == null)
             {
                 throw new InvalidOperationException(
-                    "RockHazard requires IPlayerDamageReceiver injection before collision handling.");
+                    "EnemyContactDamage requires IPlayerDamageReceiver injection before collision handling.");
             }
 
-            playerDamageReceiver.TryTakeDamage(CollisionPowerDamage);
+            playerDamageReceiver.TryTakeDamage(damageAmount);
         }
     }
 }

@@ -31,6 +31,9 @@ public sealed class PowerInstaller : MonoBehaviour, IInstaller
             .As<IPowerView>();
         builder.Register<PowerController>(Lifetime.Scoped)
             .AsSelf();
+        builder.Register<PlayerDamageController>(Lifetime.Scoped)
+            .AsSelf()
+            .As<IPlayerDamageReceiver>();
         builder.RegisterComponent(powerDrainRunner)
             .WithParameter(nameof(drainAmount), drainAmount)
             .WithParameter(nameof(drainIntervalSeconds), drainIntervalSeconds)

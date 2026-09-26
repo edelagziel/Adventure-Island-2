@@ -2,6 +2,7 @@
   "name": "AdventureIsland.Combat",
   "rootNamespace": "AdventureIsland.Combat",
   "references": [
+    "AdventureIsland.Shared",
     "VContainer"
   ],
   "includePlatforms": [],

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3300000000000000004}
   - component: {fileID: 3300000000000000005}
   - component: {fileID: 3300000000000000006}
+  - component: {fileID: 3300000000000000007}
   m_Layer: 0
   m_Name: Pre_BoomerangProjectile
   m_TagString: Untagged
@@ -141,3 +142,15 @@ MonoBehaviour:
   returnSpeed: 8
   catchRadius: 0.5
   lifetimeSeconds: 5
+--- !u!114 &3300000000000000007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3300000000000000001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04ac5e225bae4e4db1251da6a8782872, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: AdventureIsland.Combat::AdventureIsland.Combat.DefeatOnContact

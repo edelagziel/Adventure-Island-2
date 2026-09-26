@@ -32,6 +32,13 @@
 - Existing `PickUp` reset behavior restores Fruit, weapon, and animal pickups through the generic stage reset pass. Rock and Bonfire now also implement `IStageResettable`, restoring their own active state after a Stage 1 restart; Abyss has no mutable state to restore.
 - No new level geometry, managers, enemies, prefabs, gameplay systems, or StageFlow responsibilities were introduced.
 
+## AD-56 - Bidirectional combat integration
+
+- Player weapon and animal attack contacts use the shared `IDefeatable` capability. Ordinary enemies delegate defeat to their existing death/respawn lifecycle, while `GhostEnemy` rejects normal defeat; Fairy contact remains separate through `IDestructible` and can destroy Ghost.
+- Enemy contact damage and Rock numeric damage use the shared `IPlayerDamageReceiver` boundary. `PlayerDamageController` applies the existing generic protection state before delegating to `PowerController`, so damage sources do not depend on Power, Lives, Fairy, or concrete Player types. Abyss intentionally remains on `IPlayerFailureHandler` and ignores protection.
+- Hammer, Boomerang, Blue tail, Green spin, and Red fire prefabs carry the reusable `DefeatOnContact` behavior. Bird and Spider prefabs carry injected `EnemyContactDamage`; Red fire received the trigger physics components required to produce projectile contact callbacks.
+- Verification: affected production and focused test sources compile with zero errors; prefab fileID/script GUID, asmdef JSON, GUID uniqueness, and diff checks pass. Final Play Mode acceptance is intentionally deferred and recorded on Jira AD-56; it must not be represented as completed.
+
 ## AD-47 - Production stage-flow foundation
 
 - `Adventure-Island-2-Game.unity` uses one production scene with `Stage1Root` and `Stage2Root`; shared Player, camera, HUD, installers, and controllers remain outside stage roots. Each root owns its serialized Spawn, Goal trigger, and only stage-local resettable descendants.

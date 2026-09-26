@@ -3,7 +3,6 @@
   "rootNamespace": "AdventureIsland.WorldHazards",
   "references": [
     "AdventureIsland.Lives",
-    "AdventureIsland.Power",
     "AdventureIsland.Presentation",
     "AdventureIsland.Shared",
     "VContainer"
