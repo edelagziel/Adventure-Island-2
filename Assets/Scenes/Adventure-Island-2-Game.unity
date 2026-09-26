@@ -290,6 +290,51 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1 &199042604
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 199042605}
+  - component: {fileID: 199042606}
+  m_Layer: 0
+  m_Name: StaticSpiderEnemyDefinition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &199042605
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 199042604}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 5.45, y: -2.64, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4900000002}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &199042606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 199042604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15aa018d79a04df3899745956b8963b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: AdventureIsland.Enemies::AdventureIsland.Enemies.EnemySpawn
+  definition: {fileID: 11400000, guid: 45fa9370fab63504c825be45afc304b6, type: 2}
 --- !u!4 &237569303 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1722007251337342103, guid: b256659943d252f449d74bedcd494d7a, type: 3}
@@ -357,6 +402,67 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8183653730016850584, guid: b3f6c9c15719649469660d276f4466a4, type: 3}
   m_PrefabInstance: {fileID: 265104257}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &295166377
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4349149408131685857, guid: b2c1c99ea7a4b3d4694f81ff273b1abd, type: 3}
+      propertyPath: m_Name
+      value: Souting Snake
+      objectReference: {fileID: 0}
+    - target: {fileID: 4349149408131685857, guid: b2c1c99ea7a4b3d4694f81ff273b1abd, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8730282017732370556, guid: b2c1c99ea7a4b3d4694f81ff273b1abd, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8730282017732370556, guid: b2c1c99ea7a4b3d4694f81ff273b1abd, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8730282017732370556, guid: b2c1c99ea7a4b3d4694f81ff273b1abd, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8730282017732370556, guid: b2c1c99ea7a4b3d4694f81ff273b1abd, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8730282017732370556, guid: b2c1c99ea7a4b3d4694f81ff273b1abd, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8730282017732370556, guid: b2c1c99ea7a4b3d4694f81ff273b1abd, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8730282017732370556, guid: b2c1c99ea7a4b3d4694f81ff273b1abd, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8730282017732370556, guid: b2c1c99ea7a4b3d4694f81ff273b1abd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8730282017732370556, guid: b2c1c99ea7a4b3d4694f81ff273b1abd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8730282017732370556, guid: b2c1c99ea7a4b3d4694f81ff273b1abd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b2c1c99ea7a4b3d4694f81ff273b1abd, type: 3}
 --- !u!1 &393962857
 GameObject:
   m_ObjectHideFlags: 0
@@ -1086,7 +1192,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b5c5598b8196434899e0d5fb974a282, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   speed: 5
 --- !u!114 &766618914
@@ -1099,7 +1205,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 01222d632616f434f95bf336938c7298, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerJump
   jumpSpeed: 200
 --- !u!114 &766618915
@@ -1112,7 +1218,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad310000000000000000000000000010, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: AdventureIsland.Combat::AdventureIsland.Combat.PlayerAttackInput
 --- !u!1 &799713377
 GameObject:
@@ -1930,7 +2036,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad19000000000000000000000000000b, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: AdventureIsland.Power::PowerInstaller
   powerView: {fileID: 1900000005}
   initialPower: 20
@@ -1949,7 +2055,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c0deca6e4af04d818e84c19c9f61a201, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraFollow
   target: {fileID: 766618912}
 --- !u!1 &1585672580
@@ -2377,7 +2483,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2469,7 +2575,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad190000000000000000000000000009, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: AdventureIsland.Power::PowerView
   powerText: {fileID: 1900000004}
   powerBarFill: {fileID: 2900000033}
@@ -2552,7 +2658,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: 
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
@@ -2575,7 +2681,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: 
   m_IgnoreReversedGraphics: 1
   m_BlockingObjects: 0
@@ -2624,7 +2730,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad20000000000000000000000000000b, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: AdventureIsland.Power::PowerDrainRunner
 --- !u!1 &1900000033
 GameObject:
@@ -2807,7 +2913,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad250000000000000000000000000003, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: AdventureIsland.Lives::LivesInstaller
   livesView: {fileID: 1900000124}
   initialLives: 3
@@ -2867,7 +2973,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2959,9 +3065,54 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad250000000000000000000000000012, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: AdventureIsland.Lives::LivesView
   livesText: {fileID: 1900000123}
+--- !u!1 &1913515000
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1913515001}
+  - component: {fileID: 1913515002}
+  m_Layer: 0
+  m_Name: jumping snake
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1913515001
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1913515000}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.31, y: -2.64, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4900000002}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1913515002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1913515000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15aa018d79a04df3899745956b8963b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: AdventureIsland.Enemies::AdventureIsland.Enemies.EnemySpawn
+  definition: {fileID: 11400000, guid: 5a58fae622bae18468ce596eedec4b4c, type: 2}
 --- !u!1 &1930200259
 GameObject:
   m_ObjectHideFlags: 0
@@ -3100,6 +3251,79 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1001 &1960518154
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2630904023037234620, guid: be58299720cdcfb448722d3733074fb4, type: 3}
+      propertyPath: m_Name
+      value: jumping snake
+      objectReference: {fileID: 0}
+    - target: {fileID: 2630904023037234620, guid: be58299720cdcfb448722d3733074fb4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2815500653942647808, guid: be58299720cdcfb448722d3733074fb4, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4053835282391765358, guid: be58299720cdcfb448722d3733074fb4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 4053835282391765358, guid: be58299720cdcfb448722d3733074fb4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.40458
+      objectReference: {fileID: 0}
+    - target: {fileID: 4053835282391765358, guid: be58299720cdcfb448722d3733074fb4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4053835282391765358, guid: be58299720cdcfb448722d3733074fb4, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4053835282391765358, guid: be58299720cdcfb448722d3733074fb4, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4053835282391765358, guid: be58299720cdcfb448722d3733074fb4, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4053835282391765358, guid: be58299720cdcfb448722d3733074fb4, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4053835282391765358, guid: be58299720cdcfb448722d3733074fb4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4053835282391765358, guid: be58299720cdcfb448722d3733074fb4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4053835282391765358, guid: be58299720cdcfb448722d3733074fb4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4635036009211213878, guid: be58299720cdcfb448722d3733074fb4, type: 3}
+      propertyPath: m_Constraints
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4635036009211213878, guid: be58299720cdcfb448722d3733074fb4, type: 3}
+      propertyPath: m_GravityScale
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: be58299720cdcfb448722d3733074fb4, type: 3}
 --- !u!1 &1978767362
 GameObject:
   m_ObjectHideFlags: 0
@@ -3573,7 +3797,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad240000000000000000000000000001, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameLifetimeScope
   parentReference:
     TypeName: 
@@ -3636,7 +3860,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad240000000000000000000000000003, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: AdventureIsland.FruitProgress::FruitProgressInstaller
   fruitProgressView: {fileID: 2400000014}
   fruitThreshold: 20
@@ -3696,7 +3920,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -3788,7 +4012,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad240000000000000000000000000008, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: AdventureIsland.FruitProgress::FruitProgressView
   fruitProgressText: {fileID: 2400000013}
 --- !u!1 &2900000001
@@ -3846,7 +4070,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.035, g: 0.055, b: 0.09, a: 0.72}
@@ -3921,7 +4145,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -3997,7 +4221,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.12, g: 0.075, b: 0.035, a: 0.95}
@@ -4072,7 +4296,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 0.72, b: 0.08, a: 1}
@@ -4147,7 +4371,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -4222,7 +4446,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -4284,7 +4508,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad300000000000000000000000000005, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerResetter
   player: {fileID: 766618912}
   playerRigidbody: {fileID: 766618909}
@@ -4330,7 +4554,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad300000000000000000000000000006, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PickupResetter
 --- !u!1 &3000000007
 GameObject:
@@ -4374,7 +4598,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad300000000000000000000000000007, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ResetInstaller
   playerResetter: {fileID: 3000000003}
 --- !u!1 &3100000001
@@ -4420,7 +4644,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad310000000000000000000000000015, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: AdventureIsland.Combat::WeaponInstaller
   hammerProjectilePrefab: {fileID: -5653253989570747057, guid: 326d57794fd3d1344a502b536aa9280b, type: 3}
   hammerSpawnPoint: {fileID: 1585672581}
@@ -4469,7 +4693,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 03324db4368c425d91cd5f774bab7e62, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: AdventureIsland.Animals::AnimalsInstaller
   blueAnimalPrefab: {fileID: 1140100, guid: c36a0000000000000000000000000008, type: 3}
   redAnimalPrefab: {fileID: 1140300, guid: 0d063d1aef6d42249be55e4c049d5362, type: 3}
@@ -4502,7 +4726,7 @@ Transform:
   m_GameObject: {fileID: 3600000001}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -2.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4518,7 +4742,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a35b2c76e1d94f1c8a0432706d5e9b05, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: AdventureIsland.Animals::PlayerActiveAnimal
   playerVisual: {fileID: 766618911}
 --- !u!114 &4200000003
@@ -4531,7 +4755,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c36a0000000000000000000000000005, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: AdventureIsland.Animals::AnimalAttackSource
   playerActiveAnimal: {fileID: 4200000001}
 --- !u!1 &4300000001
@@ -4576,8 +4800,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e4300000000000000000000000000007, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: AdventureIsland.Enemies::EnemiesInstaller
+  playerTransform: {fileID: 766618912}
+  fireSnakeProjectilePrefab: {fileID: 4357971654049454984, guid: 104ccb7e768166149b5796d8d8e71981, type: 3}
+  fireSnakeProjectilePoolRoot: {fileID: 3600000002}
 --- !u!1 &4700000001
 GameObject:
   m_ObjectHideFlags: 0
@@ -4628,7 +4855,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad470000000000000000000000000003, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: AdventureIsland.Stages::StageRoot
   spawnPoint: {fileID: 4700000006}
 --- !u!1 &4700000005
@@ -4751,7 +4978,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad470000000000000000000000000005, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: AdventureIsland.Stages::StageGoalTrigger
   stageRoot: {fileID: 4700000004}
 --- !u!1 &4700000011
@@ -5086,7 +5313,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4100000000000000005, guid: 7621ee1791714022b62580eada62099e, type: 3}
       propertyPath: rewardObject
-      value:
+      value: 
       objectReference: {fileID: 4800000111}
     - target: {fileID: 4100000000000000011, guid: 7621ee1791714022b62580eada62099e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5098,7 +5325,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4100000000000000012, guid: 7621ee1791714022b62580eada62099e, type: 3}
       propertyPath: pickupCollider
-      value:
+      value: 
       objectReference: {fileID: 4800000112}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5172,7 +5399,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3200000000000000013, guid: ad32000000000000000000000000000a, type: 3}
       propertyPath: m_Sprite
-      value:
+      value: 
       objectReference: {fileID: 21300000, guid: 4505c68e5013ceb49aa6815bbd55fe29, type: 3}
     - target: {fileID: 3200000000000000015, guid: ad32000000000000000000000000000a, type: 3}
       propertyPath: reactivateOnStageReset
@@ -5248,7 +5475,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4100000000000000005, guid: 7621ee1791714022b62580eada62099e, type: 3}
       propertyPath: rewardObject
-      value:
+      value: 
       objectReference: {fileID: 4800000211}
     - target: {fileID: 4100000000000000011, guid: 7621ee1791714022b62580eada62099e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5260,7 +5487,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4100000000000000012, guid: 7621ee1791714022b62580eada62099e, type: 3}
       propertyPath: pickupCollider
-      value:
+      value: 
       objectReference: {fileID: 4800000212}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5386,6 +5613,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4900000012}
+  - {fileID: 199042605}
+  - {fileID: 1913515001}
   - {fileID: 4900000022}
   - {fileID: 4900000032}
   m_Father: {fileID: 4700000002}
@@ -5432,7 +5661,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 15aa018d79a04df3899745956b8963b2, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: AdventureIsland.Enemies::AdventureIsland.Enemies.EnemySpawn
   definition: {fileID: 11400000, guid: fc1725e15f20485590cd498aa7aa0810, type: 2}
 --- !u!1 &4900000021
@@ -5477,7 +5706,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 15aa018d79a04df3899745956b8963b2, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: AdventureIsland.Enemies::AdventureIsland.Enemies.EnemySpawn
   definition: {fileID: 11400000, guid: 04b6d8857c2e4232a3f6555723af1958, type: 2}
 --- !u!1 &4900000031
@@ -5522,7 +5751,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 15aa018d79a04df3899745956b8963b2, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: AdventureIsland.Enemies::AdventureIsland.Enemies.EnemySpawn
   definition: {fileID: 11400000, guid: 51e734e4feea4a7e8328c29f0854c53c, type: 2}
 --- !u!1001 &500000000000000001
@@ -5835,3 +6064,5 @@ SceneRoots:
   - {fileID: 766618912}
   - {fileID: 4700000002}
   - {fileID: 4700000012}
+  - {fileID: 1960518154}
+  - {fileID: 295166377}

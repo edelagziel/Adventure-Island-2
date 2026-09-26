@@ -1,14 +1,22 @@
 using UnityEngine;
+using VContainer;
+using VContainer.Unity;
 
 namespace AdventureIsland.Enemies
 {
     public sealed class EnemyBuilder : IEnemyBuilder
     {
+        private readonly IObjectResolver objectResolver;
         private EnemyDefinition definition;
         private Vector3 position;
         private Quaternion rotation;
         private Transform parent;
         private Enemy product;
+
+        public EnemyBuilder(IObjectResolver objectResolver)
+        {
+            this.objectResolver = objectResolver;
+        }
 
         public void Reset()
         {
@@ -46,6 +54,12 @@ namespace AdventureIsland.Enemies
                 position,
                 rotation,
                 parent);
+
+            if (product != null)
+            {
+                objectResolver.InjectGameObject(product.gameObject);
+            }
+
             return product != null;
         }
 
