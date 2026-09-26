@@ -17,6 +17,13 @@
 - Enemy death now hides the current SpriteRenderer and disables the current Collider2D while keeping the same instance active for its respawn coroutine; reset restores transform, presentation, collision, and animation. Current Bird and Spider prefabs use a 30-second respawn delay.
 - The production scene contains the Player Fairy protection/contact components and visual, the scene-level Fairy installer, and an inactive Fairy reward pickup owned by its Egg. Manual Play Mode verification confirmed Fairy collection and enemy contact destruction; affected production and EditMode test assemblies compile with zero errors.
 
+## AD-45 - Snake and Frog enemy behaviours (complete)
+
+- `JumpingSnakeEnemy` and `FireSnakeEnemy` are concrete `Enemy` behaviours created through the existing enemy-definition spawn path. The jumping Snake reuses `GroundedJumpMotor`; the Fire Snake obtains pooled `FireSnakeProjectile` instances through the existing Combat projectile pool.
+- Fire Snake projectiles activate before receiving their `Rigidbody2D` velocity, keep gravity at zero, aim from the configured mouth spawn point toward the Player, and flip their sprite to match horizontal travel. The scene owns both Snake spawn definitions and the scoped installer owns Player Transform and projectile-pool registrations.
+- `FrogEnemy` receives the shared Player Transform provider and jumps only while the Player is within its configured proximity distance; its jump motor resets through the base Enemy death/respawn hooks.
+- Verification: Unity imported and compiled the feature changes; Play Mode verified Fire Snake projectile creation, leftward targeting toward the Player, zero gravity, and leftward sprite flip. The scene was saved in its current configured state.
+
 ## AD-41 - Egg / reward creation (complete)
 
 - Production Eggs separate interaction, state, and presentation through `EggOpenTrigger`, `Egg`, and `EggPresentation`. Each Egg owns one inactive reward beneath a scene-authored `RewardAnchor`; opening activates that existing reward without runtime creation or destruction.

@@ -56,6 +56,7 @@ namespace AdventureIsland.Enemies
                 position,
                 rotation,
                 parent);
+
             return product != null;
         }
 
