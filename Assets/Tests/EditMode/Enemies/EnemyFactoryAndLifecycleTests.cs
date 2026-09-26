@@ -14,6 +14,8 @@ namespace AdventureIsland.Enemies.Tests
         private EnemyDefinition testEnemyDefinition;
         private TestEnemy createdEnemy;
         private GameObject movementTestObject;
+        private GameObject playerTestObject;
+        private GameObject spawnTestObject;
 
         [SetUp]
         public void SetUp()
@@ -47,6 +49,16 @@ namespace AdventureIsland.Enemies.Tests
             if (movementTestObject != null)
             {
                 Object.DestroyImmediate(movementTestObject);
+            }
+
+            if (playerTestObject != null)
+            {
+                Object.DestroyImmediate(playerTestObject);
+            }
+
+            if (spawnTestObject != null)
+            {
+                Object.DestroyImmediate(spawnTestObject);
             }
         }
 
@@ -168,6 +180,92 @@ namespace AdventureIsland.Enemies.Tests
 
             Assert.That(bird.transform.position.x, Is.LessThan(spawnPosition.x));
             Assert.That(bird.transform.position.y, Is.LessThan(spawnPosition.y));
+        }
+
+        [UnityTest]
+        public IEnumerator GhostChasesPlayerRejectsNormalDefeatAndAcceptsDestruction()
+        {
+            movementTestObject = new GameObject("Ghost Movement Test");
+            GhostEnemy ghost = movementTestObject.AddComponent<GhostEnemy>();
+            ConfigureFloat(ghost, "chaseSpeed", 2f);
+            ConfigureFloat(ghost, "respawnDelaySeconds", 0.05f);
+
+            playerTestObject = new GameObject("Player Target Test");
+            playerTestObject.transform.position = new Vector3(2f, 1f, 0f);
+
+            var builder = new ContainerBuilder();
+            builder.RegisterInstance(playerTestObject.transform)
+                .AsSelf();
+            IObjectResolver resolver = builder.Build();
+            resolver.Inject(ghost);
+
+            Vector3 spawnPosition = ghost.transform.position;
+            yield return null;
+            yield return new WaitForSeconds(0.05f);
+
+            Assert.That(ghost.transform.position.x, Is.GreaterThan(spawnPosition.x));
+            Assert.That(ghost.transform.position.y, Is.GreaterThan(spawnPosition.y));
+            Assert.That(ghost.TryDefeat(), Is.False);
+            Assert.That(ghost.IsAlive, Is.True);
+
+            Assert.That(ghost.TryDestroy(), Is.True);
+            Vector3 deathPosition = ghost.transform.position;
+            yield return new WaitForSeconds(0.02f);
+
+            Assert.That(ghost.IsAlive, Is.False);
+            Assert.That(ghost.transform.position, Is.EqualTo(deathPosition));
+
+            yield return new WaitForSeconds(0.08f);
+
+            Assert.That(ghost.IsAlive, Is.True);
+            Vector3 resumedPosition = ghost.transform.position;
+            yield return new WaitForSeconds(0.03f);
+            Assert.That(
+                Vector3.Distance(ghost.transform.position, playerTestObject.transform.position),
+                Is.LessThan(Vector3.Distance(resumedPosition, playerTestObject.transform.position)));
+        }
+
+        [UnityTest]
+        public IEnumerator EnemySpawnRevealsConfiguredAnimalDropAndHidesItOnStageReset()
+        {
+            spawnTestObject = new GameObject("Enemy Spawn Test");
+            EnemySpawn enemySpawn = spawnTestObject.AddComponent<EnemySpawn>();
+            GameObject animalDrop = new GameObject("Animal Drop Test");
+            animalDrop.transform.SetParent(spawnTestObject.transform);
+
+            var serializedSpawn = new SerializedObject(enemySpawn);
+            serializedSpawn.FindProperty("definition").objectReferenceValue =
+                testEnemyDefinition;
+            serializedSpawn.FindProperty("animalDropChance").floatValue = 1f;
+            serializedSpawn.FindProperty("animalDrop").objectReferenceValue = animalDrop;
+            serializedSpawn.ApplyModifiedPropertiesWithoutUndo();
+
+            var builder = new ContainerBuilder();
+            builder.Register<EnemyBuilder>(Lifetime.Scoped)
+                .As<IEnemyBuilder>();
+            builder.Register<EnemyDirector>(Lifetime.Scoped)
+                .AsSelf();
+            builder.Register<EnemyFactory>(Lifetime.Scoped)
+                .AsSelf();
+
+            IObjectResolver resolver = builder.Build();
+            resolver.Inject(enemySpawn);
+
+            yield return null;
+
+            TestEnemy spawnedEnemy = spawnTestObject.GetComponentInChildren<TestEnemy>();
+            Assert.That(spawnedEnemy, Is.Not.Null);
+            Assert.That(animalDrop.activeSelf, Is.False);
+
+            spawnedEnemy.transform.position = new Vector3(4f, 3f, 0f);
+            Assert.That(spawnedEnemy.TryDie(), Is.True);
+            Assert.That(animalDrop.activeSelf, Is.True);
+            Assert.That(animalDrop.transform.position, Is.EqualTo(spawnedEnemy.transform.position));
+
+            enemySpawn.ResetStageState();
+
+            Assert.That(animalDrop.activeSelf, Is.False);
+            Assert.That(spawnedEnemy.IsAlive, Is.True);
         }
 
         private VerticalSpiderEnemy CreateVerticalSpider()

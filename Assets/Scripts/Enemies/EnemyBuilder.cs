@@ -1,14 +1,24 @@
+using System;
 using UnityEngine;
+using VContainer;
+using VContainer.Unity;
 
 namespace AdventureIsland.Enemies
 {
     public sealed class EnemyBuilder : IEnemyBuilder
     {
+        private readonly IObjectResolver objectResolver;
         private EnemyDefinition definition;
         private Vector3 position;
         private Quaternion rotation;
         private Transform parent;
         private Enemy product;
+
+        public EnemyBuilder(IObjectResolver objectResolver)
+        {
+            this.objectResolver = objectResolver
+                ?? throw new ArgumentNullException(nameof(objectResolver));
+        }
 
         public void Reset()
         {
@@ -41,7 +51,7 @@ namespace AdventureIsland.Enemies
                 return false;
             }
 
-            product = Object.Instantiate(
+            product = objectResolver.Instantiate(
                 definition.Prefab,
                 position,
                 rotation,

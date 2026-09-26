@@ -8,6 +8,8 @@ namespace AdventureIsland.Enemies
     public sealed class EnemySpawn : MonoBehaviour, IStageResettable
     {
         [SerializeField] private EnemyDefinition definition;
+        [SerializeField, Range(0f, 1f)] private float animalDropChance;
+        [SerializeField] private GameObject animalDrop;
 
         private EnemyFactory enemyFactory;
         private Enemy spawnedEnemy;
@@ -21,11 +23,14 @@ namespace AdventureIsland.Enemies
 
         private void Start()
         {
+            HideAnimalDrop();
             EnsureEnemyCreated();
         }
 
         public void ResetStageState()
         {
+            HideAnimalDrop();
+
             if (spawnedEnemy == null)
             {
                 EnsureEnemyCreated();
@@ -64,6 +69,36 @@ namespace AdventureIsland.Enemies
             {
                 throw new InvalidOperationException(
                     $"{nameof(EnemyFactory)} failed to create the enemy for '{name}'.");
+            }
+
+            spawnedEnemy.DeathStarted += HandleEnemyDeathStarted;
+        }
+
+        private void OnDestroy()
+        {
+            if (spawnedEnemy != null)
+            {
+                spawnedEnemy.DeathStarted -= HandleEnemyDeathStarted;
+            }
+        }
+
+        private void HandleEnemyDeathStarted(Enemy enemy)
+        {
+            if (animalDrop == null || animalDrop.activeSelf ||
+                animalDropChance <= 0f || UnityEngine.Random.value > animalDropChance)
+            {
+                return;
+            }
+
+            animalDrop.transform.position = enemy.transform.position;
+            animalDrop.SetActive(true);
+        }
+
+        private void HideAnimalDrop()
+        {
+            if (animalDrop != null)
+            {
+                animalDrop.SetActive(false);
             }
         }
     }

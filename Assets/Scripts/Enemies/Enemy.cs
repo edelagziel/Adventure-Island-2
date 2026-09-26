@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using AdventureIsland.Presentation;
 using UnityEngine;
 
 namespace AdventureIsland.Enemies
 {
-    public abstract class Enemy : MonoBehaviour, IDestructible
+    public abstract class Enemy : MonoBehaviour, IDefeatable, IDestructible
     {
         [SerializeField, Min(0f)] private float respawnDelaySeconds;
         [SerializeField] private SpriteFrameAnimation spriteAnimation;
@@ -17,6 +18,7 @@ namespace AdventureIsland.Enemies
 
         public bool IsAlive { get; private set; }
         public bool IsWaitingToRespawn => respawnCoroutine != null;
+        public event Action<Enemy> DeathStarted;
 
         private void Awake()
         {
@@ -42,8 +44,14 @@ namespace AdventureIsland.Enemies
 
             SetRuntimePresence(false);
             OnDeathStarted();
+            DeathStarted?.Invoke(this);
             respawnCoroutine = StartCoroutine(RespawnAfterDelay());
             return true;
+        }
+
+        public virtual bool TryDefeat()
+        {
+            return TryDie();
         }
 
         public bool TryDestroy()

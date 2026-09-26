@@ -1,5 +1,14 @@
 # Project State
 
+## AD-46 - Ghost and enemy lifecycle integration (code checkpoint)
+
+- Normal combat uses the shared `IDefeatable.TryDefeat()` capability. `Enemy` delegates normal defeat to its existing death/respawn lifecycle, while `GhostEnemy` rejects normal defeat without weapon-, animal-, or Ghost-type checks in callers.
+- Fairy destruction remains deliberately separate through `IDestructible.TryDestroy()`, so Fairy can destroy both ordinary enemies and Ghost while normal attacks cannot defeat Ghost.
+- `GhostEnemy` owns its continuous movement toward the live Player Transform while alive. `EnemiesInstaller` supplies that Transform, and `EnemyBuilder` now creates runtime enemies through VContainer so instantiated enemy components receive injection. The shared `Enemy` lifecycle still restores the original spawn transform before the Ghost resumes chasing.
+- `EnemySpawn` owns optional Inspector-configured Animal-drop chance and an existing inactive drop object. It responds to the accepted enemy-death notification, activates the configured pickup at the death position, and hides it during stage reset without introducing another reward factory.
+- Verification: the Enemies production and EditMode test assemblies compile with zero errors, metadata GUID and scene-reference checks pass, and `git diff --check` passes. Automated Unity Test Runner execution remains unconfirmed because the project was open and the second batch Editor exited without producing results.
+- Deferred runtime content: `Pre_GhostEnemy`, `GhostEnemyDefinition`, a production-scene `GhostSpawn`, and final Play Mode verification require an approved Ghost sprite/presentation asset. No placeholder asset or invisible production prefab was created.
+
 ## AD-42 - Fairy protection and contact destruction (complete)
 
 - `FairyProtection` owns the ten-second protection lifetime, repeated-collection restart, attached visual state, and reset cancellation. It exposes read-only protection through `IPlayerProtectionState` and participates in shared stage resets through `IResettable`.
