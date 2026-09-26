@@ -4,6 +4,7 @@
   "references": [
     "AdventureIsland.Lives",
     "AdventureIsland.Power",
+    "AdventureIsland.Shared",
     "VContainer"
   ],
   "includePlatforms": [],

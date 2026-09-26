@@ -1,5 +1,11 @@
 # Project State
 
+## AD-48 - Stage 1 production-content completion
+
+- Preserved the approved Stage 1 layout. `Stage1Root` now explicitly owns the existing Fruit, WeaponPickups, AnimalPickups, world/hazard, Spawn, and Goal branches, so a Stage 1 restart cannot leak these collectible objects into another stage.
+- Existing `PickUp` reset behavior restores Fruit, weapon, and animal pickups through the generic stage reset pass. Rock and Bonfire now also implement `IStageResettable`, restoring their own active state after a Stage 1 restart; Abyss has no mutable state to restore.
+- No new level geometry, managers, enemies, prefabs, gameplay systems, or StageFlow responsibilities were introduced.
+
 ## AD-47 - Production stage-flow foundation
 
 - `Adventure-Island-2-Game.unity` uses one production scene with `Stage1Root` and `Stage2Root`; shared Player, camera, HUD, installers, and controllers remain outside stage roots. Each root owns its serialized Spawn, Goal trigger, and only stage-local resettable descendants.

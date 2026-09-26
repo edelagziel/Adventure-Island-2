@@ -5,7 +5,7 @@ using VContainer;
 namespace AdventureIsland.WorldHazards
 {
     [DisallowMultipleComponent]
-    public sealed class BonfireHazard : MonoBehaviour, IExtinguishableObstacle
+    public sealed class BonfireHazard : MonoBehaviour, IExtinguishableObstacle, IStageResettable
     {
         private IPlayerFailureHandler playerFailureHandler;
 
@@ -25,6 +25,11 @@ namespace AdventureIsland.WorldHazards
 
             gameObject.SetActive(false);
             return true;
+        }
+
+        public void ResetStageState()
+        {
+            gameObject.SetActive(true);
         }
 
         private void OnTriggerEnter2D(Collider2D other)
