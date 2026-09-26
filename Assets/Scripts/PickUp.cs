@@ -8,9 +8,8 @@ public abstract class PickUp : MonoBehaviour, IStageResettable
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.tag == "Player")
+        if (col.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Mario Collision! " + name);
             OnPickUp(col.gameObject);
             this.gameObject.SetActive(false);
         }

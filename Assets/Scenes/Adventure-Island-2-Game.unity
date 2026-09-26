@@ -9861,7 +9861,7 @@ Transform:
   m_GameObject: {fileID: 846146245}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 36.28, y: 1, z: 0}
+  m_LocalPosition: {x: 22.5, y: 4.9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -21797,7 +21797,6 @@ Transform:
   - {fileID: 4300000002}
   - {fileID: 3100000002}
   - {fileID: 3000000002}
-  - {fileID: 3000000005}
   - {fileID: 3000000008}
   - {fileID: 4700000025}
   - {fileID: 5100000102}
@@ -23289,7 +23288,7 @@ GameObject:
   - component: {fileID: 1989160834}
   - component: {fileID: 1989160835}
   m_Layer: 0
-  m_Name: BirdSpawn_Copy
+  m_Name: BirdSpawn_FinalApproach
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23304,7 +23303,7 @@ Transform:
   m_GameObject: {fileID: 1989160833}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 179.8, y: -1.99, z: 0}
+  m_LocalPosition: {x: 140, y: -1.99, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -25511,37 +25510,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerResetter
   player: {fileID: 766618912}
   playerRigidbody: {fileID: 766618909}
---- !u!1 &3000000004
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3000000005}
-  m_Layer: 0
-  m_Name: PickupResetter
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3000000005
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3000000004}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1900000034}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3000000007
 GameObject:
   m_ObjectHideFlags: 0
@@ -25807,7 +25775,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4700000002
 Transform:
   m_ObjectHideFlags: 0
@@ -25985,7 +25953,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4700000012
 Transform:
   m_ObjectHideFlags: 0
