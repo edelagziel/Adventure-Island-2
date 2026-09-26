@@ -19,6 +19,7 @@ public sealed class GameLifetimeScope : LifetimeScope
     [SerializeField] private FairyInstaller fairyInstaller;
     [SerializeField] private ResetInstaller resetInstaller;
     [SerializeField] private StageInstaller stageInstaller;
+    [SerializeField] private GameUiInstaller gameUiInstaller;
 
     protected override void Configure(IContainerBuilder builder)
     {
@@ -33,6 +34,7 @@ public sealed class GameLifetimeScope : LifetimeScope
         fairyInstaller.Install(builder);
         resetInstaller.Install(builder);
         stageInstaller.Install(builder);
+        gameUiInstaller.Install(builder);
 
         builder.Register<LivesFlowCoordinator>(Lifetime.Scoped)
             .AsSelf()
@@ -41,6 +43,12 @@ public sealed class GameLifetimeScope : LifetimeScope
             container.Resolve<LivesFlowCoordinator>());
         builder.RegisterBuildCallback(container =>
             container.Resolve<StageFlowController>().Initialize());
+        builder.RegisterBuildCallback(container =>
+            container.Resolve<WeaponIndicatorController>());
+        builder.RegisterBuildCallback(container =>
+            container.Resolve<AnimalIndicatorController>());
+        builder.RegisterBuildCallback(container =>
+            container.Resolve<GameSessionFlowController>().Initialize());
     }
 
     private void ValidateConfiguration()
@@ -88,6 +96,11 @@ public sealed class GameLifetimeScope : LifetimeScope
         if (stageInstaller == null)
         {
             throw new InvalidOperationException("GameLifetimeScope requires a StageInstaller reference.");
+        }
+
+        if (gameUiInstaller == null)
+        {
+            throw new InvalidOperationException("GameLifetimeScope requires a GameUiInstaller reference.");
         }
     }
 }

@@ -10,6 +10,8 @@ public sealed class LivesFlowCoordinator : IDisposable, IPlayerFailureHandler
     private bool isHandlingPlayerFailure;
     private int lastHandledFailureFrame = -1;
 
+    public event Action GameOverReached;
+
     public LivesFlowCoordinator(
         PowerController powerController,
         LivesController livesController,
@@ -54,8 +56,7 @@ public sealed class LivesFlowCoordinator : IDisposable, IPlayerFailureHandler
                 return true;
             }
 
-            livesController.ResetState();
-            stageFlowController.ResetToFirstStage();
+            GameOverReached?.Invoke();
             return true;
         }
         finally

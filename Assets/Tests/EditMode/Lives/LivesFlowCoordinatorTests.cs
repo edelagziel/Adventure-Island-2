@@ -35,19 +35,38 @@ public sealed class LivesFlowCoordinatorTests
     }
 
     [Test]
-    public void FinalLifeLoss_ResetsLivesAndReturnsToStage1()
+    public void FinalLifeLoss_RaisesGameOverAndPreservesTheCurrentStage()
     {
         TestContext context = CreateContext(initialLives: 1, initialPower: 10);
         context.StageFlowController.TryCompleteStage(context.Stage1);
+        int gameOverCount = 0;
+        context.Coordinator.GameOverReached += () => gameOverCount++;
 
         bool handled = context.Coordinator.TryHandlePlayerFailure();
 
         Assert.That(handled, Is.True);
-        Assert.That(context.LivesModel.CurrentLives, Is.EqualTo(1));
-        Assert.That(context.StageFlowController.CurrentStage, Is.SameAs(context.Stage1));
-        Assert.That(context.Stage1.gameObject.activeSelf, Is.True);
-        Assert.That(context.Stage2.gameObject.activeSelf, Is.False);
-        Assert.That(context.PlayerResetter.LastSpawn, Is.SameAs(context.Stage1.SpawnPoint));
+        Assert.That(gameOverCount, Is.EqualTo(1));
+        Assert.That(context.LivesModel.CurrentLives, Is.EqualTo(0));
+        Assert.That(context.StageFlowController.CurrentStage, Is.SameAs(context.Stage2));
+        Assert.That(context.Stage1.gameObject.activeSelf, Is.False);
+        Assert.That(context.Stage2.gameObject.activeSelf, Is.True);
+        Assert.That(context.PlayerResetter.LastSpawn, Is.SameAs(context.Stage2.SpawnPoint));
+    }
+
+    [Test]
+    public void FinalStageCompletion_RaisesGameCompletedOnce()
+    {
+        TestContext context = CreateContext(initialLives: 3, initialPower: 10);
+        int gameCompletedCount = 0;
+        context.StageFlowController.GameCompleted += () => gameCompletedCount++;
+
+        context.StageFlowController.TryCompleteStage(context.Stage1);
+        bool completed = context.StageFlowController.TryCompleteStage(context.Stage2);
+        bool duplicateCompletion = context.StageFlowController.TryCompleteStage(context.Stage2);
+
+        Assert.That(completed, Is.True);
+        Assert.That(duplicateCompletion, Is.False);
+        Assert.That(gameCompletedCount, Is.EqualTo(1));
     }
 
     private TestContext CreateContext(int initialLives, int initialPower)

@@ -6,6 +6,10 @@ namespace AdventureIsland.Combat
     {
         private IWeapon activeWeapon;
 
+        public event Action ActiveWeaponChanged;
+
+        public IWeapon ActiveWeapon => activeWeapon;
+
         public bool HasActiveWeapon
         {
             get
@@ -27,6 +31,7 @@ namespace AdventureIsland.Combat
             }
 
             activeWeapon = weapon;
+            ActiveWeaponChanged?.Invoke();
             return true;
         }
 
@@ -38,6 +43,7 @@ namespace AdventureIsland.Combat
             }
 
             activeWeapon = null;
+            ActiveWeaponChanged?.Invoke();
             return true;
         }
 

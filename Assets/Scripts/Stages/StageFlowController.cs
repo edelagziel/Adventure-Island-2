@@ -55,6 +55,8 @@ public sealed class StageFlowController
 
     public bool IsGameCompleted => isGameCompleted;
 
+    public event Action GameCompleted;
+
     public void Initialize()
     {
         if (isInitialized)
@@ -79,6 +81,7 @@ public sealed class StageFlowController
         if (nextStageIndex >= stageRoots.Length)
         {
             isGameCompleted = true;
+            GameCompleted?.Invoke();
             return true;
         }
 
