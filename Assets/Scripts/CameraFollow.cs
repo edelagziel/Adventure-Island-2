@@ -3,12 +3,15 @@ using UnityEngine;
 public sealed class CameraFollow : MonoBehaviour
 {
     [SerializeField] private Transform target;
+    [SerializeField] private GameObject stage2Root;
 
     private float xOffset;
+    private float stage1CameraY;
 
     private void Awake()
     {
         xOffset = transform.position.x - target.position.x;
+        stage1CameraY = transform.position.y;
     }
 
     private void LateUpdate()
@@ -18,10 +21,10 @@ public sealed class CameraFollow : MonoBehaviour
             return;
         }
 
-        transform.position = new Vector3(
-            target.position.x + xOffset,
-            this.transform.position.y,
-            this.transform.position.z
-        );
+        float cameraY = stage2Root != null && stage2Root.activeInHierarchy
+            ? target.position.y
+            : stage1CameraY;
+
+        transform.position = new Vector3(target.position.x + xOffset, cameraY, transform.position.z);
     }
 }
