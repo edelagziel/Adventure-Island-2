@@ -12,10 +12,8 @@ namespace AdventureIsland.Presentation
         [SerializeField] private bool playOnEnable = true;
         [SerializeField] private bool loop = true;
 
-        private int currentFrame;
-        private float elapsedSeconds;
         private bool isConfigured;
-        private bool isPlaying;
+        private SpriteFramePlayer framePlayer;
 
         private void Awake()
         {
@@ -24,7 +22,11 @@ namespace AdventureIsland.Presentation
                 targetRenderer = GetComponent<SpriteRenderer>();
             }
 
-            isConfigured = HasValidConfiguration();
+            framePlayer = new SpriteFramePlayer();
+            isConfigured = framePlayer.TryConfigure(
+                targetRenderer,
+                frames,
+                secondsPerFrame);
 
             if (!isConfigured)
             {
@@ -36,7 +38,6 @@ namespace AdventureIsland.Presentation
                 return;
             }
 
-            ResetToFirstFrame();
         }
 
         private void OnEnable()
@@ -49,18 +50,7 @@ namespace AdventureIsland.Presentation
 
         private void Update()
         {
-            if (!isPlaying)
-            {
-                return;
-            }
-
-            elapsedSeconds += Time.deltaTime;
-
-            while (isPlaying && elapsedSeconds >= secondsPerFrame)
-            {
-                elapsedSeconds -= secondsPerFrame;
-                AdvanceFrame();
-            }
+            framePlayer.Tick(Time.deltaTime);
         }
 
         public void PlayLoop()
@@ -75,14 +65,12 @@ namespace AdventureIsland.Presentation
 
         public void Stop()
         {
-            isPlaying = false;
+            framePlayer?.Stop();
         }
 
         public void ResetToFirstFrame()
         {
-            currentFrame = 0;
-            elapsedSeconds = 0f;
-            ShowCurrentFrame();
+            framePlayer?.ResetToFirstFrame();
         }
 
         private void Play(bool shouldLoop)
@@ -92,56 +80,14 @@ namespace AdventureIsland.Presentation
                 return;
             }
 
-            loop = shouldLoop;
-            isPlaying = true;
-            ResetToFirstFrame();
-        }
-
-        private void AdvanceFrame()
-        {
-            if (currentFrame + 1 < frames.Length)
+            if (shouldLoop)
             {
-                currentFrame++;
-                ShowCurrentFrame();
-                return;
-            }
-
-            if (loop)
-            {
-                currentFrame = 0;
-                ShowCurrentFrame();
+                framePlayer.PlayLoop();
             }
             else
             {
-                isPlaying = false;
+                framePlayer.PlayOnce();
             }
-        }
-
-        private void ShowCurrentFrame()
-        {
-            if (targetRenderer != null && frames != null && frames.Length > 0)
-            {
-                targetRenderer.sprite = frames[currentFrame];
-            }
-        }
-
-        private bool HasValidConfiguration()
-        {
-            if (targetRenderer == null || frames == null || frames.Length == 0 ||
-                secondsPerFrame <= 0f)
-            {
-                return false;
-            }
-
-            foreach (Sprite frame in frames)
-            {
-                if (frame == null)
-                {
-                    return false;
-                }
-            }
-
-            return true;
         }
     }
 }

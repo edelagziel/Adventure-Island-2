@@ -1,29 +1,67 @@
+using System;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
+using AdventureIsland.Combat;
 
 namespace AdventureIsland.Enemies
 {
     [DisallowMultipleComponent]
     public sealed class EnemiesInstaller : MonoBehaviour, IInstaller
     {
-        [SerializeField] private Transform player;
+        [SerializeField] private Transform playerTransform;
+        [SerializeField] private FireSnakeProjectile fireSnakeProjectilePrefab;
+        [SerializeField] private Transform fireSnakeProjectilePoolRoot;
+
+        private const string FireSnakeProjectilePoolKey = "FireSnakeProjectilePool";
 
         public void Install(IContainerBuilder builder)
         {
-            if (player == null)
+            if (playerTransform == null)
             {
                 throw new System.InvalidOperationException(
                     "EnemiesInstaller requires a Player Transform reference.");
             }
 
-            builder.RegisterInstance(player)
+            builder.RegisterInstance(playerTransform)
                 .AsSelf();
+            builder.RegisterInstance<IPlayerTransformProvider>(
+                new PlayerTransformProvider(playerTransform));
             builder.Register<EnemyBuilder>(Lifetime.Scoped)
                 .As<IEnemyBuilder>();
             builder.Register<EnemyDirector>(Lifetime.Scoped)
                 .AsSelf();
             builder.Register<EnemyFactory>(Lifetime.Scoped)
+                .AsSelf();
+
+            RegisterFireSnakeProjectilePool(builder);
+        }
+
+        private void RegisterFireSnakeProjectilePool(IContainerBuilder builder)
+        {
+            if (fireSnakeProjectilePrefab == null &&
+                fireSnakeProjectilePoolRoot == null)
+            {
+                return;
+            }
+
+            if (fireSnakeProjectilePrefab == null ||
+                fireSnakeProjectilePoolRoot == null)
+            {
+                throw new InvalidOperationException(
+                    "EnemiesInstaller requires both a Fire Snake projectile prefab " +
+                    "and projectile pool root when Fire Snake pooling is configured.");
+            }
+
+            builder.Register<ProjectilePool>(Lifetime.Scoped)
+                .Keyed(FireSnakeProjectilePoolKey)
+                .WithParameter("prefab", (Projectile)fireSnakeProjectilePrefab)
+                .WithParameter("projectileRoot", fireSnakeProjectilePoolRoot)
+                .AsSelf();
+            builder.Register<FireSnakeProjectileProvider>(Lifetime.Scoped)
+                .WithParameter(
+                    "pool",
+                    resolver => resolver.Resolve<ProjectilePool>(FireSnakeProjectilePoolKey))
                 .AsSelf();
         }
     }

@@ -4,7 +4,8 @@
   "references": [
     "AdventureIsland.Presentation",
     "AdventureIsland.Shared",
-    "VContainer"
+    "VContainer",
+    "AdventureIsland.Combat"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],
