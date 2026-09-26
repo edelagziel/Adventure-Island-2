@@ -10,6 +10,11 @@ public sealed class CameraFollow : MonoBehaviour
 
     private void Awake()
     {
+        if (target == null)
+        {
+            return;
+        }
+
         xOffset = transform.position.x - target.position.x;
         stage1CameraY = transform.position.y;
     }
