@@ -11,6 +11,7 @@ namespace AdventureIsland.Enemies.Tests
     public sealed class EnemyFactoryAndLifecycleTests
     {
         private TestEnemy testEnemyPrefab;
+        private EnemyDefinition testEnemyDefinition;
         private TestEnemy createdEnemy;
         private GameObject movementTestObject;
 
@@ -19,6 +20,10 @@ namespace AdventureIsland.Enemies.Tests
         {
             testEnemyPrefab = new GameObject("Test Enemy Prefab")
                 .AddComponent<TestEnemy>();
+            testEnemyDefinition = ScriptableObject.CreateInstance<EnemyDefinition>();
+            SerializedObject serializedDefinition = new SerializedObject(testEnemyDefinition);
+            serializedDefinition.FindProperty("prefab").objectReferenceValue = testEnemyPrefab;
+            serializedDefinition.ApplyModifiedPropertiesWithoutUndo();
         }
 
         [TearDown]
@@ -34,6 +39,11 @@ namespace AdventureIsland.Enemies.Tests
                 Object.DestroyImmediate(testEnemyPrefab.gameObject);
             }
 
+            if (testEnemyDefinition != null)
+            {
+                Object.DestroyImmediate(testEnemyDefinition);
+            }
+
             if (movementTestObject != null)
             {
                 Object.DestroyImmediate(movementTestObject);
@@ -44,19 +54,19 @@ namespace AdventureIsland.Enemies.Tests
         public void FactoryCreatesTypedEnemyAtRequestedSpawnTransformThroughVContainer()
         {
             var builder = new ContainerBuilder();
-            builder.RegisterInstance<IEnemyBuilder<TestEnemy>>(
-                new TestEnemyBuilder(testEnemyPrefab));
-            builder.Register(typeof(EnemyDirector<>), Lifetime.Scoped)
+            builder.Register<EnemyBuilder>(Lifetime.Scoped)
+                .As<IEnemyBuilder>();
+            builder.Register<EnemyDirector>(Lifetime.Scoped)
                 .AsSelf();
-            builder.Register(typeof(EnemyFactory<>), Lifetime.Scoped)
+            builder.Register<EnemyFactory>(Lifetime.Scoped)
                 .AsSelf();
 
             IObjectResolver resolver = builder.Build();
-            EnemyFactory<TestEnemy> factory = resolver.Resolve<EnemyFactory<TestEnemy>>();
+            EnemyFactory factory = resolver.Resolve<EnemyFactory>();
             Vector3 position = new Vector3(3f, 4f, 0f);
             Quaternion rotation = Quaternion.Euler(0f, 0f, 90f);
 
-            createdEnemy = factory.Create(position, rotation);
+            createdEnemy = factory.Create(testEnemyDefinition, position, rotation) as TestEnemy;
 
             Assert.That(createdEnemy, Is.TypeOf<TestEnemy>());
             Assert.That(createdEnemy.transform.position, Is.EqualTo(position));
@@ -208,19 +218,5 @@ namespace AdventureIsland.Enemies.Tests
             }
         }
 
-        private sealed class TestEnemyBuilder : IEnemyBuilder<TestEnemy>
-        {
-            private readonly TestEnemy testEnemyPrefab;
-
-            public TestEnemyBuilder(TestEnemy testEnemyPrefab)
-            {
-                this.testEnemyPrefab = testEnemyPrefab;
-            }
-
-            public TestEnemy Build(Vector3 position, Quaternion rotation)
-            {
-                return Object.Instantiate(testEnemyPrefab, position, rotation);
-            }
-        }
     }
 }

@@ -2,6 +2,7 @@
   "name": "AdventureIsland.Enemies",
   "rootNamespace": "AdventureIsland.Enemies",
   "references": [
+    "AdventureIsland.Shared",
     "VContainer"
   ],
   "includePlatforms": [],

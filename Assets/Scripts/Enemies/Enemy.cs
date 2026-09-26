@@ -34,6 +34,19 @@ namespace AdventureIsland.Enemies
             return true;
         }
 
+        internal void ResetRuntimeState()
+        {
+            if (respawnCoroutine != null)
+            {
+                StopCoroutine(respawnCoroutine);
+                respawnCoroutine = null;
+            }
+
+            transform.SetPositionAndRotation(originalSpawnPosition, originalSpawnRotation);
+            IsAlive = true;
+            OnRespawned();
+        }
+
         protected virtual void OnDeathStarted()
         {
         }
@@ -46,10 +59,8 @@ namespace AdventureIsland.Enemies
         {
             yield return new WaitForSeconds(respawnDelaySeconds);
 
-            transform.SetPositionAndRotation(originalSpawnPosition, originalSpawnRotation);
-            IsAlive = true;
             respawnCoroutine = null;
-            OnRespawned();
+            ResetRuntimeState();
         }
     }
 }
