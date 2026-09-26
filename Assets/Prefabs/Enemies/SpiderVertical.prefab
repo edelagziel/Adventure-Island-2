@@ -171,7 +171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4400000000000000000000000000020, type: 3}
   m_Name: 
   m_EditorClassIdentifier: AdventureIsland.Enemies::AdventureIsland.Enemies.VerticalSpiderEnemy
-  respawnDelaySeconds: 0.5
+  respawnDelaySeconds: 30
   spriteAnimation: {fileID: 6827952427174003551}
   verticalSpeed: 1
   verticalRange: 0.5

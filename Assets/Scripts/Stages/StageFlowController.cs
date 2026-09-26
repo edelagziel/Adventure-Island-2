@@ -10,6 +10,7 @@ public sealed class StageFlowController
     private readonly FruitProgressController fruitProgressController;
     private readonly WeaponController weaponController;
     private readonly PlayerActiveAnimal playerActiveAnimal;
+    private readonly IResettable fairyProtectionResetter;
 
     private StageRoot currentStage;
     private bool isInitialized;
@@ -23,7 +24,8 @@ public sealed class StageFlowController
         PowerDrainRunner powerDrainRunner,
         FruitProgressController fruitProgressController,
         WeaponController weaponController,
-        PlayerActiveAnimal playerActiveAnimal)
+        PlayerActiveAnimal playerActiveAnimal,
+        IResettable fairyProtectionResetter)
     {
         if (stageRoots == null || stageRoots.Length < 2)
         {
@@ -37,6 +39,8 @@ public sealed class StageFlowController
         this.fruitProgressController = fruitProgressController ?? throw new ArgumentNullException(nameof(fruitProgressController));
         this.weaponController = weaponController ?? throw new ArgumentNullException(nameof(weaponController));
         this.playerActiveAnimal = playerActiveAnimal ?? throw new ArgumentNullException(nameof(playerActiveAnimal));
+        this.fairyProtectionResetter = fairyProtectionResetter
+            ?? throw new ArgumentNullException(nameof(fairyProtectionResetter));
 
         foreach (StageRoot stageRoot in stageRoots)
         {
@@ -125,6 +129,7 @@ public sealed class StageFlowController
         fruitProgressController.ResetState();
         weaponController.ClearActiveWeapon();
         playerActiveAnimal.ClearActiveAnimal();
+        fairyProtectionResetter.ResetState();
         powerController.ResetState();
         powerDrainRunner.ResetState();
     }

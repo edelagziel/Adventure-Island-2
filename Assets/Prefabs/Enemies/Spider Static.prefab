@@ -106,7 +106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4400000000000000000000000000021, type: 3}
   m_Name: 
   m_EditorClassIdentifier: AdventureIsland.Enemies::AdventureIsland.Enemies.StaticSpiderEnemy
-  respawnDelaySeconds: 0.5
+  respawnDelaySeconds: 30
   spriteAnimation: {fileID: 5640977475786734676}
 --- !u!61 &2461307009870922897
 BoxCollider2D:

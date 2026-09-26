@@ -73,7 +73,7 @@ namespace AdventureIsland.WorldHazards.Tests
         {
             FakeFailureHandler handler = new FakeFailureHandler();
             BonfireHazard hazard = CreateTriggerHazard<BonfireHazard>();
-            hazard.Construct(handler);
+            hazard.Construct(handler, new FakePlayerProtectionState());
             BoxCollider2D contact = CreateContactObject(
                 "Player", Vector2.zero, addRigidbody: false).GetComponent<BoxCollider2D>();
 
@@ -89,7 +89,9 @@ namespace AdventureIsland.WorldHazards.Tests
         public void BonfireTryExtinguish_DeactivatesOnlyOnce()
         {
             BonfireHazard hazard = CreateTriggerHazard<BonfireHazard>();
-            hazard.Construct(new FakeFailureHandler());
+            hazard.Construct(
+                new FakeFailureHandler(),
+                new FakePlayerProtectionState());
 
             Assert.That(hazard.TryExtinguish(), Is.True);
             Assert.That(hazard.gameObject.activeSelf, Is.False);
@@ -120,7 +122,7 @@ namespace AdventureIsland.WorldHazards.Tests
             hazardObject = new GameObject("RockHazardTests");
             hazardObject.AddComponent<BoxCollider2D>();
             RockHazard hazard = hazardObject.AddComponent<RockHazard>();
-            hazard.Construct(controller);
+            hazard.Construct(controller, new FakePlayerProtectionState());
             return hazard;
         }
 
@@ -187,6 +189,11 @@ namespace AdventureIsland.WorldHazards.Tests
             public void UpdatePowerDisplay(int currentPower, int maximumPower)
             {
             }
+        }
+
+        private sealed class FakePlayerProtectionState : IPlayerProtectionState
+        {
+            public bool IsActive => false;
         }
     }
 }

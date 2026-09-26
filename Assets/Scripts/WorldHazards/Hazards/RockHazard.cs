@@ -5,17 +5,23 @@ using VContainer;
 namespace AdventureIsland.WorldHazards
 {
     [DisallowMultipleComponent]
-    public sealed class RockHazard : MonoBehaviour, IBreakableObstacle, IStageResettable
+    public sealed class RockHazard : MonoBehaviour, IBreakableObstacle,
+        IDestructible, IStageResettable
     {
         private const int CollisionPowerDamage = 3;
 
         private PowerController powerController;
+        private IPlayerProtectionState playerProtection;
 
         [Inject]
-        public void Construct(PowerController injectedPowerController)
+        public void Construct(
+            PowerController injectedPowerController,
+            IPlayerProtectionState injectedPlayerProtection)
         {
             powerController = injectedPowerController
                 ?? throw new ArgumentNullException(nameof(injectedPowerController));
+            playerProtection = injectedPlayerProtection
+                ?? throw new ArgumentNullException(nameof(injectedPlayerProtection));
         }
 
         public bool TryBreak()
@@ -27,6 +33,11 @@ namespace AdventureIsland.WorldHazards
 
             gameObject.SetActive(false);
             return true;
+        }
+
+        public bool TryDestroy()
+        {
+            return TryBreak();
         }
 
         public void ResetStageState()
@@ -46,10 +57,15 @@ namespace AdventureIsland.WorldHazards
                 return;
             }
 
-            if (powerController == null)
+            if (playerProtection != null && playerProtection.IsActive)
+            {
+                return;
+            }
+
+            if (powerController == null || playerProtection == null)
             {
                 throw new InvalidOperationException(
-                    "RockHazard requires PowerController injection before collision handling.");
+                    "RockHazard requires Power and player protection injection before collision handling.");
             }
 
             powerController.ReducePower(CollisionPowerDamage);

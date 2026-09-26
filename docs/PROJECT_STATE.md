@@ -1,5 +1,13 @@
 # Project State
 
+## AD-42 - Fairy protection and contact destruction (complete)
+
+- `FairyProtection` owns the ten-second protection lifetime, repeated-collection restart, attached visual state, and reset cancellation. It exposes read-only protection through `IPlayerProtectionState` and participates in shared stage resets through `IResettable`.
+- `FairyContactHandler` remains the Fairy-specific contact layer but targets only the shared `IDestructible` capability. Rock delegates destruction to `TryBreak()`, Bonfire to `TryExtinguish()`, and Enemy to its existing `TryDie()` lifecycle; no concrete target-type branching is used.
+- Rock and Bonfire suppress their normal Player penalty while generic player protection is active. Abyss remains independent of protection and always uses the existing player-failure flow.
+- Enemy death now hides the current SpriteRenderer and disables the current Collider2D while keeping the same instance active for its respawn coroutine; reset restores transform, presentation, collision, and animation. Current Bird and Spider prefabs use a 30-second respawn delay.
+- The production scene contains the Player Fairy protection/contact components and visual, the scene-level Fairy installer, and an inactive Fairy reward pickup owned by its Egg. Manual Play Mode verification confirmed Fairy collection and enemy contact destruction; affected production and EditMode test assemblies compile with zero errors.
+
 ## AD-41 - Egg / reward creation (complete)
 
 - Production Eggs separate interaction, state, and presentation through `EggOpenTrigger`, `Egg`, and `EggPresentation`. Each Egg owns one inactive reward beneath a scene-authored `RewardAnchor`; opening activates that existing reward without runtime creation or destruction.
