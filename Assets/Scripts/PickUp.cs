@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class PickUp : MonoBehaviour
+public abstract class PickUp : MonoBehaviour, IStageResettable
 {
     void OnTriggerEnter2D(Collider2D col)
     {
@@ -15,4 +15,9 @@ public abstract class PickUp : MonoBehaviour
     }
 
     protected abstract void OnPickUp(GameObject player);
+
+    public virtual void ResetStageState()
+    {
+        gameObject.SetActive(true);
+    }
 }

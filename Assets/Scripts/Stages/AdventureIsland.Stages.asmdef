@@ -1,8 +1,10 @@
 {
-  "name": "AdventureIsland.WorldHazards",
-  "rootNamespace": "AdventureIsland.WorldHazards",
+  "name": "AdventureIsland.Stages",
+  "rootNamespace": "",
   "references": [
-    "AdventureIsland.Lives",
+    "AdventureIsland.Animals",
+    "AdventureIsland.Combat",
+    "AdventureIsland.FruitProgress",
     "AdventureIsland.Power",
     "AdventureIsland.Shared",
     "VContainer"

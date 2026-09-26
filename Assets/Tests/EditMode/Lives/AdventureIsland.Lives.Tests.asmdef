@@ -5,7 +5,10 @@
     "AdventureIsland.Lives",
     "AdventureIsland.Power",
     "AdventureIsland.FruitProgress",
-    "AdventureIsland.Shared"
+    "AdventureIsland.Shared",
+    "AdventureIsland.Stages",
+    "AdventureIsland.Combat",
+    "AdventureIsland.Animals"
   ],
   "includePlatforms": [
     "Editor"

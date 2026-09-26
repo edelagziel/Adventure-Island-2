@@ -1,152 +1,120 @@
-using System;
+using System.Collections.Generic;
 using System.Reflection;
+using AdventureIsland.Combat;
 using NUnit.Framework;
 using UnityEngine;
 
 public sealed class LivesFlowCoordinatorTests
 {
-    private GameObject powerDrainObject;
+    private readonly List<GameObject> gameObjects = new List<GameObject>();
 
     [TearDown]
     public void TearDown()
     {
-        if (powerDrainObject != null)
+        foreach (GameObject gameObject in gameObjects)
         {
-            UnityEngine.Object.DestroyImmediate(powerDrainObject);
+            if (gameObject != null)
+            {
+                Object.DestroyImmediate(gameObject);
+            }
         }
+
+        gameObjects.Clear();
     }
 
     [Test]
-    public void DirectFailureRequest_UsesExistingAttemptResetFlow()
+    public void PowerMinimum_RestartsTheCurrentStageWhenLivesRemain()
     {
-        TestContext context = CreateContext(initialPower: 10);
-        context.PowerController.ReducePower(2);
-
-        bool handled = context.Coordinator.TryHandlePlayerFailure();
-
-        Assert.That(handled, Is.True);
-        Assert.That(context.LivesModel.CurrentLives, Is.EqualTo(2));
-        Assert.That(context.PowerModel.CurrentPower, Is.EqualTo(10));
-        Assert.That(context.PlayerResetter.ResetCount, Is.EqualTo(1));
-        Assert.That(context.PickupResetter.ResetCount, Is.Zero);
-
-        context.Coordinator.Dispose();
-    }
-
-    [Test]
-    public void PowerMinimum_DelegatesToTheSameFailureOperation()
-    {
-        TestContext context = CreateContext(initialPower: 3);
+        TestContext context = CreateContext(initialLives: 3, initialPower: 3);
 
         context.PowerController.ReducePower(3);
 
         Assert.That(context.LivesModel.CurrentLives, Is.EqualTo(2));
-        Assert.That(context.PowerModel.CurrentPower, Is.EqualTo(3));
-        Assert.That(context.PlayerResetter.ResetCount, Is.EqualTo(1));
-        Assert.That(context.PickupResetter.ResetCount, Is.Zero);
-
-        context.Coordinator.Dispose();
+        Assert.That(context.StageFlowController.CurrentStage, Is.SameAs(context.Stage1));
+        Assert.That(context.PlayerResetter.LastSpawn, Is.SameAs(context.Stage1.SpawnPoint));
     }
 
     [Test]
-    public void OverlappingFailureRequest_IsRejectedWithoutSecondLifeLoss()
+    public void FinalLifeLoss_ResetsLivesAndReturnsToStage1()
     {
-        TestContext context = CreateContext(initialPower: 10);
-        bool nestedResult = true;
-        context.PlayerResetter.OnReset = () =>
-            nestedResult = context.Coordinator.TryHandlePlayerFailure();
+        TestContext context = CreateContext(initialLives: 1, initialPower: 10);
+        context.StageFlowController.TryCompleteStage(context.Stage1);
 
         bool handled = context.Coordinator.TryHandlePlayerFailure();
 
         Assert.That(handled, Is.True);
-        Assert.That(nestedResult, Is.False);
-        Assert.That(context.LivesModel.CurrentLives, Is.EqualTo(2));
-        Assert.That(context.PlayerResetter.ResetCount, Is.EqualTo(1));
-
-        context.Coordinator.Dispose();
+        Assert.That(context.LivesModel.CurrentLives, Is.EqualTo(1));
+        Assert.That(context.StageFlowController.CurrentStage, Is.SameAs(context.Stage1));
+        Assert.That(context.Stage1.gameObject.activeSelf, Is.True);
+        Assert.That(context.Stage2.gameObject.activeSelf, Is.False);
+        Assert.That(context.PlayerResetter.LastSpawn, Is.SameAs(context.Stage1.SpawnPoint));
     }
 
-    [Test]
-    public void RepeatedFailureRequestInSameFrame_IsRejectedWithoutSecondLifeLoss()
+    private TestContext CreateContext(int initialLives, int initialPower)
     {
-        TestContext context = CreateContext(initialPower: 10);
+        StageRoot stage1 = CreateStage("Stage1", new Vector3(-3f, 0f, 0f));
+        StageRoot stage2 = CreateStage("Stage2", new Vector3(6f, 0f, 0f));
+        stage2.gameObject.SetActive(false);
 
-        bool firstHandled = context.Coordinator.TryHandlePlayerFailure();
-        bool secondHandled = context.Coordinator.TryHandlePlayerFailure();
-
-        Assert.That(firstHandled, Is.True);
-        Assert.That(secondHandled, Is.False);
-        Assert.That(context.LivesModel.CurrentLives, Is.EqualTo(2));
-        Assert.That(context.PlayerResetter.ResetCount, Is.EqualTo(1));
-
-        context.Coordinator.Dispose();
-    }
-
-    [Test]
-    public void FailureSequence_ReachingZeroPerformsFullReset()
-    {
-        TestContext context = CreateContext(initialPower: 10);
-        context.FruitProgressController.CollectFruit();
-
-        Assert.That(InvokeFailureSequence(context.Coordinator), Is.True);
-        Assert.That(InvokeFailureSequence(context.Coordinator), Is.True);
-        Assert.That(InvokeFailureSequence(context.Coordinator), Is.True);
-
-        Assert.That(context.LivesModel.CurrentLives, Is.EqualTo(3));
-        Assert.That(context.FruitProgressModel.CurrentFruitCount, Is.Zero);
-        Assert.That(context.PlayerResetter.ResetCount, Is.EqualTo(3));
-        Assert.That(context.PickupResetter.ResetCount, Is.EqualTo(1));
-
-        context.Coordinator.Dispose();
-    }
-
-    private static bool InvokeFailureSequence(LivesFlowCoordinator coordinator)
-    {
-        MethodInfo failureMethod = typeof(LivesFlowCoordinator).GetMethod(
-            "HandlePlayerFailure",
-            BindingFlags.Instance | BindingFlags.NonPublic);
-
-        Assert.That(failureMethod, Is.Not.Null);
-        return (bool)failureMethod.Invoke(coordinator, null);
-    }
-
-    private TestContext CreateContext(int initialPower)
-    {
-        PowerModel powerModel = new PowerModel(initialPower, 0, 20);
-        PowerController powerController = new PowerController(
-            powerModel,
-            new FakePowerView());
-        LivesModel livesModel = new LivesModel(3);
-        LivesController livesController = new LivesController(
-            livesModel,
-            new FakeLivesView());
-        FruitProgressModel fruitProgressModel = new FruitProgressModel(20);
-        FruitProgressController fruitProgressController =
-            new FruitProgressController(fruitProgressModel, new FakeFruitProgressView());
         FakePlayerResetter playerResetter = new FakePlayerResetter();
-        FakePickupResetter pickupResetter = new FakePickupResetter();
+        PowerModel powerModel = new PowerModel(initialPower, 0, 20);
+        PowerController powerController = new PowerController(powerModel, new FakePowerView());
+        FruitProgressController fruitProgressController = new FruitProgressController(
+            new FruitProgressModel(20),
+            new FakeFruitProgressView());
+        LivesModel livesModel = new LivesModel(initialLives);
+        LivesController livesController = new LivesController(livesModel, new FakeLivesView());
+        PowerDrainRunner powerDrainRunner = CreateGameObject("PowerDrainRunner")
+            .AddComponent<PowerDrainRunner>();
+        PlayerActiveAnimal playerActiveAnimal = CreateGameObject("Player")
+            .AddComponent<PlayerActiveAnimal>();
 
-        powerDrainObject = new GameObject("PowerDrainRunnerTests");
-        PowerDrainRunner powerDrainRunner =
-            powerDrainObject.AddComponent<PowerDrainRunner>();
+        StageFlowController stageFlowController = new StageFlowController(
+            new[] { stage1, stage2 },
+            playerResetter,
+            powerController,
+            powerDrainRunner,
+            fruitProgressController,
+            new WeaponController(),
+            playerActiveAnimal);
+        stageFlowController.Initialize();
 
         LivesFlowCoordinator coordinator = new LivesFlowCoordinator(
             powerController,
             livesController,
             fruitProgressController,
-            powerDrainRunner,
-            playerResetter,
-            pickupResetter);
+            stageFlowController);
 
         return new TestContext(
             coordinator,
             powerController,
-            powerModel,
             livesModel,
-            fruitProgressController,
-            fruitProgressModel,
-            playerResetter,
-            pickupResetter);
+            stageFlowController,
+            stage1,
+            stage2,
+            playerResetter);
+    }
+
+    private StageRoot CreateStage(string name, Vector3 spawnPosition)
+    {
+        GameObject stageObject = CreateGameObject(name);
+        StageRoot stageRoot = stageObject.AddComponent<StageRoot>();
+        GameObject spawnObject = CreateGameObject("Spawn");
+        spawnObject.transform.SetParent(stageObject.transform);
+        spawnObject.transform.position = spawnPosition;
+
+        typeof(StageRoot)
+            .GetField("spawnPoint", BindingFlags.Instance | BindingFlags.NonPublic)
+            .SetValue(stageRoot, spawnObject.transform);
+
+        return stageRoot;
+    }
+
+    private GameObject CreateGameObject(string name)
+    {
+        GameObject gameObject = new GameObject(name);
+        gameObjects.Add(gameObject);
+        return gameObject;
     }
 
     private sealed class TestContext
@@ -154,31 +122,38 @@ public sealed class LivesFlowCoordinatorTests
         public TestContext(
             LivesFlowCoordinator coordinator,
             PowerController powerController,
-            PowerModel powerModel,
             LivesModel livesModel,
-            FruitProgressController fruitProgressController,
-            FruitProgressModel fruitProgressModel,
-            FakePlayerResetter playerResetter,
-            FakePickupResetter pickupResetter)
+            StageFlowController stageFlowController,
+            StageRoot stage1,
+            StageRoot stage2,
+            FakePlayerResetter playerResetter)
         {
             Coordinator = coordinator;
             PowerController = powerController;
-            PowerModel = powerModel;
             LivesModel = livesModel;
-            FruitProgressController = fruitProgressController;
-            FruitProgressModel = fruitProgressModel;
+            StageFlowController = stageFlowController;
+            Stage1 = stage1;
+            Stage2 = stage2;
             PlayerResetter = playerResetter;
-            PickupResetter = pickupResetter;
         }
 
         public LivesFlowCoordinator Coordinator { get; }
         public PowerController PowerController { get; }
-        public PowerModel PowerModel { get; }
         public LivesModel LivesModel { get; }
-        public FruitProgressController FruitProgressController { get; }
-        public FruitProgressModel FruitProgressModel { get; }
+        public StageFlowController StageFlowController { get; }
+        public StageRoot Stage1 { get; }
+        public StageRoot Stage2 { get; }
         public FakePlayerResetter PlayerResetter { get; }
-        public FakePickupResetter PickupResetter { get; }
+    }
+
+    private sealed class FakePlayerResetter : IPlayerResetter
+    {
+        public Transform LastSpawn { get; private set; }
+
+        public void ResetToSpawn(Transform spawnPoint)
+        {
+            LastSpawn = spawnPoint;
+        }
     }
 
     private sealed class FakePowerView : IPowerView
@@ -199,28 +174,6 @@ public sealed class LivesFlowCoordinatorTests
     {
         public void UpdateFruitProgress(int currentFruitCount, int fruitThreshold)
         {
-        }
-    }
-
-    private sealed class FakePlayerResetter : IPlayerResetter
-    {
-        public Action OnReset { get; set; }
-        public int ResetCount { get; private set; }
-
-        public void ResetToInitialSpawn()
-        {
-            ResetCount++;
-            OnReset?.Invoke();
-        }
-    }
-
-    private sealed class FakePickupResetter : IPickupResetter
-    {
-        public int ResetCount { get; private set; }
-
-        public void ReactivatePickups()
-        {
-            ResetCount++;
         }
     }
 }

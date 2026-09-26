@@ -1,5 +1,19 @@
 # Project State
 
+## AD-48 - Stage 1 production-content completion
+
+- Preserved the approved Stage 1 layout. `Stage1Root` now explicitly owns the existing Fruit, WeaponPickups, AnimalPickups, world/hazard, Spawn, and Goal branches, so a Stage 1 restart cannot leak these collectible objects into another stage.
+- Existing `PickUp` reset behavior restores Fruit, weapon, and animal pickups through the generic stage reset pass. Rock and Bonfire now also implement `IStageResettable`, restoring their own active state after a Stage 1 restart; Abyss has no mutable state to restore.
+- No new level geometry, managers, enemies, prefabs, gameplay systems, or StageFlow responsibilities were introduced.
+
+## AD-47 - Production stage-flow foundation
+
+- `Adventure-Island-2-Game.unity` uses one production scene with `Stage1Root` and `Stage2Root`; shared Player, camera, HUD, installers, and controllers remain outside stage roots. Each root owns its serialized Spawn, Goal trigger, and only stage-local resettable descendants.
+- `StageFlowController` initializes Stage 1, restarts only the current stage, transitions once from Stage 1 to Stage 2, restores both roots on a full reset, and records final Stage 2 completion. It coordinates existing focused owners for player position, Power/drain, Fruit Progress, Weapon, and active Animal without owning their internal rules.
+- `LivesFlowCoordinator` remains limited to Power/Fruit event and Lives decisions. A surviving life calls `RestartCurrentStage()`; zero lives resets Lives and requests `ResetToFirstStage()`.
+- `StageRoot.ResetStageState()` performs one generic pass over stage-local `IStageResettable` components. `PickUp` implements that contract to reactivate itself; no generic reset manager, scene reload, or legacy `SC_Death` / `ResetPosition` path is used.
+- Verification: `Assembly-CSharp.csproj` built with 0 warnings and 0 errors; source and scene static checks confirm both roots, Spawn/Goal references, auto-injection roots, and the approved stage-flow call paths. No AD-48/AD-49 level content was saved or committed in this workstream.
+
 ## AD-43 - Enemy foundation and respawn lifecycle (complete)
 
 - `AdventureIsland.Enemies` provides the reusable typed construction path: `EnemyFactory<TEnemy> -> EnemyDirector<TEnemy> -> IEnemyBuilder<TEnemy> -> concrete builder`. Position and rotation flow through every step, so `Enemy.Awake()` captures the instantiated object's real spawn transform.

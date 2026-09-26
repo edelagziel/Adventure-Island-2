@@ -5,6 +5,7 @@
     "AdventureIsland.FruitProgress",
     "AdventureIsland.Power",
     "AdventureIsland.Shared",
+    "AdventureIsland.Stages",
     "Unity.TextMeshPro",
     "VContainer"
   ],

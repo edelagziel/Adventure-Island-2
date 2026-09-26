@@ -5,7 +5,7 @@ using VContainer;
 namespace AdventureIsland.WorldHazards
 {
     [DisallowMultipleComponent]
-    public sealed class RockHazard : MonoBehaviour, IBreakableObstacle
+    public sealed class RockHazard : MonoBehaviour, IBreakableObstacle, IStageResettable
     {
         private const int CollisionPowerDamage = 3;
 
@@ -27,6 +27,11 @@ namespace AdventureIsland.WorldHazards
 
             gameObject.SetActive(false);
             return true;
+        }
+
+        public void ResetStageState()
+        {
+            gameObject.SetActive(true);
         }
 
         private void OnCollisionEnter2D(Collision2D collision)

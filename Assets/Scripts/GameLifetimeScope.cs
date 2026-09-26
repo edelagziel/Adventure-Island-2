@@ -16,6 +16,7 @@ public sealed class GameLifetimeScope : LifetimeScope
     [SerializeField] private AnimalsInstaller animalsInstaller;
     [SerializeField] private EnemiesInstaller enemiesInstaller;
     [SerializeField] private ResetInstaller resetInstaller;
+    [SerializeField] private StageInstaller stageInstaller;
 
     protected override void Configure(IContainerBuilder builder)
     {
@@ -28,12 +29,15 @@ public sealed class GameLifetimeScope : LifetimeScope
         animalsInstaller.Install(builder);
         enemiesInstaller.Install(builder);
         resetInstaller.Install(builder);
+        stageInstaller.Install(builder);
 
         builder.Register<LivesFlowCoordinator>(Lifetime.Scoped)
             .AsSelf()
             .As<IPlayerFailureHandler>();
         builder.RegisterBuildCallback(container =>
             container.Resolve<LivesFlowCoordinator>());
+        builder.RegisterBuildCallback(container =>
+            container.Resolve<StageFlowController>().Initialize());
     }
 
     private void ValidateConfiguration()
@@ -71,6 +75,11 @@ public sealed class GameLifetimeScope : LifetimeScope
         if (resetInstaller == null)
         {
             throw new InvalidOperationException("GameLifetimeScope requires a ResetInstaller reference.");
+        }
+
+        if (stageInstaller == null)
+        {
+            throw new InvalidOperationException("GameLifetimeScope requires a StageInstaller reference.");
         }
     }
 }
