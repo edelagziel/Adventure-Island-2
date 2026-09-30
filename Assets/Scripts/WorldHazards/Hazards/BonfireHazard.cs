@@ -5,7 +5,7 @@ using VContainer;
 namespace AdventureIsland.WorldHazards
 {
     [DisallowMultipleComponent]
-    public sealed class BonfireHazard : MonoBehaviour, IExtinguishableObstacle,
+    public sealed class BonfireHazard : MonoBehaviour,
         IDestructible, IStageResettable
     {
         private IPlayerFailureHandler playerFailureHandler;
@@ -22,7 +22,7 @@ namespace AdventureIsland.WorldHazards
                 ?? throw new ArgumentNullException(nameof(injectedPlayerProtection));
         }
 
-        public bool TryExtinguish()
+        private bool TryExtinguish()
         {
             if (!gameObject.activeSelf)
             {

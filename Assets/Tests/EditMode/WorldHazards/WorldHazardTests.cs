@@ -84,16 +84,17 @@ namespace AdventureIsland.WorldHazards.Tests
         }
 
         [Test]
-        public void BonfireTryExtinguish_DeactivatesOnlyOnce()
+        public void BonfireTryDestroy_DeactivatesOnlyOnce()
         {
             BonfireHazard hazard = CreateTriggerHazard<BonfireHazard>();
             hazard.Construct(
                 new FakeFailureHandler(),
                 new FakePlayerProtectionState());
+            IDestructible destructible = hazard;
 
-            Assert.That(hazard.TryExtinguish(), Is.True);
+            Assert.That(destructible.TryDestroy(), Is.True);
             Assert.That(hazard.gameObject.activeSelf, Is.False);
-            Assert.That(hazard.TryExtinguish(), Is.False);
+            Assert.That(destructible.TryDestroy(), Is.False);
         }
 
         [Test]
@@ -145,7 +146,6 @@ namespace AdventureIsland.WorldHazards.Tests
             InvokeTrigger(hazard, contact);
             Assert.That(handler.RequestCount, Is.EqualTo(1));
             Assert.That(hazard, Is.Not.InstanceOf<IBreakableObstacle>());
-            Assert.That(hazard, Is.Not.InstanceOf<IExtinguishableObstacle>());
 
             contactObject.tag = "Untagged";
             InvokeTrigger(hazard, contact);
