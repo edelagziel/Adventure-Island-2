@@ -2,13 +2,17 @@ using UnityEngine;
 
 namespace AdventureIsland.Enemies
 {
-    public sealed class VerticalSpiderEnemy : Enemy
+    public sealed class VerticalSpiderEnemy : Enemy, IDefeatable, IDestructible
     {
         [SerializeField, Min(0f)] private float verticalSpeed;
         [SerializeField, Min(0f)] private float verticalRange;
 
         private Vector3 movementOrigin;
         private bool movingUp = true;
+
+        public bool TryDefeat() => TryDie();
+
+        public bool TryDestroy() => TryDie();
 
         private void Start()
         {

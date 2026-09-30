@@ -3,7 +3,7 @@ using VContainer;
 
 namespace AdventureIsland.Enemies
 {
-    public sealed class FireSnakeEnemy : Enemy
+    public sealed class FireSnakeEnemy : Enemy, IDefeatable, IDestructible
     {
         [SerializeField] private Transform projectileSpawnPoint;
         [SerializeField, Min(0.01f)] private float fireIntervalSeconds = 1f;
@@ -11,6 +11,10 @@ namespace AdventureIsland.Enemies
         private float nextFireTime;
         private FireSnakeProjectileProvider projectileProvider;
         private Transform playerTransform;
+
+        public bool TryDefeat() => TryDie();
+
+        public bool TryDestroy() => TryDie();
 
         [Inject]
         public void Construct(

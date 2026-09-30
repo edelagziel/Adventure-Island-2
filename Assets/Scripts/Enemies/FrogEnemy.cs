@@ -4,7 +4,7 @@ using VContainer;
 namespace AdventureIsland.Enemies
 {
     [RequireComponent(typeof(GroundedJumpMotor))]
-    public sealed class FrogEnemy : Enemy
+    public sealed class FrogEnemy : Enemy, IDefeatable, IDestructible
     {
         [SerializeField, Min(0f)] private float triggerDistance = 3f;
         [SerializeField, Min(0f)] private float jumpHorizontalSpeed = 3f;
@@ -15,6 +15,10 @@ namespace AdventureIsland.Enemies
         private GroundedJumpMotor jumpMotor;
         private Transform playerTransform;
         private float nextJumpTime;
+
+        public bool TryDefeat() => TryDie();
+
+        public bool TryDestroy() => TryDie();
 
         [Inject]
         public void Construct(IPlayerTransformProvider playerTransformProvider)

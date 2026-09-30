@@ -5,7 +5,7 @@ using VContainer;
 namespace AdventureIsland.Enemies
 {
     [DisallowMultipleComponent]
-    public sealed class GhostEnemy : Enemy
+    public sealed class GhostEnemy : Enemy, IDestructible
     {
         [SerializeField, Min(0f)] private float chaseSpeed = 2f;
         [SerializeField] private bool spriteFacesLocalRight = true;
@@ -20,10 +20,7 @@ namespace AdventureIsland.Enemies
                 ?? throw new ArgumentNullException(nameof(injectedPlayer));
         }
 
-        public override bool TryDefeat()
-        {
-            return false;
-        }
+        public bool TryDestroy() => TryDie();
 
         private void Start()
         {

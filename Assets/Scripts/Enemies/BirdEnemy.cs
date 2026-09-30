@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace AdventureIsland.Enemies
 {
-    public sealed class BirdEnemy : Enemy
+    public sealed class BirdEnemy : Enemy, IDefeatable, IDestructible
     {
         [SerializeField, Min(0f)] private float horizontalSpeed;
         [SerializeField, Min(0f)] private float verticalSpeed;
@@ -10,6 +10,10 @@ namespace AdventureIsland.Enemies
 
         private Vector3 movementOrigin;
         private bool movingDown = true;
+
+        public bool TryDefeat() => TryDie();
+
+        public bool TryDestroy() => TryDie();
 
         private void Start()
         {

@@ -3,7 +3,7 @@ using UnityEngine;
 namespace AdventureIsland.Enemies
 {
     [RequireComponent(typeof(GroundedJumpMotor))]
-    public sealed class JumpingSnakeEnemy : Enemy
+    public sealed class JumpingSnakeEnemy : Enemy, IDefeatable, IDestructible
     {
         [SerializeField, Min(0f)] private float jumpHorizontalSpeed = 2f;
         [SerializeField, Min(0f)] private float jumpVerticalSpeed = 4f;
@@ -11,6 +11,10 @@ namespace AdventureIsland.Enemies
         [SerializeField] private bool spriteFacesLocalRight;
         private GroundedJumpMotor jumpMotor;
         private float nextJumpTime;
+
+        public bool TryDefeat() => TryDie();
+
+        public bool TryDestroy() => TryDie();
 
         private void Start()
         {

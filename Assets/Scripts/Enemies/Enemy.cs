@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace AdventureIsland.Enemies
 {
-    public abstract class Enemy : MonoBehaviour, IDefeatable, IDestructible
+    public abstract class Enemy : MonoBehaviour
     {
         [SerializeField, Min(0f)] private float respawnDelaySeconds;
         [SerializeField] private SpriteFrameAnimation spriteAnimation;
@@ -29,7 +29,7 @@ namespace AdventureIsland.Enemies
             IsAlive = true;
         }
 
-        public bool TryDie()
+        protected bool TryDie()
         {
             if (!IsAlive || IsWaitingToRespawn)
             {
@@ -47,16 +47,6 @@ namespace AdventureIsland.Enemies
             DeathStarted?.Invoke(this);
             respawnCoroutine = StartCoroutine(RespawnAfterDelay());
             return true;
-        }
-
-        public virtual bool TryDefeat()
-        {
-            return TryDie();
-        }
-
-        public bool TryDestroy()
-        {
-            return TryDie();
         }
 
         internal void ResetRuntimeState()
