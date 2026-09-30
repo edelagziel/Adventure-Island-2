@@ -3,7 +3,7 @@ using UnityEngine;
 namespace AdventureIsland.Combat
 {
     [DisallowMultipleComponent]
-    public sealed class DestroyDestructibleOnContact : MonoBehaviour
+    public sealed class BreakObstacleOnContact : MonoBehaviour
     {
         private void OnTriggerEnter2D(Collider2D other)
         {
